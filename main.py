@@ -9,6 +9,7 @@ from datetime import datetime
 import re
 
 from patient_data import PatientData, Medication, Diagnosis, Field
+from models import DiagnosesTableModel, MedicationTableModel
 
 # TODO:
 #   - Fragebögen eingeben
@@ -25,65 +26,6 @@ from patient_data import PatientData, Medication, Diagnosis, Field
 #   - Status für spätere Bearbeitung speichern?
 #   - Word Datei schreiben
 #   - (Word Datei bearbeiten)
-
-
-class DiagnosesTableModel(QtCore.QAbstractTableModel):
-    def __init__(self, diagnoses: list[Diagnosis]):
-        super().__init__()
-        self.diagnoses = diagnoses
-
-    def rowCount(self, /, parent = ...):
-        return len(self.diagnoses) if not parent.isValid() else 0
-
-    def columnCount(self, /, parent = ...):
-        return 2 if not parent.isValid() else 0
-
-    def data(self, index, /, role = ...):
-        if role == Qt.ItemDataRole.DisplayRole:
-            return getattr(self.diagnoses[index.row()], "icd10" if index.column() == 0 else "name")
-        return None
-
-    def headerData(self, section, orientation, /, role = ...):
-        if role != Qt.ItemDataRole.DisplayRole or orientation == Qt.Orientation.Vertical:
-            return None
-
-        return "ICD 10" if section == 0 else "Bezeichnung"
-
-
-class MedicationTableModel(QtCore.QAbstractTableModel):
-    def __init__(self, base_medication: list[Medication], other_medication: list[Medication]):
-        super().__init__()
-        self.base_medication = base_medication
-        self.other_medication = other_medication
-
-    def rowCount(self, /, parent = ...):
-        return len(self.base_medication) + len(self.other_medication) + 2 if not parent.isValid() else 0
-
-    def columnCount(self, /, parent = ...):
-        return 7 if not parent.isValid() else 0
-
-    def data(self, index, /, role = ...):
-        if role == Qt.ItemDataRole.DisplayRole:
-            if index.row() == 0:
-                return "Basismedikation"
-
-            idx = index.row() - 1
-            attr_name = ["name", "dosis", "unit", "morning", "noon", "evening", "night"][index.column()]
-
-            if idx < len(self.base_medication):
-                return getattr(self.base_medication[idx], attr_name)
-
-            if idx == len(self.base_medication):
-                return "Sonstige Medikation"
-
-            return getattr(self.other_medication[idx - len(self.base_medication) - 1], attr_name)
-
-        return None
-
-    def headerData(self, section, orientation, /, role = ...):
-        if role != Qt.ItemDataRole.DisplayRole or orientation == Qt.Orientation.Vertical:
-            return None
-        return ["Name", "Dosis", "Einheit", "Morgens", "Mittags", "Abends", "Nachts"][section]
 
 
 class MainWidget(QtWidgets.QWidget):
@@ -250,6 +192,8 @@ class MainWidget(QtWidgets.QWidget):
         )
 
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
+
+        self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1)
         self.medication_table.setModel(MedicationTableModel(
             self.patient_data.medication["current"]["base"],
             self.patient_data.medication["current"]["other"]))
