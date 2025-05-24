@@ -51,27 +51,39 @@ class DiagnosesTableModel(QtCore.QAbstractTableModel):
 
 
 class MedicationTableModel(QtCore.QAbstractTableModel):
-    def __init__(self, medication: list[Medication]):
+    def __init__(self, base_medication: list[Medication], other_medication: list[Medication]):
         super().__init__()
-        self.medication = medication
+        self.base_medication = base_medication
+        self.other_medication = other_medication
 
     def rowCount(self, /, parent = ...):
-        return len(self.medication) if not parent.isValid() else 0
+        return len(self.base_medication) + len(self.other_medication) + 2 if not parent.isValid() else 0
 
     def columnCount(self, /, parent = ...):
         return 7 if not parent.isValid() else 0
 
     def data(self, index, /, role = ...):
         if role == Qt.ItemDataRole.DisplayRole:
-            return getattr(
-                self.medication[index.row()],
-                ["name", "dosis", "unit", "morning", "noon", "evening", "night"][index.column()]
-            )
+            if index.row() == 0:
+                return "Basismedikation"
+
+            idx = index.row() - 1
+            attr_name = ["name", "dosis", "unit", "morning", "noon", "evening", "night"][index.column()]
+
+            if idx < len(self.base_medication):
+                return getattr(self.base_medication[idx], attr_name)
+
+            if idx == len(self.base_medication):
+                return "Sonstige Medikation"
+
+            return getattr(self.other_medication[idx - len(self.base_medication) - 1], attr_name)
+
         return None
 
     def headerData(self, section, orientation, /, role = ...):
         if role != Qt.ItemDataRole.DisplayRole or orientation == Qt.Orientation.Vertical:
             return None
+        return ["Name", "Dosis", "Einheit", "Morgens", "Mittags", "Abends", "Nachts"][section]
 
 
 class MainWidget(QtWidgets.QWidget):
@@ -105,13 +117,25 @@ class MainWidget(QtWidgets.QWidget):
         self.diagnoses_table = QtWidgets.QTableView()
         self.diagnoses_table.horizontalHeader().setStretchLastSection(True)
         self.diagnoses_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
+        self.diagnoses_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.diagnoses_table.setModel(DiagnosesTableModel([]))
+
+        self.medication_table = QtWidgets.QTableView()
+        self.medication_table.horizontalHeader().setStretchLastSection(True)
+        self.medication_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
+        self.medication_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+        self.medication_table.setModel(MedicationTableModel([], []))
+        self.medication_table.setSpan(0, 0, 1, 7)
+        self.medication_table.setSpan(1, 0, 1, 7)
 
         layout = QtWidgets.QVBoxLayout(self)
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         layout.addWidget(self.search_bar)
         layout.addWidget(self.patient_label)
+        layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
         layout.addWidget(self.diagnoses_table)
+        layout.addWidget(QtWidgets.QLabel("\nMedikation\n"))
+        layout.addWidget(self.medication_table)
 
 
     @QtCore.Slot()
@@ -136,7 +160,7 @@ class MainWidget(QtWidgets.QWidget):
         def __read_meds(text_line: str, when_key: str, how_key: str):
             meds = [Medication(
                 name=med[1], dosis=med[2], unit=med[3],
-                morning=med[4], noon=med[5], evening=med[6], night=med[7])
+                morning=med[4], noon=med[5], evening=med[6], night=med[7] if med[7] is not None else "0")
                 for med in med_pattern.finditer(text_line)]
 
             if not meds:
@@ -222,10 +246,15 @@ class MainWidget(QtWidgets.QWidget):
             f"{self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n"
             f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n"
             f"Wohnhaft: {self.patient_data.address}\n"
-            f"Arzt: {self.patient_data.doc_name}, PT: {self.patient_data.pt_name}\n"
+            f"Arzt: {self.patient_data.doc_name}, PT: {self.patient_data.pt_name}"
         )
 
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
+        self.medication_table.setModel(MedicationTableModel(
+            self.patient_data.medication["current"]["base"],
+            self.patient_data.medication["current"]["other"]))
+        self.medication_table.setSpan(0, 0, 1, 7)
+        self.medication_table.setSpan(len(self.patient_data.medication["current"]["base"]) + 1, 0, 1, 7)
 
 
 
