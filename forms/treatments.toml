@@ -1,5 +1,7 @@
+name = "Vorbehandlungen"
+
 [[field]]
-caption = "Bisherige Behandlungen"
+caption = ""
 field_type = "xbox"
 values = [
     "Akupunktur", "Allgemeinarzt", "Apotheker", "Bademeister",

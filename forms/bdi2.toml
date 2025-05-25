@@ -2,10 +2,12 @@
 # Werden keine Kommata oder Leerzeichen gefunden, wird jede eingegebene Ziffer einzeln gewertet
 # Pro Ziffern wird ein entsprechender Textblock aus "values" gewählt und in einer stringliste gespeichert
 
+name = "BDI-II"
+
 [[field]]
-caption = "BDI-II"
+caption = "Depression"
 field_type = "eval_line"
-start = -1
+start = 1
 
 [[field.values]]
 0 = ""

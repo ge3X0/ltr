@@ -3,14 +3,12 @@ from PySide6.QtCore import Qt
 
 from datetime import datetime
 from zipfile import ZipFile
-from pathlib import Path
 import re
 
 from lxml import etree
 
 from patient_data import Medication, Diagnosis, Field, PatientData
 from models import DiagnosesTableModel, MedicationTableModel
-
 
 
 class DataTabWidget(QtWidgets.QWidget):
@@ -127,18 +125,26 @@ class DataTabWidget(QtWidgets.QWidget):
 
         dt_layout.addLayout(search_box)
 
+        # Setup Data display
+
         dt_layout.addWidget(QtWidgets.QLabel("\nPatientendaten\n"))
         self.patient_label = QtWidgets.QLabel()
         dt_layout.addWidget(self.patient_label)
 
+        # Setup ICD10 Table
+
         dt_layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
+
         self.diagnoses_table = QtWidgets.QTableView()
         self.diagnoses_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.diagnoses_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.diagnoses_table.setModel(DiagnosesTableModel([]))
         dt_layout.addWidget(self.diagnoses_table)
 
+        # Setup Medication Table
+
         dt_layout.addWidget(QtWidgets.QLabel("\nAktuelle Dauermedikation\n"))
+
         self.medication_table = QtWidgets.QTableView()
         self.medication_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.medication_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)

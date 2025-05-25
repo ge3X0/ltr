@@ -1,5 +1,6 @@
+name = "WHODAS 2.0"
 [[field]]
-caption = "WHODAS 2.0 - Betroffene Lebensbereiche"
+caption = "Betroffene Lebensbereiche"
 field_type = "xbox"
 values = [
     "Verständnis und Kommunikation",
@@ -16,6 +17,6 @@ values = [
 # Gespeichert werden die Inhalte der gewählten Checkboxen ("values") als array von strings
 
 [[field]]
-caption = "WHODAS 2.0 - Score"
+caption = "Score"
 field_type = "sum_line"
 max_entries = 3
