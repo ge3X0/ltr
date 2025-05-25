@@ -1,0 +1,15 @@
+[[field]]
+caption = "MIDAS"
+form_type = "sum_line"
+max_entries = 5
+max_sum = 240
+
+[field.results]
+6 = "keiner Beeinträchtigung "
+11 = "leichten Beeinträchtigung "
+21 = "mäßigen Beeinträchtigung "
+241 = "schweren Beeinträchtigung "
+
+# Displays an input line expecting a comma and/or space separated list of numbers
+# Saves number in order of input as array, adds sum of all numbers to the array
+# Saves string according to sum (read from "less-than" list "results")

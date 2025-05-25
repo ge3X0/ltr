@@ -47,6 +47,7 @@ class MainWidget(QtWidgets.QWidget):
         self.configs["file_db"] = Path(self.configs.get("file_db", "./"))
 
         self.search_bar = QtWidgets.QLineEdit()
+        self.search_bar.setStyleSheet("padding: 12px")
         self.search_bar.returnPressed.connect(self.select_patient)
 
         self.file_completer = QtWidgets.QCompleter(
@@ -72,11 +73,22 @@ class MainWidget(QtWidgets.QWidget):
 
         layout = QtWidgets.QVBoxLayout(self)
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        layout.addWidget(self.search_bar)
+
+        search_box = QtWidgets.QHBoxLayout()
+        search_box.addWidget(self.search_bar)
+        search_button = QtWidgets.QPushButton("Neu laden")
+        search_button.setStyleSheet("padding: 12px")
+        search_button.pressed.connect(self.select_patient)
+        search_box.addWidget(search_button)
+        layout.addLayout(search_box)
+
+        layout.addWidget(QtWidgets.QLabel("\nPatientendaten\n"))
         layout.addWidget(self.patient_label)
+
         layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
         layout.addWidget(self.diagnoses_table)
-        layout.addWidget(QtWidgets.QLabel("\nMedikation\n"))
+
+        layout.addWidget(QtWidgets.QLabel("\nAktuelle Dauermedikation\n"))
         layout.addWidget(self.medication_table)
 
 
@@ -185,10 +197,10 @@ class MainWidget(QtWidgets.QWidget):
 
     def display_data(self):
         self.patient_label.setText(
-            f"{self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n"
-            f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n"
-            f"Wohnhaft: {self.patient_data.address}\n"
-            f"Arzt: {self.patient_data.doc_name}, PT: {self.patient_data.pt_name}"
+            f"Datensatz: {self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n\n"
+            f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n\n"
+            f"Wohnhaft: {self.patient_data.address}\n\n"
+            f"Arzt: {self.patient_data.doc_name}\n\nPT: {self.patient_data.pt_name}"
         )
 
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))

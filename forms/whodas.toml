@@ -1,0 +1,21 @@
+[[field]]
+caption = "WHODAS 2.0 - Betroffene Lebensbereiche"
+field_type = "xbox"
+values = [
+    "Verständnis und Kommunikation",
+    "Mobilität",
+    "Selbstversorgung",
+    "Umgang mit anderen Menschen",
+    "Tägliches Leben",
+    "Teilnahme am gesellschaftlichen Leben"
+]
+
+# xbox generiert eine gruppenbox mit checkboxen, die per shortcut miteinander verbunden sind.
+# Ist eine checkbox fokussiert, kann sie mittels "x" ausgewählt werden, per "y" nicht ausgewählt werden.
+# Nach dem Input springt der Fokus automatisch zur nächsten Checkbox.
+# Gespeichert werden die Inhalte der gewählten Checkboxen ("values") als array von strings
+
+[[field]]
+caption = "WHODAS 2.0 - Score"
+field_type = "sum_line"
+max_entries = 3
