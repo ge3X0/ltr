@@ -1,2 +1,5 @@
 file_db = "./file_db"
 ignore_meds = ["Akut", "Basis", ":"]
+fields = [
+    "midas", "treatments", "symptoms", "bdi2", "whodas"
+]

@@ -29,80 +29,7 @@ from models import DiagnosesTableModel, MedicationTableModel
 
 
 class MainWidget(QtWidgets.QWidget):
-    def __init__(self):
-        # TODO: Read file_db path from config.toml
-        super().__init__()
-
-        self.patient_data = PatientData()
-
-        if Path("config.toml").exists():
-            with open("config.toml", "rb") as config_file:
-                self.configs = toml.load(config_file)
-        else:
-            # TODO: standard configs
-            self.configs = {
-                "ignore_meds": []
-            }
-
-        self.configs["file_db"] = Path(self.configs.get("file_db", "./"))
-
-        self.search_bar = QtWidgets.QLineEdit()
-        self.search_bar.setStyleSheet("padding: 12px")
-        self.search_bar.returnPressed.connect(self.select_patient)
-
-        self.file_completer = QtWidgets.QCompleter(
-            [file_name.stem for file_name in self.configs["file_db"].glob("*.docx", case_sensitive=False)])
-        self.file_completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        self.search_bar.setCompleter(self.file_completer)
-
-        self.patient_label = QtWidgets.QLabel()
-
-        self.diagnoses_table = QtWidgets.QTableView()
-        self.diagnoses_table.horizontalHeader().setStretchLastSection(True)
-        self.diagnoses_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
-        self.diagnoses_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
-        self.diagnoses_table.setModel(DiagnosesTableModel([]))
-
-        self.medication_table = QtWidgets.QTableView()
-        self.medication_table.horizontalHeader().setStretchLastSection(True)
-        self.medication_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
-        self.medication_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
-        self.medication_table.setModel(MedicationTableModel([], []))
-        self.medication_table.setSpan(0, 0, 1, 7)
-        self.medication_table.setSpan(1, 0, 1, 7)
-
-        layout = QtWidgets.QVBoxLayout(self)
-        layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        search_box = QtWidgets.QHBoxLayout()
-        search_box.addWidget(self.search_bar)
-        search_button = QtWidgets.QPushButton("Neu laden")
-        search_button.setStyleSheet("padding: 12px")
-        search_button.pressed.connect(self.select_patient)
-        search_box.addWidget(search_button)
-        layout.addLayout(search_box)
-
-        layout.addWidget(QtWidgets.QLabel("\nPatientendaten\n"))
-        layout.addWidget(self.patient_label)
-
-        layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
-        layout.addWidget(self.diagnoses_table)
-
-        layout.addWidget(QtWidgets.QLabel("\nAktuelle Dauermedikation\n"))
-        layout.addWidget(self.medication_table)
-
-
-    @QtCore.Slot()
-    def select_patient(self):
-        # Make sure file exists
-        patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
-        if not patient_path.exists():
-            # TODO: throw
-            print("Not found")
-            return
-
-        # Setup regex for diagnoses and medication
-
+    def __extract_patient_data(self, patient_data):
         icd_pattern = re.compile(r"\b([,.:\-\w äöüÄÖÜß]+)\s+([A-Z]\d{2}(?:\.\d+)?)")
         md_name = r"([/.\-()\w\s\däöüÄÖÜß]{5,18})"
         md_dosage = r"([\d.,/]+)\s*"
@@ -119,15 +46,9 @@ class MainWidget(QtWidgets.QWidget):
 
             if not meds:
                 meds = [Medication(name=med[1])
-                for med in simple_med_pattern.finditer(text_line) if med[1] not in self.configs["ignore_meds"]]
+                        for med in simple_med_pattern.finditer(text_line) if med[1] not in self.configs["ignore_meds"]]
 
             self.patient_data.medication[when_key][how_key] = meds
-
-        # Read files
-
-        with ZipFile(patient_path) as archive:
-            with archive.open("word/document.xml") as fl:
-                patient_data = etree.parse(fl)
 
         ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
 
@@ -135,8 +56,6 @@ class MainWidget(QtWidgets.QWidget):
         #     print(i, end=' ')
         #     text = ''.join(map(lambda x: x.text, cell.iterfind(".//w:t", namespaces=ns)))
         #     print(text)
-
-        self.patient_data = PatientData()
 
         for i, cell in enumerate(patient_data.iterfind(".//w:tc", namespaces=ns)):
             text = '\n'.join(map(lambda x: x.text, cell.iterfind(".//w:t", namespaces=ns)))
@@ -192,6 +111,101 @@ class MainWidget(QtWidgets.QWidget):
                 case Field.MedFormBase:
                     __read_meds(text, "former", "base")
 
+
+    def __setup_data_tab(self, dt_layout: QtWidgets.QVBoxLayout):
+
+        # Setup Search bar and completer
+
+        self.search_bar = QtWidgets.QLineEdit()
+        self.search_bar.setStyleSheet("padding: 12px")
+        self.search_bar.returnPressed.connect(self.select_patient)
+
+        file_completer = QtWidgets.QCompleter(
+            [file_name.stem for file_name in self.configs["file_db"].glob("*.docx", case_sensitive=False)])
+        file_completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        self.search_bar.setCompleter(file_completer)
+
+        search_button = QtWidgets.QPushButton("Neu laden")
+        search_button.setStyleSheet("padding: 12px")
+        search_button.pressed.connect(self.select_patient)
+
+        search_box = QtWidgets.QHBoxLayout()
+        search_box.addWidget(self.search_bar)
+        search_box.addWidget(search_button)
+
+        dt_layout.addLayout(search_box)
+
+        dt_layout.addWidget(QtWidgets.QLabel("\nPatientendaten\n"))
+        self.patient_label = QtWidgets.QLabel()
+        dt_layout.addWidget(self.patient_label)
+
+        dt_layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
+        self.diagnoses_table = QtWidgets.QTableView()
+        self.diagnoses_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
+        self.diagnoses_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+        self.diagnoses_table.setModel(DiagnosesTableModel([]))
+        dt_layout.addWidget(self.diagnoses_table)
+
+        dt_layout.addWidget(QtWidgets.QLabel("\nAktuelle Dauermedikation\n"))
+        self.medication_table = QtWidgets.QTableView()
+        self.medication_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
+        self.medication_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+        self.medication_table.setModel(MedicationTableModel([], []))
+        self.medication_table.setSpan(0, 0, 1, 7)
+        self.medication_table.setSpan(1, 0, 1, 7)
+        dt_layout.addWidget(self.medication_table)
+
+
+    def __init__(self):
+        # TODO: Read file_db path from config.toml
+        super().__init__()
+
+        self.patient_data = PatientData()
+
+        if Path("config.toml").exists():
+            with open("config.toml", "rb") as config_file:
+                self.configs = toml.load(config_file)
+        else:
+            # TODO: standard configs
+            self.configs = {
+                "ignore_meds": []
+            }
+
+        self.configs["file_db"] = Path(self.configs.get("file_db", "./"))
+
+        # Tab Widget is central widget
+
+        self.setLayout(QtWidgets.QVBoxLayout())
+        self.tab_widget = QtWidgets.QTabWidget()
+        self.layout().addWidget(self.tab_widget)
+
+        # Setup tabs
+
+        data_tab = QtWidgets.QWidget()
+        dt_layout = QtWidgets.QVBoxLayout(data_tab)
+        dt_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.tab_widget.addTab(data_tab, "Patientendaten")
+
+        self.__setup_data_tab(dt_layout)
+
+
+    @QtCore.Slot()
+    def select_patient(self):
+        # Make sure file exists
+        patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
+        if not patient_path.exists():
+            # TODO: throw
+            print("Not found")
+            return
+
+        # Read files
+
+        with ZipFile(patient_path) as archive:
+            with archive.open("word/document.xml") as fl:
+                patient_data = etree.parse(fl)
+
+        self.patient_data = PatientData()
+        self.__extract_patient_data(patient_data)
         self.display_data()
 
 
@@ -204,6 +218,7 @@ class MainWidget(QtWidgets.QWidget):
         )
 
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
+        self.diagnoses_table.resizeColumnsToContents()
 
         self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1)
         self.medication_table.setModel(MedicationTableModel(
@@ -211,6 +226,7 @@ class MainWidget(QtWidgets.QWidget):
             self.patient_data.medication["current"]["other"]))
         self.medication_table.setSpan(0, 0, 1, 7)
         self.medication_table.setSpan(len(self.patient_data.medication["current"]["base"]) + 1, 0, 1, 7)
+        self.medication_table.resizeColumnsToContents()
 
 
 
