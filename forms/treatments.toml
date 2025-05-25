@@ -3,6 +3,7 @@ name = "Vorbehandlungen"
 [[field]]
 caption = ""
 field_type = "xbox"
+rows = 20
 values = [
     "Akupunktur", "Allgemeinarzt", "Apotheker", "Bademeister",
     "Chiropraktiker", "Endokrinologe", "Geistheiler", "Hautarzt",

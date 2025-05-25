@@ -1,10 +1,11 @@
-from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6 import QtWidgets, QtGui
+from PySide6.QtCore import Qt
 
 from pathlib import Path
 import tomllib as toml
 
 from patient_data import PatientData
-from widgets import DataTabWidget, SumLineEdit, NumLineEdit
+from widgets import DataTabWidget, SumLineEdit, NumLineEdit, XBox
 
 # TODO:
 #   - Fragebögen eingeben
@@ -56,23 +57,28 @@ class MainWidget(QtWidgets.QWidget):
             with form_file.open("rb") as fl:
                 form_data = toml.load(fl)
 
-            form_group = QtWidgets.QGroupBox(title=form_data.get("name", default=""))
+            form_group = QtWidgets.QWidget()
             form_layout = QtWidgets.QVBoxLayout(form_group)
+            self.tab_widget.addTab(form_group, form_data.get("name", "Unbekanntes Formular"))
 
             for field in form_data["field"]:
-                field_group = QtWidgets.QGroupBox(title=field.get("caption", default=""))
+                field_group = QtWidgets.QGroupBox(title=field.get("caption", ""))
                 field_layout = QtWidgets.QVBoxLayout(field_group)
+                field_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
                 match field["field_type"]:
                     case "sum_line":
                         field_layout.addWidget(SumLineEdit(
-                            max_entries=field.get("max_entries", default=99),
-                            max_sum=field.get("max_sum", default=99999999),
+                            max_entries=field.get("max_entries", 99),
+                            max_sum=field.get("max_sum", 99999999),
                             results=field.get("results", None)
                         ))
 
                     case "xbox":
-                        pass
+                        field_layout.addWidget(XBox(
+                            values=field.get("values", []),
+                            rows=field.get("rows", -1)
+                        ))
 
                     case "eval_line":
                         pass
@@ -84,6 +90,7 @@ class MainWidget(QtWidgets.QWidget):
                         ))
 
                 form_layout.addWidget(field_group)
+
 
 
 
