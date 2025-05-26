@@ -1,4 +1,5 @@
 from PySide6 import QtWidgets, QtCore
+import re
 
 
 class NumLineEdit(QtWidgets.QLineEdit):
@@ -14,9 +15,18 @@ class NumLineEdit(QtWidgets.QLineEdit):
 
     @QtCore.Slot()
     def process_input(self):
-        # TODO: throw on no int
-        self.values = [
-            self.__result_list[idx]
-            for i in self.text().split(',')
-            if 0 <= (idx := int(i) - self.__start) < len(self.__result_list)
-        ]
+        result = []
+        span = False
+
+        for token in re.finditer(r"\d+|-", self.text()):
+            if token[0] == '-':
+                span = True
+                continue
+
+            dig = int(token[0])
+            if span and result:
+                result.extend([i for i in range(result[-1] + 1, dig)])
+            result.append(dig)
+            span = False
+
+        self.values = [self.__result_list[idx] for idx in result if 0 <= idx < len(self.__result_list)]

@@ -5,7 +5,7 @@ from pathlib import Path
 import tomllib as toml
 
 from patient_data import PatientData
-from widgets import DataTabWidget, SumLineEdit, NumLineEdit, XBox
+from widgets import DataTabWidget, SumLineEdit, NumLineEdit, XBox, EvalLine
 
 # TODO:
 #   - Fragebögen eingeben
@@ -81,7 +81,10 @@ class MainWidget(QtWidgets.QWidget):
                         ))
 
                     case "eval_line":
-                        pass
+                        field_layout.addWidget(EvalLine(
+                            values=field.get("values", []),
+                            start=field.get("start", 0)
+                        ))
 
                     case "num_line":
                         field_layout.addWidget(NumLineEdit(
