@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
     <xsl:variable name="data" select="document('data.xml')"/>
 
     <xsl:template match="@*|node()">
@@ -22,6 +21,26 @@
         <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
     </xsl:template>
 
+    <xsl:template match="//alter">
+        <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
+    </xsl:template>
+
+    <xsl:template match="//groesse">
+        <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
+    </xsl:template>
+
+    <xsl:template match="//gewicht">
+        <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
+    </xsl:template>
+
+    <xsl:template match="//puls">
+        <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
+    </xsl:template>
+
+    <xsl:template match="//blutdruck">
+        <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
+    </xsl:template>
+
     <xsl:template match="//aufnahme">
         <p><xsl:value-of select="$data//patient/aufnahme/text()"/></p>
     </xsl:template>
@@ -31,6 +50,14 @@
     </xsl:template>
 
     <xsl:template match="//anrede">
+        <p><xsl:value-of select="$data//patient/anrede/text()"/></p>
+    </xsl:template>
+
+    <xsl:template match="//ersie">
+        <p><xsl:value-of select="$data//patient/anrede/text()"/></p>
+    </xsl:template>
+
+    <xsl:template match="//ersie_cap">
         <p><xsl:value-of select="$data//patient/anrede/text()"/></p>
     </xsl:template>
 
@@ -100,8 +127,23 @@
         </p>
     </xsl:template>
 
+    <xsl:template match="symptoms">
+        <xsl:variable name="s">
+            <xsl:for-each select="$data//field[@name='symptoms']/value">
+                <xsl:if test="text() != ''">
+                    <xsl:value-of select="." />
+                    <xsl:if test="position() &lt; last()">
+                        <xsl:text>, </xsl:text>
+                    </xsl:if>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+
+        <p><xsl:value-of select="$s"/></p>
+    </xsl:template>
+
     <xsl:template match="bdi_ii">
-        <xsl:variable name="symptoms">
+        <xsl:variable name="s">
             <xsl:for-each select="$data//field[@name='bdi_ii']/value">
                 <xsl:if test="text() != ''">
                     <xsl:value-of select="." />
@@ -115,6 +157,21 @@
             </xsl:for-each>
         </xsl:variable>
 
-        <p>Aktuell beschreibt <xsl:value-of select="$patient"/> in der Selbstauskunft <xsl:value-of select="symptoms"/></p>
+        <p><xsl:value-of select="$s"/></p>
+    </xsl:template>
+
+    <xsl:template match="chronisch">
+        <xsl:variable name="s">
+            <xsl:for-each select="$data//field[@name='chronisch']/value">
+                <xsl:if test="text() != ''">
+                    <xsl:value-of select="." />
+                    <xsl:if test="position() &lt; last()">
+                        <xsl:text>, </xsl:text>
+                    </xsl:if>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+
+        <p><xsl:value-of select="$s"/></p>
     </xsl:template>
 </xsl:stylesheet>

@@ -11,13 +11,13 @@ start = 1
 
 [[field.values]]
 0 = ""
-1 = "oft traurig"
-2 = "ständig traurig"
-3 = "so traurig und unglücklich, dass es nicht auszuhalten sei"
+1 = "sei oft traurig"
+2 = "sei ständig traurig"
+3 = "sei so traurig und unglücklich, dass es nicht auszuhalten sei"
 [[field.values]]
 0 = ""
 1 = "sehe mutloser in die Zukunft als sonst"
-2 = "mutlos und erwarte nicht, dass die Situation besser würde"
+2 = "sei mutlos und erwarte nicht, dass die Situation besser würde"
 3 = "glaube, dass die Zukunft hoffnungslos sei"
 [[field.values]]
 0 = ""
@@ -27,7 +27,7 @@ start = 1
 [[field.values]]
 0 = ""
 1 = "könne die Dinge nicht mehr so genießen wie früher"
-2 = "Dinge, die früher Freude gemacht haben, seien nicht mehr genießbar"
+2 = "könne Dinge, die früher Freude gemacht haben, nicht mehr genießen"
 3 = "könne das Leben gar nicht mehr genießen"
 [[field.values]]
 0 = ""
@@ -71,8 +71,8 @@ start = 1
 3 = "habe fast gar kein Interesse mehr an irgendetwas"
 [[field.values]]
 0 = ""
-1 = "es falle schwerer als sonst, Entscheidungen zu treffen"
-2 = "es falle sehr viel schwerer als sonst, Entscheidungen zu treffen"
+1 = "habe mehr Schwierigkeiten als sonst, Entscheidungen zu treffen"
+2 = "habe viel mehr Schwierigkeiten als sonst, Entscheidungen zu treffen"
 3 = "könne sich überhaupt nicht mehr entscheiden"
 [[field.values]]
 0 = ""
