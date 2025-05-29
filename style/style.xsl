@@ -3,9 +3,16 @@
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-<!--    <xsl:variable name="extern" select="document('../data/Sterk_Claudia_21021955_21032024.xml')"/>-->
 
-    <xsl:variable name="gender" select="$data//patient/gender/text()"/>
+    <xsl:variable name="gender" select="$data//exam/gender"/>
+    <xsl:variable name="diag_overuse" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.4']"/>
+    <xsl:variable name="diag_cluster" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.0']"/>
+    <xsl:variable name="diag_migraine_without_aura" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.0']"/>
+    <xsl:variable name="diag_migraine_with_aura" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.1']"/>
+    <xsl:variable name="diag_status_migrainosus" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.2']"/>
+    <xsl:variable name="diag_spaks" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.2']"/>
+
+    <xsl:include href="acute_medication.xsl"/>
 
     <xsl:template match="@*|node()">
         <xsl:copy>
