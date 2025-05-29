@@ -9,22 +9,15 @@ import re
 from lxml import etree
 
 from patient_data import PatientData
-from widgets import DataTabWidget, SumLineEdit, NumLineEdit, XBox, EvalLine, ExamTab
+from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, ExamTab
 
 # TODO:
 #   - Fragebögen eingeben
-#       - MIDAS, WHODAS
-#       - BDI2, Symptome
-#       - Allgemeinsymptome
-#       - Vorbehandler
 #       - Arzt Adresse
 #   - Text einsetzen
-#       - Allgemeine Patientendaten
-#       - Gendern
 #       - ICD10-gesteuerte Textbausteine
 #       - Medikamenten-gesteuerte Textbausteine
 #   - Status für spätere Bearbeitung speichern?
-#   - Word Datei schreiben
 #   - (Word Datei bearbeiten)
 
 # TODO:
@@ -85,12 +78,10 @@ class MainWidget(QtWidgets.QWidget):
                 new_widget = None
 
                 match field["field_type"]:
-                    case "sum_line":
-                        new_widget = SumLineEdit(
+                    case "split_line":
+                        new_widget = SplitLineEdit(
                             field_id=field["id"],
-                            max_entries=field.get("max_entries", 99),
-                            max_sum=field.get("max_sum", 99999999),
-                            results=field.get("results", None)
+                            max_entries=field.get("max_entries", 99)
                         )
 
                     case "xbox":
@@ -172,9 +163,6 @@ class MainWidget(QtWidgets.QWidget):
                         output.writestr(doc_name, etree.tostring(out_xml))
                     else:
                         output.writestr(doc_name, template.read(doc_name))
-
-        # TODO: header
-
 
 
 if __name__ == "__main__":

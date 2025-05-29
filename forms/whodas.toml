@@ -20,5 +20,5 @@ values = [
 [[field]]
 caption = "Score"
 id = "whodas"
-field_type = "sum_line"
+field_type = "split_line"
 max_entries = 3

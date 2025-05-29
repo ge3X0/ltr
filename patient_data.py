@@ -105,11 +105,6 @@ class PatientData:
     <admission>{self.admission.strftime(date_format)}</admission>
     <discharge>{self.discharge.strftime(date_format)}</discharge>
     <allergies>{self.allergies}</allergies>
-    <pulse>TODO</pulse>
-    <blood_pressure>TODO</blood_pressure>
-    <height>TODO</height>
-    <weight>TODO</weight>
-    <gender>TODO</gender>
     
     <diagnoses>{''.join(d.to_xml() for d in self.diagnoses)}</diagnoses>
     <medication when="current" which="acute">{''.join(m.to_xml() for m in self.medication['current']['acute'])}</medication>

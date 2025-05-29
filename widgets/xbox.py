@@ -4,6 +4,8 @@ from itertools import batched
 
 
 class XCheckBox(QtWidgets.QCheckBox):
+    """Used for custom focus forwarding on pressing 'x'"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)

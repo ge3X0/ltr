@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 <!--    <xsl:variable name="extern" select="document('../data/Sterk_Claudia_21021955_21032024.xml')"/>-->
 
     <xsl:variable name="gender" select="$data//patient/gender/text()"/>
@@ -25,6 +27,10 @@
 
     <xsl:template match="//alter">
         <xsl:value-of select="$data//patient/age"/>
+    </xsl:template>
+
+    <xsl:template match="//addresse">
+        <xsl:value-of select="$data//patient/address"/>
     </xsl:template>
 
     <xsl:template match="//groesse">
@@ -97,13 +103,65 @@
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template match="//w:p[.//diagnosen]">
+        <xsl:for-each select="$data//patient/diagnoses/diagnosis">
+            <w:p>
+                <w:pPr>
+                    <w:ind w:left="1134" w:hanging="1134"/>
+                    <w:jc w:val="both"/>
+                    <w:rPr>
+                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+                        <w:color w:val="000000"/>
+                        <w:sz w:val="18"/>
+                        <w:szCs w:val="18"/>
+                    </w:rPr>
+                </w:pPr>
+                <w:r>
+                    <w:rPr>
+                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+                        <w:sz w:val="18"/>
+                        <w:szCs w:val="18"/>
+                    </w:rPr>
+                    <w:t><xsl:value-of select="icd10"/></w:t>
+                </w:r>
+                <w:r>
+                    <w:rPr>
+                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+                        <w:sz w:val="18"/>
+                        <w:szCs w:val="18"/>
+                    </w:rPr>
+                    <w:tab/>
+                </w:r>
+                <w:r>
+                    <w:rPr>
+                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+                        <w:color w:val="000000"/>
+                        <w:sz w:val="18"/>
+                        <w:szCs w:val="18"/>
+                    </w:rPr>
+                    <w:t><xsl:value-of select="name"/></w:t>
+                </w:r>
+            </w:p>
+        </xsl:for-each>
+    </xsl:template>
+
     <xsl:template match="//midas">
+        <xsl:variable name="val_sum" select="sum($data//field[@name='midas']/value)"/>
+        <xsl:variable name="comment">
+            <xsl:choose>
+                <xsl:when test="$val_sum &lt; 6">keiner</xsl:when>
+                <xsl:when test="$val_sum &lt; 11">leichten</xsl:when>
+                <xsl:when test="$val_sum &lt; 21">mäßigen</xsl:when>
+                <xsl:when test="$val_sum &lt; 31">schweren</xsl:when>
+                <xsl:otherwise>sehr schweren</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <xsl:variable name="val1" select="$data//field[@name='midas']/value[1]/text()"/>
         <xsl:variable name="val2" select="$data//field[@name='midas']/value[2]/text()"/>
         <xsl:variable name="val3" select="$data//field[@name='midas']/value[3]/text()"/>
         <xsl:variable name="val4" select="$data//field[@name='midas']/value[4]/text()"/>
         <xsl:variable name="val5" select="$data//field[@name='midas']/value[5]/text()"/>
-        Im MIDAS-Score erreicht <xsl:call-template name="patient"/> einen Wert von <xsl:value-of select="sum($data//field[@name='midas']/value)"/>, einer sehr schweren Beeinträchtigung entsprechend.
+        Im MIDAS-Score erreicht <xsl:call-template name="patient"/> einen Wert von <xsl:value-of select="$val_sum"/>, einer <xsl:value-of select="$comment"/> Beeinträchtigung entsprechend.
         <xsl:if test="$val1 != 0"> An <xsl:value-of select="$val1"/> Tagen in den letzten 3 Monaten ist <xsl:call-template name="patient"/> wegen der Schmerzen nicht zur Arbeit gegangen. </xsl:if>
         <xsl:if test="$val2 != 0"> An <xsl:value-of select="$val2"/> Tagen in den letzten 3 Monaten war die Leistungsfähigkeit am Arbeitsplatz um die Hälfte oder mehr eingeschränkt. </xsl:if>
         <xsl:if test="$val3 != 0"> An <xsl:value-of select="$val3"/> Tagen in den letzten 3 Monaten konnte <xsl:call-template name="patient"/> wegen der Schmerzen keine Hausarbeit verrichten. </xsl:if>
