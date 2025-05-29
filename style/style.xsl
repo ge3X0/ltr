@@ -13,6 +13,8 @@
     <xsl:variable name="diag_spaks" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.2']"/>
 
     <xsl:include href="acute_medication.xsl"/>
+    <xsl:include href="other_medication.xsl"/>
+    <xsl:include href="cluster.xsl"/>
 
     <xsl:template match="@*|node()">
         <xsl:copy>
