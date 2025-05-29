@@ -1,8 +1,12 @@
-from PySide6 import QtWidgets, QtGui
+from PySide6 import QtWidgets, QtGui, QtCore
 from PySide6.QtCore import Qt
 
 from pathlib import Path
 import tomllib as toml
+from zipfile import ZipFile
+import re
+
+from lxml import etree
 
 from patient_data import PatientData
 from widgets import DataTabWidget, SumLineEdit, NumLineEdit, XBox, EvalLine
@@ -42,6 +46,10 @@ class MainWidget(QtWidgets.QWidget):
             }
 
         self.configs["file_db"] = Path(self.configs.get("file_db", "./"))
+        self.configs["save_path"] = Path(self.configs.get("save_path", "./"))
+        # TODO: check exists
+        self.configs["template_file"] = Path(self.configs.get("template_file", "."))
+        self.configs["xsl_file"] = Path(self.configs.get("xsl_file", "."))
 
         # Tab Widget is central widget
 
@@ -51,7 +59,9 @@ class MainWidget(QtWidgets.QWidget):
 
         # Setup tabs
 
-        self.tab_widget.addTab(DataTabWidget(self.configs), "Patientendaten")
+        self.fields = [DataTabWidget(self.configs)]
+        self.tab_widget.addTab(self.fields[0], "Patientendaten")
+        self.fields[0].search_bar.setFocus()
 
         for form_file in Path("./forms/").glob("*.toml"):
             with form_file.open("rb") as fl:
@@ -66,37 +76,87 @@ class MainWidget(QtWidgets.QWidget):
                 field_layout = QtWidgets.QVBoxLayout(field_group)
                 field_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
+                new_widget = None
+
                 match field["field_type"]:
                     case "sum_line":
-                        field_layout.addWidget(SumLineEdit(
+                        new_widget = SumLineEdit(
+                            field_id=field["id"],
                             max_entries=field.get("max_entries", 99),
                             max_sum=field.get("max_sum", 99999999),
                             results=field.get("results", None)
-                        ))
+                        )
 
                     case "xbox":
-                        field_layout.addWidget(XBox(
+                        new_widget = XBox(
+                            field_id=field["id"],
                             values=field.get("values", []),
                             rows=field.get("rows", -1)
-                        ))
+                        )
 
                     case "eval_line":
-                        field_layout.addWidget(EvalLine(
+                        new_widget = EvalLine(
+                            field_id=field["id"],
                             values=field.get("values", []),
                             start=field.get("start", 0)
-                        ))
+                        )
 
                     case "num_line":
-                        field_layout.addWidget(NumLineEdit(
+                        new_widget = NumLineEdit(
+                            field_id=field["id"],
                             result_list=field.get("values", []),
                             start=field.get("start", 0)
-                        ))
+                        )
 
+                self.fields.append(new_widget)
+                field_layout.addWidget(new_widget)
                 form_layout.addWidget(field_group)
 
 
+    def keyPressEvent(self, event, /):
+        if event.type() == QtCore.QEvent.Type.KeyPress:
+            if event.key() == Qt.Key.Key_S and event.modifiers() == Qt.KeyboardModifier.ControlModifier:
+                self.to_xml()
 
 
+    def to_xml(self):
+        data_file = self.configs["save_path"] / self.fields[0].patient_file_name()
+
+        if data_file.exists():
+            # TODO: throw
+            pass
+
+        data_file.parent.mkdir(exist_ok=True, parents=True)
+
+        with data_file.open("bw+") as fl:
+            xml = f"<?xml version=\"1.0\" encoding=\"UTF-8\" ?><data>{''.join(field.to_xml() for field in self.fields)}</data>"
+            fl.write(xml.encode())
+
+        with open(self.configs["xsl_file"], "rb") as xsl_file:
+            xsl_xml = etree.parse(xsl_file)
+            xsl_root = xsl_xml.getroot()
+            etree.SubElement(xsl_root, "{http://www.w3.org/1999/XSL/Transform}variable", {
+                "name": "data",
+                "select": f"document('{data_file.absolute().as_posix()}')"})
+              # {"xsl": "http://www.w3.org/1999/XSL/Transform"})
+            transform = etree.XSLT(xsl_xml)
+
+        def repl(m_str) -> str:
+            full_m = m_str[0]
+            tag_name = full_m[1:full_m.find('<')]
+            tag_name += ''.join(m[1] for m in re.finditer(r"<w:t>(.+?)</w:t>", full_m))
+            return f"<{tag_name} />"
+
+        with ZipFile(self.configs["template_file"]) as archive:
+            with archive.open("word/document.xml") as document:
+                xml_content = re.sub(r"\{.+?}", repl, document.read().decode())
+                docxml = etree.fromstring(xml_content.encode())
+
+        # print(etree.tostring(docxml, pretty_print=True).decode())
+
+        out_xml = transform(docxml)
+        out_xml.write("./data/output.xml", pretty_print=True)
+        # print(etree.tostring(out_xml, pretty_print=True).decode())
 
 
 if __name__ == "__main__":

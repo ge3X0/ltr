@@ -35,6 +35,13 @@ class Diagnosis:
             return self.icd10 == str
         return self.icd10 == other.icd10
 
+    def to_xml(self):
+        return f"""
+<diagnosis>
+    <icd10>{self.icd10}</icd10>
+    <name>{self.name}</name>
+</diagnosis>"""
+
 
 @dataclass
 class Medication:
@@ -45,6 +52,18 @@ class Medication:
     noon: str = "0"
     evening: str = "0"
     night: str = "0"
+
+    def to_xml(self) -> str:
+        return f"""
+<entry>
+    <name>{self.name}</name>
+    <dosis>{self.dosis}</dosis>
+    <unit>{self.unit}</unit>
+    <morning>{self.morning}</morning>
+    <noon>{self.noon}</noon>
+    <evening>{self.evening}</evening>
+    <night>{self.night}</night>
+</entry>"""
 
 
 @dataclass
@@ -71,3 +90,29 @@ class PatientData:
             "base": []
         }
     })
+
+
+    def to_xml(self, date_format: str = "%d.%m.%Y") -> str:
+        return f"""<patient>
+    <first_name>{self.first_name}</first_name>
+    <last_name>{self.last_name}</last_name>
+    <birthday>{self.birthday.strftime(date_format)}</birthday>
+    <address>{self.address}</address>
+    <doctor_name>{self.doc_name}</doctor_name>
+    <therapist_name>{self.pt_name}</therapist_name>
+    <admission>{self.admission.strftime(date_format)}</admission>
+    <discharge>{self.discharge.strftime(date_format)}</discharge>
+    <allergies>{self.allergies}</allergies>
+    <pulse>TODO</pulse>
+    <blood_pressure>TODO</blood_pressure>
+    <height>TODO</height>
+    <weight>TODO</weight>
+    <gender>TODO</gender>
+    
+    <diagnoses>{''.join(d.to_xml() for d in self.diagnoses)}</diagnoses>
+    <medication when="current" which="acute">{''.join(m.to_xml() for m in self.medication['current']['acute'])}</medication>
+    <medication when="current" which="base">{''.join(m.to_xml() for m in self.medication['current']['base'])}</medication>
+    <medication when="current" which="other">{''.join(m.to_xml() for m in self.medication['current']['other'])}</medication>
+    <medication when="former" which="acute">{''.join(m.to_xml() for m in self.medication['former']['acute'])}</medication>
+    <medication when="former" which="base">{''.join(m.to_xml() for m in self.medication['former']['base'])}</medication>
+</patient>"""

@@ -3,10 +3,11 @@ import re
 
 
 class NumLineEdit(QtWidgets.QLineEdit):
-    def __init__(self, result_list: list[str], start: int = 0, *args, **kwargs):
+    def __init__(self, field_id: str, result_list: list[str], start: int = 0, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.values: list[str] = []
+        self.__field_id = field_id
         self.__result_list: list[str] = result_list
         self.__start: int = start
 
@@ -30,3 +31,8 @@ class NumLineEdit(QtWidgets.QLineEdit):
             span = False
 
         self.values = [self.__result_list[idx] for idx in result if 0 <= idx < len(self.__result_list)]
+
+
+    def to_xml(self) -> str:
+        values = ''.join(f"<value>{v}</value>" for v in self.values)
+        return f"""<field name="{self.__field_id}">{values}</field>"""

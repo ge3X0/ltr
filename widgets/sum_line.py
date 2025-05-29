@@ -2,13 +2,14 @@ from PySide6 import QtWidgets, QtCore
 
 
 class SumLineEdit(QtWidgets.QLineEdit):
-    def __init__(self, max_entries: int, max_sum: int, results: dict[str, str] | None, *args, **kwargs):
+    def __init__(self, field_id: str, max_entries: int, max_sum: int, results: dict[str, str] | None, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.sum = 0
-        self.numbers = []
+        self.values = []
         self.result = ""
 
+        self.__field_id = field_id
         self.__result_map = results
         self.__max_sum = max_sum
         self.__max_entries = max_entries
@@ -18,9 +19,9 @@ class SumLineEdit(QtWidgets.QLineEdit):
 
     @QtCore.Slot()
     def sum_input(self):
-        self.numbers = [int(i) for i in self.text().split(',')]
-        del self.numbers[self.__max_entries:]
-        self.sum = min(sum(self.numbers), self.__max_sum)
+        self.values = [int(i) for i in self.text().split(',')]
+        del self.values[self.__max_entries:]
+        self.sum = min(sum(self.values), self.__max_sum)
 
         # TODO: very strange and inefficient, assumes dicts are sorted by key
         if self.__result_map is None:
@@ -30,3 +31,7 @@ class SumLineEdit(QtWidgets.QLineEdit):
             if self.sum < int(cmp):
                 self.result = res
 
+    def to_xml(self) -> str:
+        # TODO: insert result string?
+        values = ''.join(f"<value>{v}</value>" for v in self.values)
+        return f"""<field name="{self.__field_id}">{values}</field>"""

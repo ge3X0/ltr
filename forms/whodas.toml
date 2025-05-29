@@ -1,6 +1,7 @@
 name = "WHODAS 2.0"
 [[field]]
 caption = "Betroffene Lebensbereiche"
+id = "sections"
 field_type = "xbox"
 values = [
     "Verständnis und Kommunikation",
@@ -18,5 +19,6 @@ values = [
 
 [[field]]
 caption = "Score"
+id = "whodas"
 field_type = "sum_line"
 max_entries = 3

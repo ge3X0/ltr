@@ -189,3 +189,12 @@ class DataTabWidget(QtWidgets.QWidget):
         self.medication_table.setSpan(0, 0, 1, 7)
         self.medication_table.setSpan(len(self.patient_data.medication["current"]["base"]) + 1, 0, 1, 7)
         self.medication_table.resizeColumnsToContents()
+
+
+    def patient_file_name(self) -> str:
+        return (f"{self.patient_data.last_name}_{self.patient_data.first_name}_"
+                f"{self.patient_data.birthday.strftime('%d%m%Y')}_{self.patient_data.admission.strftime('%d%m%Y')}.xml")
+
+
+    def to_xml(self) -> str:
+        return self.patient_data.to_xml()

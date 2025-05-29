@@ -2,6 +2,7 @@ name = "MIDAS"
 
 [[field]]
 caption = "Score"
+id = "midas"
 field_type = "sum_line"
 max_entries = 5
 max_sum = 240

@@ -6,6 +6,7 @@ name = "BDI-II"
 
 [[field]]
 caption = "Depression"
+id = "bdi_ii"
 field_type = "eval_line"
 start = 1
 
@@ -116,6 +117,7 @@ start = 1
 
 [[field]]
 caption = "Chronische Schmerzerkrankung"
+id = "chronisch"
 field_type = "xbox"
 values = [
     "habe eine verminderte körperliche Leistungsfähigkeit",

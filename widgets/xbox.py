@@ -14,7 +14,7 @@ class XCheckBox(QtWidgets.QCheckBox):
 
 
 class XBox(QtWidgets.QWidget):
-    def __init__(self, values: list[str], rows: int = -1, *args, **kwargs):
+    def __init__(self, field_id: str, values: list[str], rows: int = -1, *args, **kwargs):
         def __make_checkboxes(vals):
             col = QtWidgets.QVBoxLayout()
             for v in vals:
@@ -25,6 +25,7 @@ class XBox(QtWidgets.QWidget):
 
         super().__init__(*args, **kwargs)
 
+        self.__field_id = field_id
         self.__checkboxes: list[QtWidgets.QCheckBox] = []
 
         layout = QtWidgets.QHBoxLayout(self)
@@ -39,3 +40,7 @@ class XBox(QtWidgets.QWidget):
     def results(self) -> list[str]:
         return [cb.text() for cb in self.__checkboxes if cb.isChecked()]
 
+
+    def to_xml(self) -> str:
+        values = ''.join(f"<value>{v}</value>" for v in self.results())
+        return f"""<field name="{self.__field_id}">{values}</field>"""

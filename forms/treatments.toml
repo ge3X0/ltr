@@ -2,6 +2,7 @@ name = "Vorbehandlungen"
 
 [[field]]
 caption = ""
+id = "treatments"
 field_type = "xbox"
 rows = 20
 values = [

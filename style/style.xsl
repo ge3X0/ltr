@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:variable name="data" select="document('data.xml')"/>
+<!--    <xsl:variable name="extern" select="document('../data/Sterk_Claudia_21021955_21032024.xml')"/>-->
+
+    <xsl:variable name="gender" select="$data//patient/gender/text()"/>
 
     <xsl:template match="@*|node()">
         <xsl:copy>
@@ -10,63 +12,78 @@
     </xsl:template>
 
     <xsl:template match="//vorname">
-        <p><xsl:value-of select="$data//patient/vorname/text()"/></p>
+        <xsl:value-of select="$data//patient/first_name"/>
     </xsl:template>
 
     <xsl:template match="//nachname">
-        <p><xsl:value-of select="$data//patient/nachname/text()"/></p>
+        <xsl:value-of select="$data//patient/last_name"/>
     </xsl:template>
 
     <xsl:template match="//geburtstag">
-        <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
+        <xsl:value-of select="$data//patient/birthday"/>
     </xsl:template>
 
     <xsl:template match="//alter">
-        <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
+        <xsl:value-of select="$data//patient/geburtstag/text()"/>
     </xsl:template>
 
     <xsl:template match="//groesse">
-        <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
+        <xsl:value-of select="$data//patient/height"/>
     </xsl:template>
 
     <xsl:template match="//gewicht">
-        <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
+        <xsl:value-of select="$data//patient/weight"/>
     </xsl:template>
 
     <xsl:template match="//puls">
-        <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
+        <xsl:value-of select="$data//patient/pulse"/>
     </xsl:template>
 
     <xsl:template match="//blutdruck">
-        <p><xsl:value-of select="$data//patient/geburtstag/text()"/></p>
+        <xsl:value-of select="$data//patient/blood_pressure"/>
     </xsl:template>
 
     <xsl:template match="//aufnahme">
-        <p><xsl:value-of select="$data//patient/aufnahme/text()"/></p>
+        <xsl:value-of select="$data//patient/admission"/>
     </xsl:template>
 
     <xsl:template match="//entlassung">
-        <p><xsl:value-of select="$data//patient/entlassung/text()"/></p>
+        <xsl:value-of select="$data//patient/discharge"/>
     </xsl:template>
 
     <xsl:template match="//anrede">
-        <p><xsl:value-of select="$data//patient/anrede/text()"/></p>
+        <xsl:choose>
+            <xsl:when test="$gender = 'm'">Herr</xsl:when>
+            <xsl:otherwise>Frau</xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="//ersie">
-        <p><xsl:value-of select="$data//patient/anrede/text()"/></p>
+        <xsl:choose>
+            <xsl:when test="$gender = 'm'">er</xsl:when>
+            <xsl:otherwise>sie</xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="//ersie_cap">
-        <p><xsl:value-of select="$data//patient/anrede/text()"/></p>
+        <xsl:choose>
+            <xsl:when test="$gender = 'm'">Er</xsl:when>
+            <xsl:otherwise>Sie</xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="//patient">
-        <p><xsl:value-of select="$data//patient/patient/text()"/></p>
+        <xsl:choose>
+            <xsl:when test="$gender = 'm'">der Patient</xsl:when>
+            <xsl:otherwise>die Patientin</xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="//patient_gen">
-        <p><xsl:value-of select="$data//patient/patient_gen/text()"/></p>
+    <xsl:template match="//patient_dat">
+        <xsl:choose>
+            <xsl:when test="$gender = 'm'">dem Patienten</xsl:when>
+            <xsl:otherwise>der Patientin</xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="//midas">
@@ -75,15 +92,12 @@
         <xsl:variable name="val3" select="$data//field[@name='midas']/value[3]/text()"/>
         <xsl:variable name="val4" select="$data//field[@name='midas']/value[4]/text()"/>
         <xsl:variable name="val5" select="$data//field[@name='midas']/value[5]/text()"/>
-
-        <p>
-            Im MIDAS-Score erreicht die Patientin einen Wert von <xsl:value-of select="sum($data//field[@name='midas']/value)"/>, einer sehr schweren Beeinträchtigung entsprechend.
-            <xsl:if test="$val1 != 0"> An <xsl:value-of select="$val1"/> Tagen in den letzten 3 Monaten ist die Patientin wegen der Schmerzen nicht zur Arbeit gegangen. </xsl:if>
-            <xsl:if test="$val2 != 0"> An <xsl:value-of select="$val2"/> Tagen in den letzten 3 Monaten war die Leistungsfähigkeit am Arbeitsplatz um die Hälfte oder mehr eingeschränkt. </xsl:if>
-            <xsl:if test="$val3 != 0"> An <xsl:value-of select="$val3"/> Tagen in den letzten 3 Monaten konnte die Patientin wegen der Schmerzen keine Hausarbeit verrichten. </xsl:if>
-            <xsl:if test="$val4 != 0"> An <xsl:value-of select="$val4"/> Tagen in den letzten 3 Monaten war die Leistungsfähigkeit im Haushalt um die Hälfte oder mehr eingeschränkt. </xsl:if>
-            <xsl:if test="$val5 != 0"> An <xsl:value-of select="$val5"/> Tagen in den letzten 3 Monaten konnte die Patientin an familiären, sozialen oder Freizeitaktivitäten wegen der Schmerzen nicht teilnehmen. </xsl:if>
-        </p>
+        Im MIDAS-Score erreicht die Patientin einen Wert von <xsl:value-of select="sum($data//field[@name='midas']/value)"/>, einer sehr schweren Beeinträchtigung entsprechend.
+        <xsl:if test="$val1 != 0"> An <xsl:value-of select="$val1"/> Tagen in den letzten 3 Monaten ist die Patientin wegen der Schmerzen nicht zur Arbeit gegangen. </xsl:if>
+        <xsl:if test="$val2 != 0"> An <xsl:value-of select="$val2"/> Tagen in den letzten 3 Monaten war die Leistungsfähigkeit am Arbeitsplatz um die Hälfte oder mehr eingeschränkt. </xsl:if>
+        <xsl:if test="$val3 != 0"> An <xsl:value-of select="$val3"/> Tagen in den letzten 3 Monaten konnte die Patientin wegen der Schmerzen keine Hausarbeit verrichten. </xsl:if>
+        <xsl:if test="$val4 != 0"> An <xsl:value-of select="$val4"/> Tagen in den letzten 3 Monaten war die Leistungsfähigkeit im Haushalt um die Hälfte oder mehr eingeschränkt. </xsl:if>
+        <xsl:if test="$val5 != 0"> An <xsl:value-of select="$val5"/> Tagen in den letzten 3 Monaten konnte die Patientin an familiären, sozialen oder Freizeitaktivitäten wegen der Schmerzen nicht teilnehmen. </xsl:if>
     </xsl:template>
 
     <xsl:template match="//whodas">
@@ -98,16 +112,14 @@
                 </xsl:if>
             </xsl:for-each>
         </xsl:variable>
-
         <xsl:variable name="val1" select="$data//field[@name='whodas']/value[1]/text()"/>
         <xsl:variable name="val2" select="$data//field[@name='whodas']/value[2]/text()"/>
         <xsl:variable name="val3" select="$data//field[@name='whodas']/value[3]/text()"/>
-
-        <p>Diese Angaben spiegeln sich auch im WHODAS-2.0, insbesondere im Bereich <xsl:value-of select="$area"/>
+        Diese Angaben spiegeln sich auch im WHODAS-2.0, insbesondere im Bereich <xsl:value-of select="$area"/>
         wider. An <xsl:value-of select="$val1"/> in den letzten 30 Tagen traten diese Schwierigkeiten auf.
         An <xsl:value-of select="$val2"/> in den letzten 30 Tagen war der Patient aufgrund der Gesundheitsprobleme absolut unfähig alltägliche Aktivitäten oder seine Arbeit zu verrichten,
         an <xsl:value-of select="$val3"/> Tagen von 30 Tagen musste der Patient aufgrund seiner Gesundheitsprobleme alltägliche Aktivitäten oder seine Arbeit reduzieren.
-        Somit besteht eine ausgeprägte Beeinträchtigung sowohl der Lebensqualität als auch der Arbeitsfähigkeit.</p>
+        Somit besteht eine ausgeprägte Beeinträchtigung sowohl der Lebensqualität als auch der Arbeitsfähigkeit.
     </xsl:template>
 
     <xsl:template match="//treatments">
@@ -122,9 +134,7 @@
                 </xsl:if>
             </xsl:for-each>
         </xsl:variable>
-        <p>
-            Die bisherige Behandlung erfolgte bei Ärzten mit der Fach- bzw. Zusatzbezeichnung <xsl:value-of select="$docs"/>.
-        </p>
+        Die bisherige Behandlung erfolgte bei Ärzten mit der Fach- bzw. Zusatzbezeichnung <xsl:value-of select="$docs"/>.
     </xsl:template>
 
     <xsl:template match="symptoms">
@@ -139,7 +149,7 @@
             </xsl:for-each>
         </xsl:variable>
 
-        <p><xsl:value-of select="$s"/></p>
+        <xsl:value-of select="$s"/>
     </xsl:template>
 
     <xsl:template match="bdi_ii">
@@ -157,7 +167,7 @@
             </xsl:for-each>
         </xsl:variable>
 
-        <p><xsl:value-of select="$s"/></p>
+        <xsl:value-of select="$s"/>
     </xsl:template>
 
     <xsl:template match="chronisch">
@@ -172,6 +182,6 @@
             </xsl:for-each>
         </xsl:variable>
 
-        <p><xsl:value-of select="$s"/></p>
+        <xsl:value-of select="$s"/>
     </xsl:template>
 </xsl:stylesheet>

@@ -6,6 +6,7 @@ name = "Allgemeine Symptome"
 
 [[field]]
 caption = ""
+id = "symptoms"
 field_type = "num_line"
 start = 1
 values = [
