@@ -17,6 +17,7 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:include href="acute_medication.xsl"/>
     <xsl:include href="other_medication.xsl"/>
     <xsl:include href="base_medication.xsl"/>
+    <xsl:include href="overuse.xsl"/>
     <xsl:include href="cluster.xsl"/>
 
     <xsl:template match="@*|node()">
