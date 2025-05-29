@@ -4,13 +4,34 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
-   <xsl:template match="//w:p[.//basismedikation]">
-       <xsl:variable name="base" select="$data//medication[@when = 'current' and @which = 'base']/entry"/>
-       <xsl:variable name="tza" select="$base/name[text() = 'Amitriptylin' or text() = 'Trimipramin' or text() = 'Doxepin']"/>
-       <xsl:variable name="cgrp" select="$base/name[text() = 'Erenumab' or text() = 'Fremanezumab' or text() = 'Galcanezumab']"/>
-       <xsl:variable name="rr_med" select="$base/name[text() = 'Amlodipin' or text() = 'Bisoprolol' or text() = 'Metoprolol']"/>
+    <xsl:template match="basismedikation_zuvor">
+        <xsl:for-each select="$data//medication[@when = 'former' and @which = 'base']/entry">
+            <xsl:value-of select="name"/>
+            <xsl:if test="position() &lt; last()">
+                <xsl:text>,</xsl:text>
+            </xsl:if>
+        </xsl:for-each>
+    </xsl:template>
 
-       <w:tbl>
+    <xsl:template match="akutmedikation_zuvor">
+        <xsl:for-each select="$data//medication[@when = 'former' and @which = 'acute']/entry">
+            <xsl:value-of select="name"/>
+            <xsl:if test="position() &lt; last()">
+                <xsl:text>,</xsl:text>
+            </xsl:if>
+        </xsl:for-each>
+    </xsl:template>
+
+    <xsl:template match="//w:p[.//basismedikation]">
+        <xsl:variable name="base" select="$data//medication[@when = 'current' and @which = 'base']/entry"/>
+        <xsl:variable name="tza"
+                      select="$base/name[text() = 'Amitriptylin' or text() = 'Trimipramin' or text() = 'Doxepin']"/>
+        <xsl:variable name="cgrp"
+                      select="$base/name[text() = 'Erenumab' or text() = 'Fremanezumab' or text() = 'Galcanezumab']"/>
+        <xsl:variable name="rr_med"
+                      select="$base/name[text() = 'Amlodipin' or text() = 'Bisoprolol' or text() = 'Metoprolol']"/>
+
+        <w:tbl>
             <w:tblPr>
                 <w:tblW w:w="0" w:type="auto"/>
                 <w:tblInd w:w="-106" w:type="dxa"/>
@@ -305,7 +326,9 @@
                                     <w:sz w:val="18"/>
                                     <w:szCs w:val="18"/>
                                 </w:rPr>
-                                <w:t><xsl:value-of select="name" /></w:t>
+                                <w:t>
+                                    <xsl:value-of select="name"/>
+                                </w:t>
                             </w:r>
                         </w:p>
                     </w:tc>
@@ -335,7 +358,10 @@
                                     <w:sz w:val="18"/>
                                     <w:szCs w:val="18"/>
                                 </w:rPr>
-                                <w:t><xsl:value-of select="dosis" /> <xsl:value-of select="unit"/></w:t>
+                                <w:t>
+                                    <xsl:value-of select="dosis"/>
+                                    <xsl:value-of select="unit"/>
+                                </w:t>
                             </w:r>
                         </w:p>
                     </w:tc>
@@ -365,7 +391,9 @@
                                     <w:sz w:val="18"/>
                                     <w:szCs w:val="18"/>
                                 </w:rPr>
-                                <w:t><xsl:value-of select="morning" /></w:t>
+                                <w:t>
+                                    <xsl:value-of select="morning"/>
+                                </w:t>
                             </w:r>
                         </w:p>
                     </w:tc>
@@ -395,7 +423,9 @@
                                     <w:sz w:val="18"/>
                                     <w:szCs w:val="18"/>
                                 </w:rPr>
-                                <w:t><xsl:value-of select="noon" /></w:t>
+                                <w:t>
+                                    <xsl:value-of select="noon"/>
+                                </w:t>
                             </w:r>
                         </w:p>
                     </w:tc>
@@ -425,7 +455,9 @@
                                     <w:sz w:val="18"/>
                                     <w:szCs w:val="18"/>
                                 </w:rPr>
-                                <w:t><xsl:value-of select="evening" /></w:t>
+                                <w:t>
+                                    <xsl:value-of select="evening"/>
+                                </w:t>
                             </w:r>
                         </w:p>
                     </w:tc>
@@ -455,7 +487,9 @@
                                     <w:sz w:val="18"/>
                                     <w:szCs w:val="18"/>
                                 </w:rPr>
-                                <w:t><xsl:value-of select="night" /></w:t>
+                                <w:t>
+                                    <xsl:value-of select="night"/>
+                                </w:t>
                             </w:r>
                         </w:p>
                     </w:tc>
@@ -591,7 +625,7 @@
                 </w:tc>
             </w:tr>
 
-           <xsl:if test="$diag_chronic_migraine">
+            <xsl:if test="$diag_chronic_migraine">
                 <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
                     <w:tc>
                         <w:tcPr>
@@ -620,7 +654,7 @@
                         </w:p>
                     </w:tc>
                 </w:tr>
-           </xsl:if>
+            </xsl:if>
 
             <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
                 <w:tc>
@@ -745,7 +779,9 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
-                                <w:t><xsl:value-of select="$cgrp"/></w:t>
+                                <w:t>
+                                    <xsl:value-of select="$cgrp"/>
+                                </w:t>
                             </w:r>
                             <w:r>
                                 <w:rPr>
@@ -1263,7 +1299,9 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
-                                <w:t><xsl:value-of select="$rr_med"/></w:t>
+                                <w:t>
+                                    <xsl:value-of select="$rr_med"/>
+                                </w:t>
                             </w:r>
                             <w:r w:rsidRPr="00E0410B">
                                 <w:rPr>
@@ -1393,7 +1431,7 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
-                                <w:t>Evaluation der Wirksamkeit 8 Wochen nach Erreichen der Zieldosis des </w:t>
+                                <w:t>Evaluation der Wirksamkeit 8 Wochen nach Erreichen der Zieldosis des</w:t>
                             </w:r>
                             <w:r w:rsidRPr="00CE18C6">
                                 <w:rPr>
@@ -1559,420 +1597,243 @@
                         </w:p>
                     </xsl:if>
 
-                    <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
-                        <w:pPr>
-                            <w:numPr>
-                                <w:ilvl w:val="0"/>
-                                <w:numId w:val="21"/>
-                            </w:numPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="743"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                        </w:pPr>
-                        <w:r w:rsidRPr="00DB3F3C">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve">Auslassversuch von </w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00DB3F3C">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>Flunarizin</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00DB3F3C">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve"> nach maximal 6 bis 9 Monaten (Gefahr von extrapyramidal- motorischen Störungen)Flunarizin kann zu depressiven Verstimmungen, Angstzuständen, Schlaflosigkeit und Asth</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00DB3F3C">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>e</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00DB3F3C">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>nie sowie zu extrapyramidal- motorischen Störungen führen. Wir empfehlen regelmäßige
-                                klinische Ko
-                            </w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00DB3F3C">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>n</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00DB3F3C">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>trollen</w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>. Eine Dosissteigerung des Flunarizins auf 5 mg täglich ist aus schmerztherapeutischer
-                                Sicht u
-                            </w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>n</w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve">ter Beachtung der unerwünschten Arneimittelwirkung sowie Labor- und EKG-Kontrollen möglich. Eine Dosissteigerung bis zu maximal 10 mg/Tag ist prinzipiell durchführbar. Bei Auftreten von Dyskinesien oder einer Stimmungsverschlechterung ggf. vorzeitiges Absetzen von Flunarizin. </w:t>
-                        </w:r>
-                    </w:p>
+                    <xsl:if test="$base/name[text() = 'Flunarizin'">
+                        <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                            <w:pPr>
+                                <w:numPr>
+                                    <w:ilvl w:val="0"/>
+                                    <w:numId w:val="21"/>
+                                </w:numPr>
+                                <w:tabs>
+                                    <w:tab w:val="left" w:pos="743"/>
+                                    <w:tab w:val="left" w:pos="6804"/>
+                                </w:tabs>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                            </w:pPr>
+                            <w:r w:rsidRPr="00DB3F3C">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve">Auslassversuch von </w:t>
+                            </w:r>
+                            <w:r w:rsidRPr="00DB3F3C">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:b/>
+                                    <w:bCs/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t>Flunarizin</w:t>
+                            </w:r>
+                            <w:r w:rsidRPr="00DB3F3C">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve"> nach maximal 6 bis 9 Monaten (Gefahr von extrapyramidal- motorischen Störungen)Flunarizin kann zu depressiven Verstimmungen, Angstzuständen, Schlaflosigkeit und Asthenie sowie zu extrapyramidal- motorischen Störungen führen. Wir empfehlen regelmäßige klinische Kontrollen. Eine Dosissteigerung des Flunarizins auf 5 mg täglich ist aus schmerztherapeutischer Sicht unter Beachtung der unerwünschten Arzneimittelwirkung sowie Labor- und EKG-Kontrollen möglich. Eine Dosissteigerung bis zu maximal 10 mg/Tag ist prinzipiell durchführbar. Bei Auftreten von Dyskinesien oder einer Stimmungsverschlechterung ggf. vorzeitiges Absetzen von Flunarizin. </w:t>
+                            </w:r>
+                        </w:p>
+                    </xsl:if>
 
-                    <w:p w:rsidR="00877D06" w:rsidRPr="003B171E" w:rsidRDefault="00877D06" w:rsidP="005863E9">
-                        <w:pPr>
-                            <w:numPr>
-                                <w:ilvl w:val="0"/>
-                                <w:numId w:val="21"/>
-                            </w:numPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="743"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
-                        <w:r w:rsidRPr="00233748">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>Atosil</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00233748">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve"> (</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="009746CA">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>Promethazin</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00233748">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve">) bitte im Verlauf </w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve">bei weiterer Stabilität ausschleichend </w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00233748">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>absetzen</w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>.</w:t>
-                        </w:r>
-                    </w:p>
+                    <xsl:if test="$base/name[text() = 'Atosil' or text() = 'Promethazin'">
+                        <w:p w:rsidR="00877D06" w:rsidRPr="003B171E" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                            <w:pPr>
+                                <w:numPr>
+                                    <w:ilvl w:val="0"/>
+                                    <w:numId w:val="21"/>
+                                </w:numPr>
+                                <w:tabs>
+                                    <w:tab w:val="left" w:pos="743"/>
+                                    <w:tab w:val="left" w:pos="6804"/>
+                                </w:tabs>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="18"/>
+                                    <w:szCs w:val="18"/>
+                                </w:rPr>
+                            </w:pPr>
+                            <w:r w:rsidRPr="00233748">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:b/>
+                                    <w:bCs/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t>Atosil</w:t>
+                            </w:r>
+                            <w:r w:rsidRPr="00233748">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve"> (</w:t>
+                            </w:r>
+                            <w:r w:rsidRPr="009746CA">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:b/>
+                                    <w:bCs/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t>Promethazin</w:t>
+                            </w:r>
+                            <w:r w:rsidRPr="00233748">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve">) bitte im Verlauf bei weiterer Stabilität ausschleichend absetzen.</w:t>
+                            </w:r>
+                        </w:p>
+                    </xsl:if>
 
-                    <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
-                        <w:pPr>
-                            <w:numPr>
-                                <w:ilvl w:val="0"/>
-                                <w:numId w:val="21"/>
-                            </w:numPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="743"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                        </w:pPr>
-                        <w:r w:rsidRPr="001F0DE9">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>Lamotrigin</w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve"> im Verlauf bei guter Verträglichkeit und unter Leberwert- und Elektrolytwert-Kontrolle vo</w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>r</w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve">sichtig weiter im 14-tägigen Abstand um 25 mg/Tag erhöhen. Bis zu einer Dosis von 100 mg sollte die Gabe nur morgendlich erfolgen, danach auf eine morgendliche und abendliche Gabe verteilen. Zieldosis aus schmerztherapeutischer Sicht sind hierbei 150 mg/die. </w:t>
-                        </w:r>
-                    </w:p>
+                    <xsl:if test="$base/name[text() = 'Lamotrigin'">
+                        <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                            <w:pPr>
+                                <w:numPr>
+                                    <w:ilvl w:val="0"/>
+                                    <w:numId w:val="21"/>
+                                </w:numPr>
+                                <w:tabs>
+                                    <w:tab w:val="left" w:pos="743"/>
+                                    <w:tab w:val="left" w:pos="6804"/>
+                                </w:tabs>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                            </w:pPr>
+                            <w:r w:rsidRPr="001F0DE9">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:b/>
+                                    <w:bCs/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t>Lamotrigin</w:t>
+                            </w:r>
+                            <w:r>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve"> im Verlauf bei guter Verträglichkeit und unter Leberwert- und Elektrolytwert-Kontrolle vorsichtig weiter im 14-tägigen Abstand um 25 mg/Tag erhöhen. Bis zu einer Dosis von 100 mg sollte die Gabe nur morgendlich erfolgen, danach auf eine morgendliche und abendliche Gabe verteilen. Zieldosis aus schmerztherapeutischer Sicht sind hierbei 150 mg/die. </w:t>
+                            </w:r>
+                        </w:p>
 
-                    <w:p w:rsidR="00877D06" w:rsidRPr="004D192F" w:rsidRDefault="00877D06" w:rsidP="00103E2F">
-                        <w:pPr>
-                            <w:numPr>
-                                <w:ilvl w:val="0"/>
-                                <w:numId w:val="21"/>
-                            </w:numPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="743"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                        </w:pPr>
-                        <w:r w:rsidRPr="001F0DE9">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>Lamotrigin</w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve"> </w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00432CD7">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>kann bei plötzlichem Absetzen zu Rebound-Anfällen führen. Stufenweises Absetzen über
-                                einen Zeitraum von 2 Wochen empfohlen.
-                            </w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve"> </w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve">Bei An- oder Wiederabsetzen potenzielle pharmakokinetische Wechselwirkungen bedenken. </w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="004D192F">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>Labor- (Leberwerte) und EKG-Kontrolle während der Einnahme der oben genannten
-                                Medikation
-                            </w:t>
-                        </w:r>
-                    </w:p>
+                        <w:p w:rsidR="00877D06" w:rsidRPr="004D192F" w:rsidRDefault="00877D06" w:rsidP="00103E2F">
+                            <w:pPr>
+                                <w:numPr>
+                                    <w:ilvl w:val="0"/>
+                                    <w:numId w:val="21"/>
+                                </w:numPr>
+                                <w:tabs>
+                                    <w:tab w:val="left" w:pos="743"/>
+                                    <w:tab w:val="left" w:pos="6804"/>
+                                </w:tabs>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                            </w:pPr>
+                            <w:r w:rsidRPr="001F0DE9">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:b/>
+                                    <w:bCs/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t>Lamotrigin</w:t>
+                            </w:r>
+                            <w:r>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:b/>
+                                    <w:bCs/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve"> kann bei plötzlichem Absetzen zu Rebound-Anfällen führen. Stufenweises Absetzen über einen Zeitraum von 2 Wochen empfohlen. Bei An- oder Wiederabsetzen potenzielle pharmakokinetische Wechselwirkungen bedenken. Labor- (Leberwerte) und EKG-Kontrolle während der Einnahme der oben genannten Medikation</w:t>
+                            </w:r>
+                        </w:p>
 
-                    <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
-                        <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="743"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:ind w:left="815"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                        </w:pPr>
-                        <w:r w:rsidRPr="00C64365">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve">Östrogenhaltigen Kombinationspräparate wie Valette führen zu einer Senkung des </w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00C64365">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>Lamotrigenspiegels.</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00C64365">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve"> Während der Pillenpause kommt es zur Spiegelerhöhung und es kann infolgedessen zu einer Intoxik</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00C64365">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>a</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00C64365">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>tion kommen. Rein Gestagenhaltige Präparate haben keine wesentlichen Wechselwirkungen
-                                mit Lamotrigen.
-                            </w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve"> </w:t>
-                        </w:r>
-                    </w:p>
+                        <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                            <w:pPr>
+                                <w:tabs>
+                                    <w:tab w:val="left" w:pos="743"/>
+                                    <w:tab w:val="left" w:pos="6804"/>
+                                </w:tabs>
+                                <w:ind w:left="815"/>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                            </w:pPr>
+                            <w:r w:rsidRPr="00C64365">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve">Östrogenhaltigen Kombinationspräparate wie Valette führen zu einer Senkung des </w:t>
+                            </w:r>
+                            <w:r w:rsidRPr="00C64365">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:b/>
+                                    <w:bCs/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t>Lamotrigenspiegels.</w:t>
+                            </w:r>
+                            <w:r w:rsidRPr="00C64365">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve"> Während der Pillenpause kommt es zur Spiegelerhöhung und es kann infolgedessen zu einer Intoxikation kommen. Rein Gestagenhaltige Präparate haben keine wesentlichen Wechselwirkungen mit Lamotrigen.</w:t>
+                            </w:r>
+                        </w:p>
+                    </xsl:if>
 
                     <!-- Immer !-->
 
@@ -2099,7 +1960,9 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
-                                <w:t><xsl:value-of select="name"/></w:t>
+                                <w:t>
+                                    <xsl:value-of select="name"/>
+                                </w:t>
                             </w:r>
                             <w:r w:rsidRPr="00675C3C">
                                 <w:rPr>
@@ -2533,5 +2396,5 @@
                 </w:tc>
             </w:tr>
         </w:tbl>
-   </xsl:template>
+    </xsl:template>
 </xsl:stylesheet>

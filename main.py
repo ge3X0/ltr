@@ -14,9 +14,6 @@ from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, E
 # TODO:
 #   - Fragebögen eingeben
 #       - Arzt Adresse
-#   - Text einsetzen
-#       - ICD10-gesteuerte Textbausteine
-#       - Medikamenten-gesteuerte Textbausteine
 #   - Status für spätere Bearbeitung speichern?
 #   - (Word Datei bearbeiten)
 
@@ -112,8 +109,20 @@ class MainWidget(QtWidgets.QWidget):
 
     def keyPressEvent(self, event, /):
         if event.type() == QtCore.QEvent.Type.KeyPress:
-            if event.key() == Qt.Key.Key_S and event.modifiers() == Qt.KeyboardModifier.ControlModifier:
-                self.to_xml()
+            if event.modifiers() == Qt.KeyboardModifier.ControlModifier:
+                if event.key() == Qt.Key.Key_E:
+                    self.to_xml()
+            elif event.modifiers() == Qt.KeyboardModifier.AltModifier:
+                    next_tab = self.tab_widget.currentIndex()
+                    if event.key() == Qt.Key.Key_Right:
+                        next_tab += 1
+                        if next_tab >= self.tab_widget.count():
+                            next_tab = 0
+                    elif event.key() == Qt.Key.Key_Left:
+                        next_tab -= 1
+                        if next_tab < 0:
+                            next_tab = self.tab_widget.count() - 1
+                    self.tab_widget.setCurrentIndex(next_tab)
 
 
     def to_xml(self):
@@ -146,9 +155,11 @@ class MainWidget(QtWidgets.QWidget):
 
         # Internal function to concat docs templates {varname} if word inserted <t></t> tags
         def repl(m_str) -> str:
-            full_m = m_str[0]
+            full_m = m_str[2]
             tag_name = full_m[1:full_m.find('<')]
             tag_name += ''.join(m[1] for m in re.finditer(r"<w:t>(.+?)</w:t>", full_m))
+            if m_str[1] is not None:
+                return f"<w:t xml:space=\"preserve\"><{tag_name} />"
             return f"<{tag_name} />"
 
         # Replace docs templates {varname} with <varname /> for xsl processing and load template docs file
@@ -157,7 +168,7 @@ class MainWidget(QtWidgets.QWidget):
                 for doc_name in template.infolist():
                     if doc_name.filename in self.configs["process_files"]:
                         with template.open(doc_name) as document:
-                            xml_content = re.sub(r"\{.+?}", repl, document.read().decode())
+                            xml_content = re.sub(r"(<w:t>)?(\{.+?})", repl, document.read().decode())
                             docxml = etree.fromstring(xml_content.encode())
                         out_xml = transform(docxml)
                         output.writestr(doc_name, etree.tostring(out_xml))
