@@ -72,6 +72,7 @@ class PatientData:
     last_name: str = "Unbekannt"
     birthday: datetime = datetime.now()
     address: str = "Unbekannt"
+    occupation: str = "Unbekannt"
     doc_name: str = "Unbekannt"
     pt_name: str = "Unbekannt"
     admission: datetime = datetime.now()
@@ -100,6 +101,7 @@ class PatientData:
     <birthday>{self.birthday.strftime(date_format)}</birthday>
     <age>{int((today.year - self.birthday.year) - ((today.month, today.day) < (self.birthday.month, self.birthday.day)))}</age>
     <address>{self.address}</address>
+    <occupation>{self.occupation}</occupation>
     <doctor_name>{self.doc_name}</doctor_name>
     <therapist_name>{self.pt_name}</therapist_name>
     <admission>{self.admission.strftime(date_format)}</admission>

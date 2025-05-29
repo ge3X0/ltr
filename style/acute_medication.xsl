@@ -1659,52 +1659,34 @@
                         </w:p>
                     </xsl:if>
 
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00A27897" w:rsidRDefault="00877D06" w:rsidP="00427FCB">
-                        <w:pPr>
-                            <w:numPr>
-                                <w:ilvl w:val="0"/>
-                                <w:numId w:val="21"/>
-                            </w:numPr>
-                            <w:ind w:left="601" w:hanging="241"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                                <w:highlight w:val="yellow"/>
-                            </w:rPr>
-                        </w:pPr>
-                        <w:r w:rsidRPr="00A27897">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                                <w:highlight w:val="yellow"/>
-                            </w:rPr>
-                            <w:t>Kardiovaskuläre Risikofaktoren bestehen nach individueller Abklärung nicht. Aufgrund dieser Situation sehen wir aktuell nach ausführlicher Aufklärung keine individuelle Kontraindikation für die Behandlung mit Sumatriptan über dem 65 </w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                                <w:highlight w:val="yellow"/>
-                            </w:rPr>
-                            <w:t>.</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="00A27897">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                                <w:highlight w:val="yellow"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve"> Lebensjahr.</w:t>
-                        </w:r>
-                    </w:p>
+                    <xsl:if test="$age > 64">
+                        <w:p w:rsidR="00877D06" w:rsidRPr="00A27897" w:rsidRDefault="00877D06" w:rsidP="00427FCB">
+                            <w:pPr>
+                                <w:numPr>
+                                    <w:ilvl w:val="0"/>
+                                    <w:numId w:val="21"/>
+                                </w:numPr>
+                                <w:ind w:left="601" w:hanging="241"/>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                    <w:highlight w:val="yellow"/>
+                                </w:rPr>
+                            </w:pPr>
+                            <w:r w:rsidRPr="00A27897">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                    <w:highlight w:val="yellow"/>
+                                </w:rPr>
+                                <w:t>Kardiovaskuläre Risikofaktoren bestehen nach individueller Abklärung nicht. Aufgrund dieser Situation sehen wir aktuell nach ausführlicher Aufklärung keine individuelle Kontraindikation für die Behandlung mit Sumatriptan über dem 65. Lebensjahr.</w:t>
+                            </w:r>
+                        </w:p>
+                    </xsl:if>
 
                     <w:p w:rsidR="00877D06" w:rsidRPr="000302C9" w:rsidRDefault="00877D06" w:rsidP="00A50791">
                         <w:pPr>
@@ -1729,72 +1711,57 @@
                                 <w:szCs w:val="16"/>
                                 <w:highlight w:val="yellow"/>
                             </w:rPr>
-                            <w:t>Beachtung des Agranulozytoserisikos unter Metamizol.</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="000302C9">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                                <w:highlight w:val="yellow"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve"> Bei Fieber/Schüttelfrost, Halsschmerzen, Abgeschlagenheit oder Affektionen von Haut und Schleimhäuten ist unverzüglich ein Arzt aufzusuchen und auf die Medikamenteneinnahme hinzuweisen. </w:t>
+                            <w:t>Beachtung des Agranulozytoserisikos unter Metamizol. Bei Fieber/Schüttelfrost, Halsschmerzen, Abgeschlagenheit oder Affektionen von Haut und Schleimhäuten ist unverzüglich ein Arzt aufzusuchen und auf die Medikamenteneinnahme hinzuweisen. </w:t>
                         </w:r>
                     </w:p>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="0012639C" w:rsidRDefault="00877D06" w:rsidP="001B3A32">
-                        <w:pPr>
-                            <w:numPr>
-                                <w:ilvl w:val="0"/>
-                                <w:numId w:val="21"/>
-                            </w:numPr>
-                            <w:ind w:left="601" w:hanging="241"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
-                        <w:r w:rsidRPr="0012639C">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve">Wir empfehlen die ambulante Fortführung der </w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="0012639C">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>Analgetikapause für insgesamt vier Wochen</w:t>
-                        </w:r>
-                        <w:r w:rsidRPr="0012639C">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>. Medikamentenpause heißt: Alle Medikamente für die Akutbehandlung von Kopfschmerzen dürfen für einen bestimmten Zeitraum nicht eingenommen werden. Die Pause hat nach spätestens vier bis sechs Wochen ihr Ziel erreicht und kann beendet werden. Attacken können dann wieder mit Akutmedikation behandelt werden. Eine medikamentöse Attackentherapie kann auch dann wieder beginnen.</w:t>
-                        </w:r>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t xml:space="preserve"> Nach Abschluss der Analgetikapause sollte eine Reevaluation der Kopfschmerzen und entsprechende Diagnosesicherung erfolgen.</w:t>
-                        </w:r>
-                    </w:p>
+
+                    <xsl:if test="$diag_overuse">
+                        <w:p w:rsidR="00877D06" w:rsidRPr="0012639C" w:rsidRDefault="00877D06" w:rsidP="001B3A32">
+                            <w:pPr>
+                                <w:numPr>
+                                    <w:ilvl w:val="0"/>
+                                    <w:numId w:val="21"/>
+                                </w:numPr>
+                                <w:ind w:left="601" w:hanging="241"/>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="18"/>
+                                    <w:szCs w:val="18"/>
+                                </w:rPr>
+                            </w:pPr>
+                            <w:r w:rsidRPr="0012639C">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve">Wir empfehlen die ambulante Fortführung der </w:t>
+                            </w:r>
+                            <w:r w:rsidRPr="0012639C">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:b/>
+                                    <w:bCs/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t>Analgetikapause für insgesamt vier Wochen.</w:t>
+                            </w:r>
+                            <w:r>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve"> Medikamentenpause heißt: Alle Medikamente für die Akutbehandlung von Kopfschmerzen dürfen für einen bestimmten Zeitraum nicht eingenommen werden. Die Pause hat nach spätestens vier bis sechs Wochen ihr Ziel erreicht und kann beendet werden. Attacken können dann wieder mit Akutmedikation behandelt werden. Eine medikamentöse Attackentherapie kann auch dann wieder beginnen. Nach Abschluss der Analgetikapause sollte eine Reevaluation der Kopfschmerzen und entsprechende Diagnosesicherung erfolgen.</w:t>
+                            </w:r>
+                        </w:p>
+                    </xsl:if>
+
                     <w:p w:rsidR="00877D06" w:rsidRPr="00863314" w:rsidRDefault="00764662" w:rsidP="00455D2B">
                         <w:pPr>
                             <w:numPr>

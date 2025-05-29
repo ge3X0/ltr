@@ -3,7 +3,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-    <xsl:template match="//sonstigemedikation">
+    <xsl:template match="//w:p[.//sonstigemedikation]">
         <w:tbl>
             <w:tblPr>
                 <w:tblW w:w="0" w:type="auto"/>

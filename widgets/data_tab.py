@@ -54,8 +54,8 @@ class DataTabWidget(QtWidgets.QWidget):
                     self.patient_data.address = text.replace('\n', '').strip()
 
                 case Field.Occupation:
-                    # TODO: occupation, gdb
-                    pass
+                    # TODO: extract gdb
+                    self.patient_data.occupation = text
 
                 case Field.Doctor:
                     self.patient_data.doc_name = text[text.find(' ') + 1:].strip()

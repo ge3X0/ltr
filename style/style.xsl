@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
     <xsl:variable name="gender" select="$data//exam/gender"/>
     <xsl:variable name="diag_overuse" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.4']"/>
     <xsl:variable name="diag_cluster" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.0']"/>
+    <xsl:variable name="diag_chronic_migraine" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.8']"/>
     <xsl:variable name="diag_migraine_without_aura" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.0']"/>
     <xsl:variable name="diag_migraine_with_aura" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.1']"/>
     <xsl:variable name="diag_status_migrainosus" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.2']"/>
     <xsl:variable name="diag_spaks" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.2']"/>
+    <xsl:variable name="age" select="$data//patient/age"/>
 
     <xsl:include href="acute_medication.xsl"/>
     <xsl:include href="other_medication.xsl"/>
+    <xsl:include href="base_medication.xsl"/>
     <xsl:include href="cluster.xsl"/>
 
     <xsl:template match="@*|node()">
@@ -35,11 +38,15 @@
     </xsl:template>
 
     <xsl:template match="//alter">
-        <xsl:value-of select="$data//patient/age"/>
+        <xsl:value-of select="$age"/>
     </xsl:template>
 
     <xsl:template match="//addresse">
         <xsl:value-of select="$data//patient/address"/>
+    </xsl:template>
+
+    <xsl:template match="//arbeit">
+        <xsl:value-of select="$data//patient/occupation"/>
     </xsl:template>
 
     <xsl:template match="//groesse">
@@ -64,6 +71,14 @@
 
     <xsl:template match="//entlassung">
         <xsl:value-of select="$data//patient/discharge"/>
+    </xsl:template>
+
+    <xsl:template match="//arzt">
+        <xsl:value-of select="$data//patient/doctor_name"/>
+    </xsl:template>
+
+    <xsl:template match="//psych">
+        <xsl:value-of select="$data//patient/therapist_name"/>
     </xsl:template>
 
     <xsl:template match="//anrede">
