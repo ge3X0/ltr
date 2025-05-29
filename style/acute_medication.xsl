@@ -4,6 +4,15 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
+    <xsl:template match="akutmedikation_zuvor">
+        <xsl:for-each select="$data//medication[@when = 'former' and @which = 'acute']/entry">
+            <xsl:value-of select="normalize-space(name)"/>
+            <xsl:if test="position() &lt; last()">
+                <xsl:text>, </xsl:text>
+            </xsl:if>
+        </xsl:for-each>
+    </xsl:template>
+
     <xsl:template match="//w:p[.//akutmedikation]">
         <w:tbl>
             <w:tblPr>

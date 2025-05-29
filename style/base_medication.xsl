@@ -6,18 +6,9 @@
 
     <xsl:template match="basismedikation_zuvor">
         <xsl:for-each select="$data//medication[@when = 'former' and @which = 'base']/entry">
-            <xsl:value-of select="name"/>
+            <xsl:value-of select="normalize-space(name)"/>
             <xsl:if test="position() &lt; last()">
-                <xsl:text>,</xsl:text>
-            </xsl:if>
-        </xsl:for-each>
-    </xsl:template>
-
-    <xsl:template match="akutmedikation_zuvor">
-        <xsl:for-each select="$data//medication[@when = 'former' and @which = 'acute']/entry">
-            <xsl:value-of select="name"/>
-            <xsl:if test="position() &lt; last()">
-                <xsl:text>,</xsl:text>
+                <xsl:text>, </xsl:text>
             </xsl:if>
         </xsl:for-each>
     </xsl:template>
@@ -1597,7 +1588,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$base/name[text() = 'Flunarizin'">
+                    <xsl:if test="$base/name[text() = 'Flunarizin']">
                         <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
                             <w:pPr>
                                 <w:numPr>
@@ -1647,7 +1638,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$base/name[text() = 'Atosil' or text() = 'Promethazin'">
+                    <xsl:if test="$base/name[text() = 'Atosil' or text() = 'Promethazin']">
                         <w:p w:rsidR="00877D06" w:rsidRPr="003B171E" w:rsidRDefault="00877D06" w:rsidP="005863E9">
                             <w:pPr>
                                 <w:numPr>
@@ -1708,7 +1699,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$base/name[text() = 'Lamotrigin'">
+                    <xsl:if test="$base/name[text() = 'Lamotrigin']">
                         <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
                             <w:pPr>
                                 <w:numPr>
