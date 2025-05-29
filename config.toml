@@ -1,7 +1,9 @@
 file_db = "./file_db"
 save_path = "./data"
+output_path = "./output"
 template_file = "./templates/template.docx"
 xsl_file = "./style/style.xsl"
+process_files = ["word/document.xml", "word/header1.xml"]
 ignore_meds = ["Akut", "Basis", ":"]
 fields = [
     "midas", "treatments", "symptoms", "bdi2", "whodas"

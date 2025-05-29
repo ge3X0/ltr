@@ -38,21 +38,21 @@ class MainWidget(QtWidgets.QWidget):
 
         self.patient_data = PatientData()
 
+        self.configs = {}
         if Path("config.toml").exists():
             with open("config.toml", "rb") as config_file:
                 self.configs = toml.load(config_file)
-        else:
-            # TODO: standard configs
-            self.configs = {
-                "ignore_meds": []
-            }
 
+        # TODO: all standards?
+        self.configs["ignore_meds"] = self.configs.get("ignore_meds", [])
+        self.configs["process_files"] = self.configs.get("process_files", ["word/document.xml", "word/header1.xml"])
         self.configs["file_db"] = Path(self.configs.get("file_db", "./"))
-        self.configs["save_path"] = Path(self.configs.get("save_path", "./"))
+        self.configs["save_path"] = Path(self.configs.get("save_path", "./data"))
+        self.configs["output_path"] = Path(self.configs.get("output_path", "./output"))
 
         # TODO: check exists
-        self.configs["template_file"] = Path(self.configs.get("template_file", "."))
-        self.configs["xsl_file"] = Path(self.configs.get("xsl_file", "."))
+        self.configs["template_file"] = Path(self.configs.get("template_file", "./"))
+        self.configs["xsl_file"] = Path(self.configs.get("xsl_file", "./"))
 
         # Tab Widget is central widget
 
@@ -126,42 +126,55 @@ class MainWidget(QtWidgets.QWidget):
 
 
     def to_xml(self):
-        data_file = self.configs["save_path"] / self.fields[0].patient_file_name()
+        # Generate patient data file
+        # TODO: use this to load?
+        data_file = self.configs["save_path"] / f"{self.fields[0].patient_file_name()}.xml"
+        output_file = self.configs["output_path"] / f"{self.fields[0].patient_file_name()}.docx"
 
         if data_file.exists():
             # TODO: throw
             pass
 
         data_file.parent.mkdir(exist_ok=True, parents=True)
+        output_file.parent.mkdir(exist_ok=True, parents=True)
 
+        # Write patient data file by calling to_xml() on all tabs
         with data_file.open("bw+") as fl:
             xml = f"<?xml version=\"1.0\" encoding=\"UTF-8\" ?><data>{''.join(field.to_xml() for field in self.fields)}</data>"
             fl.write(xml.encode())
 
+        # Load xsl style sheet and add "data" global variable referring to created data file
         with open(self.configs["xsl_file"], "rb") as xsl_file:
             xsl_xml = etree.parse(xsl_file)
-            xsl_root = xsl_xml.getroot()
-            etree.SubElement(xsl_root, "{http://www.w3.org/1999/XSL/Transform}variable", {
-                "name": "data",
-                "select": f"document('{data_file.absolute().as_posix()}')"})
+            etree.SubElement(
+                xsl_xml.getroot(),
+                "{http://www.w3.org/1999/XSL/Transform}variable",
+                # XSL cannot deal with windows backslashes
+                { "name": "data", "select": f"document('{data_file.absolute().as_posix()}')"})
             transform = etree.XSLT(xsl_xml)
 
+        # Internal function to concat docs templates {varname} if word inserted <t></t> tags
         def repl(m_str) -> str:
             full_m = m_str[0]
             tag_name = full_m[1:full_m.find('<')]
             tag_name += ''.join(m[1] for m in re.finditer(r"<w:t>(.+?)</w:t>", full_m))
             return f"<{tag_name} />"
 
-        with ZipFile(self.configs["template_file"]) as archive:
-            with archive.open("word/document.xml") as document:
-                xml_content = re.sub(r"\{.+?}", repl, document.read().decode())
-                docxml = etree.fromstring(xml_content.encode())
+        # Replace docs templates {varname} with <varname /> for xsl processing and load template docs file
+        with ZipFile(output_file, "w") as output:
+            with ZipFile(self.configs["template_file"]) as template:
+                for doc_name in template.infolist():
+                    if doc_name.filename in self.configs["process_files"]:
+                        with template.open(doc_name) as document:
+                            xml_content = re.sub(r"\{.+?}", repl, document.read().decode())
+                            docxml = etree.fromstring(xml_content.encode())
+                        out_xml = transform(docxml)
+                        output.writestr(doc_name, etree.tostring(out_xml))
+                    else:
+                        output.writestr(doc_name, template.read(doc_name))
 
-        # print(etree.tostring(docxml, pretty_print=True).decode())
+        # TODO: header
 
-        out_xml = transform(docxml)
-        out_xml.write("./data/output.xml", pretty_print=True)
-        # print(etree.tostring(out_xml, pretty_print=True).decode())
 
 
 if __name__ == "__main__":

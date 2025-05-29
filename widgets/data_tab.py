@@ -193,7 +193,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
     def patient_file_name(self) -> str:
         return (f"{self.patient_data.last_name}_{self.patient_data.first_name}_"
-                f"{self.patient_data.birthday.strftime('%d%m%Y')}_{self.patient_data.admission.strftime('%d%m%Y')}.xml")
+                f"{self.patient_data.birthday.strftime('%d%m%Y')}_{self.patient_data.admission.strftime('%d%m%Y')}")
 
 
     def to_xml(self) -> str:

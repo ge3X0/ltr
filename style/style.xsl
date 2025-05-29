@@ -133,7 +133,7 @@
         Somit besteht eine ausgeprägte Beeinträchtigung sowohl der Lebensqualität als auch der Arbeitsfähigkeit.
     </xsl:template>
 
-    <xsl:template match="//treatments">
+    <xsl:template match="//vorbehandlungen">
         <xsl:variable name="docs">
             <xsl:for-each select="$data//field[@name='treatments']/value">
                 <xsl:value-of select="." />
@@ -148,7 +148,7 @@
         Die bisherige Behandlung erfolgte bei Ärzten mit der Fach- bzw. Zusatzbezeichnung <xsl:value-of select="$docs"/>.
     </xsl:template>
 
-    <xsl:template match="symptoms">
+    <xsl:template match="symptome">
         <xsl:variable name="s">
             <xsl:for-each select="$data//field[@name='symptoms']/value">
                 <xsl:if test="text() != ''">
