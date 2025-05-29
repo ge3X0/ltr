@@ -9,7 +9,7 @@ import re
 from lxml import etree
 
 from patient_data import PatientData
-from widgets import DataTabWidget, SumLineEdit, NumLineEdit, XBox, EvalLine
+from widgets import DataTabWidget, SumLineEdit, NumLineEdit, XBox, EvalLine, ExamTab
 
 # TODO:
 #   - Fragebögen eingeben
@@ -27,11 +27,13 @@ from widgets import DataTabWidget, SumLineEdit, NumLineEdit, XBox, EvalLine
 #   - Word Datei schreiben
 #   - (Word Datei bearbeiten)
 
+# TODO:
+#   - Ask if overwrite is wanted on new load
+
 
 class MainWidget(QtWidgets.QWidget):
 
     def __init__(self):
-        # TODO: Read file_db path from config.toml
         super().__init__()
 
         self.patient_data = PatientData()
@@ -47,6 +49,7 @@ class MainWidget(QtWidgets.QWidget):
 
         self.configs["file_db"] = Path(self.configs.get("file_db", "./"))
         self.configs["save_path"] = Path(self.configs.get("save_path", "./"))
+
         # TODO: check exists
         self.configs["template_file"] = Path(self.configs.get("template_file", "."))
         self.configs["xsl_file"] = Path(self.configs.get("xsl_file", "."))
@@ -62,6 +65,9 @@ class MainWidget(QtWidgets.QWidget):
         self.fields = [DataTabWidget(self.configs)]
         self.tab_widget.addTab(self.fields[0], "Patientendaten")
         self.fields[0].search_bar.setFocus()
+
+        self.fields.append(ExamTab())
+        self.tab_widget.addTab(self.fields[1], "Untersuchungsdaten")
 
         for form_file in Path("./forms/").glob("*.toml"):
             with form_file.open("rb") as fl:
@@ -138,7 +144,6 @@ class MainWidget(QtWidgets.QWidget):
             etree.SubElement(xsl_root, "{http://www.w3.org/1999/XSL/Transform}variable", {
                 "name": "data",
                 "select": f"document('{data_file.absolute().as_posix()}')"})
-              # {"xsl": "http://www.w3.org/1999/XSL/Transform"})
             transform = etree.XSLT(xsl_xml)
 
         def repl(m_str) -> str:

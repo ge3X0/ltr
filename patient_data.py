@@ -93,10 +93,12 @@ class PatientData:
 
 
     def to_xml(self, date_format: str = "%d.%m.%Y") -> str:
+        today = datetime.now()
         return f"""<patient>
     <first_name>{self.first_name}</first_name>
     <last_name>{self.last_name}</last_name>
     <birthday>{self.birthday.strftime(date_format)}</birthday>
+    <age>{int((today.year - self.birthday.year) - ((today.month, today.day) < (self.birthday.month, self.birthday.day)))}</age>
     <address>{self.address}</address>
     <doctor_name>{self.doc_name}</doctor_name>
     <therapist_name>{self.pt_name}</therapist_name>
