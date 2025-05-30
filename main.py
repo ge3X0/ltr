@@ -40,9 +40,13 @@ class MainWidget(QtWidgets.QWidget):
         self.configs["save_path"] = Path(self.configs.get("save_path", "./data"))
         self.configs["output_path"] = Path(self.configs.get("output_path", "./output"))
 
-        # TODO: check exists
-        self.configs["template_file"] = Path(self.configs.get("template_file", "./"))
-        self.configs["xsl_file"] = Path(self.configs.get("xsl_file", "./"))
+        self.configs["template_file"] = Path(self.configs.get("template_file", "./dummy_938928477"))
+        if not self.configs["template_file"].exists():
+            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "config.toml beinhaltet keine template_file Option")
+
+        self.configs["xsl_file"] = Path(self.configs.get("xsl_file", "./dummy_938928477"))
+        if not self.configs["xsl_file"].exists():
+            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "config.toml beinhaltet keine xsl_file Option")
 
         # Tab Widget is central widget
 
@@ -132,8 +136,9 @@ class MainWidget(QtWidgets.QWidget):
         output_file = self.configs["output_path"] / f"{self.fields[0].patient_file_name()}.docx"
 
         if data_file.exists():
-            # TODO: throw
-            pass
+            if QtWidgets.QMessageBox.StandardButton.Yes != QtWidgets.QMessageBox.question(
+                    self, "Datei existiert", "Daten-Datei existiert bereits, überschreiben?"):
+                return
 
         data_file.parent.mkdir(exist_ok=True, parents=True)
         output_file.parent.mkdir(exist_ok=True, parents=True)
@@ -174,6 +179,8 @@ class MainWidget(QtWidgets.QWidget):
                         output.writestr(doc_name, etree.tostring(out_xml))
                     else:
                         output.writestr(doc_name, template.read(doc_name))
+
+        QtWidgets.QMessageBox.information(self, "Brief geschrieben", "Brief wurde fertig gestellt")
 
 
 if __name__ == "__main__":
