@@ -2,10 +2,10 @@
 # Zahlen gefüllt wird. Die jeweiligen durch die Zahlen angegebenen Werte
 # werden aus der liste "values" gelesen und als liste von strings gespeichert.
 
-name = "Allgemeine Symptome"
+name = "Allgemeine &Symptome"
 
 [[field]]
-caption = ""
+caption = "Symptome"
 id = "symptoms"
 field_type = "num_line"
 start = 1

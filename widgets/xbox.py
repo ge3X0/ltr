@@ -10,9 +10,14 @@ class XCheckBox(QtWidgets.QCheckBox):
         super().__init__(*args, **kwargs)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
+
     def keyReleaseEvent(self, e, /):
-        self.setChecked(e.key() == Qt.Key.Key_X)
-        self.nextInFocusChain().setFocus()
+        k = e.key()
+        if k == Qt.Key.Key_X or k == Qt.Key.Key_Y:
+            self.setChecked(k == Qt.Key.Key_X)
+            self.nextInFocusChain().setFocus()
+        else:
+            return super().keyReleaseEvent(e)
 
 
 class XBox(QtWidgets.QWidget):

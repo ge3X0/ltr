@@ -1,7 +1,7 @@
-name = "Vorbehandlungen"
+name = "&Vorbehandlungen"
 
 [[field]]
-caption = ""
+caption = "Ärzte der Fach- bzw. Zusatzbezeichnung"
 id = "treatments"
 field_type = "xbox"
 rows = 20

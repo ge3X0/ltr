@@ -1,4 +1,5 @@
-name = "WHODAS 2.0"
+name = "&WHODAS 2.0"
+
 [[field]]
 caption = "Betroffene Lebensbereiche"
 id = "sections"

@@ -2,7 +2,7 @@
 # Werden keine Kommata oder Leerzeichen gefunden, wird jede eingegebene Ziffer einzeln gewertet
 # Pro Ziffern wird ein entsprechender Textblock aus "values" gewählt und in einer stringliste gespeichert
 
-name = "BDI-II"
+name = "&BDI-II"
 
 [[field]]
 caption = "Depression"

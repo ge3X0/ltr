@@ -53,11 +53,11 @@ class MainWidget(QtWidgets.QWidget):
         # Setup tabs
 
         self.fields = [DataTabWidget(self.configs)]
-        self.tab_widget.addTab(self.fields[0], "Patientendaten")
+        self.tab_widget.addTab(self.fields[0], "&Patientendaten")
         self.fields[0].search_bar.setFocus()
 
         self.fields.append(ExamTab())
-        self.tab_widget.addTab(self.fields[1], "Untersuchungsdaten")
+        self.tab_widget.addTab(self.fields[1], "&Untersuchungsdaten")
 
         for form_file in Path("./forms/").glob("*.toml"):
             with form_file.open("rb") as fl:
