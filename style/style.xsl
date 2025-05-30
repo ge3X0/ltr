@@ -23,6 +23,7 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:include href="base_medication.xsl"/>
     <xsl:include href="overuse.xsl"/>
     <xsl:include href="cluster.xsl"/>
+    <xsl:include href="migraine.xsl"/>
 
     <!-- Copy all Nodes without other template match !-->
 
