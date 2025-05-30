@@ -13,7 +13,7 @@ from models import DiagnosesTableModel, MedicationTableModel
 
 class DataTabWidget(QtWidgets.QWidget):
     def __extract_patient_data(self, patient_data):
-        icd_pattern = re.compile(r"\b([,.:\-\w äöüÄÖÜß]+)\s+([A-Z]\d{2}(?:\.\d+)?)")
+        icd_pattern = re.compile(r"^\s*(\b[,.:\-a-zA-Z\säöüÄÖÜß]+)\s+([A-Z]\d{2}(?:\.\d+)?)", flags=re.MULTILINE)
         md_name = r"([/.\-()\w\s\däöüÄÖÜß]{5,18})"
         md_dosage = r"([\d.,/]+)\s*"
         md_unit = r"((?:g|mg|µg|ug|IE|ml|l|Hub|Kps\.?|Tbl\.?|°|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ml|l))?)"
@@ -75,7 +75,7 @@ class DataTabWidget(QtWidgets.QWidget):
                     self.patient_data.allergies = text
 
                 case Field.DiagPain | Field.DiagMisuse | Field.DiagPsych | Field.DiagSom:
-                    # TODO: show diagnoses, warn icd10
+                    # TODO: warn icd10
                     for m in icd_pattern.finditer(text):
                         self.patient_data.diagnoses.append(Diagnosis(m[1], m[2]))
 

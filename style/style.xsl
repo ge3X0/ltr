@@ -54,35 +54,40 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:template match="//anrede">
         <xsl:choose>
             <xsl:when test="$gender = 'm'">Herr</xsl:when>
-            <xsl:otherwise>Frau</xsl:otherwise>
+            <xsl:when test="$gender = 'f'">Frau</xsl:when>
+            <xsl:otherwise>Herr/Frau</xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
     <xsl:template match="//ersie">
         <xsl:choose>
             <xsl:when test="$gender = 'm'">er</xsl:when>
-            <xsl:otherwise>sie</xsl:otherwise>
+            <xsl:when test="$gender = 'f'">sie</xsl:when>
+            <xsl:otherwise>er/sie</xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
     <xsl:template match="//ersie_cap">
         <xsl:choose>
             <xsl:when test="$gender = 'm'">Er</xsl:when>
-            <xsl:otherwise>Sie</xsl:otherwise>
+            <xsl:when test="$gender = 'f'">Sie</xsl:when>
+            <xsl:otherwise>Er/Sie</xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
     <xsl:template name="seineihre">
         <xsl:choose>
             <xsl:when test="$gender = 'm'">seine</xsl:when>
-            <xsl:otherwise>ihre</xsl:otherwise>
+            <xsl:when test="$gender = 'f'">ihre</xsl:when>
+            <xsl:otherwise>seine/ihre</xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
     <xsl:template name="patient">
         <xsl:choose>
             <xsl:when test="$gender = 'm'">der Patient</xsl:when>
-            <xsl:otherwise>die Patientin</xsl:otherwise>
+            <xsl:when test="$gender = 'f'">die Patientin</xsl:when>
+            <xsl:otherwise>der Patient/die Patientin</xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
@@ -91,7 +96,8 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:template match="//patient_dat">
         <xsl:choose>
             <xsl:when test="$gender = 'm'">dem Patienten</xsl:when>
-            <xsl:otherwise>der Patientin</xsl:otherwise>
+            <xsl:when test="$gender = 'f'">der Patientin</xsl:when>
+            <xsl:otherwise>dem Patienten/der Patientin</xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
@@ -200,7 +206,7 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
     <xsl:template match="//whodas">
         <xsl:variable name="area">
-            <xsl:for-each select="$data//field[@name='whodas']/value">
+            <xsl:for-each select="$data//field[@name='sections']/value">
                 <xsl:value-of select="." />
                 <xsl:if test="position() &lt; last() - 1">
                     <xsl:text>, </xsl:text>

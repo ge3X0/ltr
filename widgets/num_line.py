@@ -6,16 +6,12 @@ class NumLineEdit(QtWidgets.QLineEdit):
     def __init__(self, field_id: str, result_list: list[str], start: int = 0, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.values: list[str] = []
         self.__field_id = field_id
         self.__result_list: list[str] = result_list
         self.__start: int = start
 
-        self.editingFinished.connect(self.process_input)
 
-
-    @QtCore.Slot()
-    def process_input(self):
+    def to_xml(self) -> str:
         result = []
         span = False
 
@@ -24,15 +20,13 @@ class NumLineEdit(QtWidgets.QLineEdit):
                 span = True
                 continue
 
-            dig = int(token[0])
+            dig = int(token[0]) - self.__start
             if span and result:
                 result.extend([i for i in range(result[-1] + 1, dig)])
             result.append(dig)
             span = False
 
-        self.values = [self.__result_list[idx] for idx in result if 0 <= idx < len(self.__result_list)]
+        vals = [self.__result_list[idx] for idx in result if 0 <= idx < len(self.__result_list)]
+        values = ''.join(f"<value>{v}</value>" for v in vals)
 
-
-    def to_xml(self) -> str:
-        values = ''.join(f"<value>{v}</value>" for v in self.values)
         return f"""<field name="{self.__field_id}">{values}</field>"""

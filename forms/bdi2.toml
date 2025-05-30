@@ -92,7 +92,7 @@ start = 1
 [[field.values]]
 0 = ""
 1 = "halte sich für weniger wertvoll und nützlich als sonst"
-2 = "fühle sich verglichen mit anderen menschen viel wengier wert"
+2 = "fühle sich verglichen mit anderen Menschen viel wengier wert"
 3 = "fühle sich völlig wertlos"
 
 [[field.values]]
@@ -153,6 +153,6 @@ values = [
     "sei wegen der Schmerzen oft arbeitfunfähig oder bei der Arbeit stark beeinträchtigt",
     "sei in Alltagsaktivitäten beeinträchtigt",
     "müsse häufig Ärzte, Therapeuten oder Kliniken aufsuchen",
-    "sei ein gesellschaftlichen Aktivitäten beeinträchtigt",
+    "sei in gesellschaftlichen Aktivitäten beeinträchtigt",
     "es sei durch die Schmerzen bereits zu Spannungen in Beruf und Familie gekommen"
 ]

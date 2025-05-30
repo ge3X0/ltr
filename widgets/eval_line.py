@@ -1,4 +1,5 @@
 from PySide6 import QtWidgets, QtCore
+import re
 
 
 class EvalLine(QtWidgets.QLineEdit):
@@ -21,28 +22,19 @@ class EvalLine(QtWidgets.QLineEdit):
         self.__values = values
         self.__start = start
 
-        self.results: list[str] = []
-
-        self.editingFinished.connect(self.process_input)
-
-
-    @QtCore.Slot()
-    def process_input(self):
-        # If no "," is found, each digit is taken as value
-        if ',' not in self.text():
-            values = [int(s) for s in self.text()]
-        else:
-            values = [int(s) for s in self.text().split(',')]
-
-        if len(values) != len(self.__values):
-            # TODO: throw
-            pass
-
-        self.results = []
-        for v, choices in zip(values, self.__values):
-            self.results.append(choices.get(str(v - self.__start), "Unbekannter Wert"))
-
 
     def to_xml(self) -> str:
-        values = ''.join(f"<value>{v}</value>" for v in self.results)
+        if ',' not in self.text() and ' ' not in self.text():
+            values = [int(s) for s in self.text()]
+        else:
+            values = [int(s[0]) for s in re.finditer(r"\d+", self.text())]
+
+        while len(values) != len(self.__values):
+            values.append(0)
+
+        results = []
+        for v, choices in zip(values, self.__values):
+            results.append(choices.get(str(v - self.__start), "Unbekannter Wert"))
+
+        values = ''.join(f"<value>{v}</value>" for v in results)
         return f"""<field name="{self.__field_id}">{values}</field>"""
