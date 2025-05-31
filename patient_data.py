@@ -1,10 +1,11 @@
 from enum import IntEnum
 from dataclasses import dataclass, field
 from typing import Self
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class Field(IntEnum):
+    """Fields in data *.docx table files"""
     Name = 0
     Birthday = 1
     Address = 4
@@ -106,6 +107,7 @@ class PatientData:
     <therapist_name>{self.pt_name}</therapist_name>
     <admission>{self.admission.strftime(date_format)}</admission>
     <discharge>{self.discharge.strftime(date_format)}</discharge>
+    <ekg2>{(self.admission + timedelta(days=7)).strftime(date_format)}</ekg2>
     <allergies>{self.allergies}</allergies>
     
     <diagnoses>{''.join(d.to_xml() for d in self.diagnoses)}</diagnoses>

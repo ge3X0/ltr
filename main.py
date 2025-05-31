@@ -22,11 +22,18 @@ from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, E
 
 
 class MainWidget(QtWidgets.QWidget):
+    """
+    :ivar configs: Dictionary loaded from configs.toml
+    :ivar fields: List of widgets containing data, each must implement to_xml()
+
+    """
 
     def __init__(self):
         super().__init__()
 
         self.patient_data = PatientData()
+
+        # Load Configuration
 
         self.configs = {}
         if Path("config.toml").exists():
@@ -34,12 +41,14 @@ class MainWidget(QtWidgets.QWidget):
                 self.configs = toml.load(config_file)
 
         # TODO: all standards?
+        self.configs["forms"] = self.configs.get("forms", [])
         self.configs["ignore_meds"] = self.configs.get("ignore_meds", [])
         self.configs["process_files"] = self.configs.get("process_files", ["word/document.xml", "word/header1.xml"])
         self.configs["file_db"] = Path(self.configs.get("file_db", "./"))
         self.configs["save_path"] = Path(self.configs.get("save_path", "./data"))
         self.configs["output_path"] = Path(self.configs.get("output_path", "./output"))
 
+        # TODO: Do we want to proceed, if these are missing?
         self.configs["template_file"] = Path(self.configs.get("template_file", "./dummy_938928477"))
         if not self.configs["template_file"].exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "config.toml beinhaltet keine template_file Option")
@@ -55,6 +64,7 @@ class MainWidget(QtWidgets.QWidget):
         self.layout().addWidget(self.tab_widget)
 
         # Export Button
+        # TODO: Better location?
 
         export_button = QtWidgets.QPushButton("Brief exportieren")
         export_button.clicked.connect(self.to_xml)
@@ -62,25 +72,41 @@ class MainWidget(QtWidgets.QWidget):
 
         # Setup tabs
 
-        self.fields = [DataTabWidget(self.configs)]
-        self.tab_widget.addTab(self.fields[0], "&Patientendaten")
-        self.fields[0].search_bar.setFocus()
+        # Data Tab
 
-        self.fields.append(ExamTab())
-        self.tab_widget.addTab(self.fields[1], "&Untersuchungsdaten")
+        self.forms = [DataTabWidget(self.configs)]
+        self.tab_widget.addTab(self.forms[0], "&Patient")
+        self.forms[0].search_bar.setFocus()
 
-        for form_file in Path("./forms/").glob("*.toml"):
+        # Examination Tab
+
+        self.forms.append(ExamTab())
+        self.tab_widget.addTab(self.forms[1], "&Untersuchung")
+
+        # Tabs loaded from ./forms
+
+        # for form_file in Path("./forms/").glob("*.toml"):
+        for form_file_name in self.configs["forms"]:
+            form_file = Path("./forms") / f"{form_file_name}.toml"
+
+            if not form_file.exists():
+                QtWidgets.QMessageBox.warning(self, "Formular nicht gefunden", f"Formulardatei '{form_file_name}.toml' nicht gefunden")
+                continue
+
             with form_file.open("rb") as fl:
                 form_data = toml.load(fl)
 
+            # Create new Tab
+
             form_group = QtWidgets.QWidget()
-            form_layout = QtWidgets.QVBoxLayout(form_group)
-            self.tab_widget.addTab(form_group, form_data.get("name", "Unbekanntes Formular"))
+            form_group.setLayout(QtWidgets.QVBoxLayout())
+            self.tab_widget.addTab(form_group, form_data.get("name", "Unbenannt"))
 
             for field in form_data["field"]:
                 field_group = QtWidgets.QGroupBox(title=field.get("caption", ""))
                 field_layout = QtWidgets.QVBoxLayout(field_group)
                 field_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+                form_group.layout().addWidget(field_group)
 
                 new_widget = None
 
@@ -112,16 +138,19 @@ class MainWidget(QtWidgets.QWidget):
                             start=field.get("start", 0)
                         )
 
-                self.fields.append(new_widget)
+                self.forms.append(new_widget)
                 field_layout.addWidget(new_widget)
-                form_layout.addWidget(field_group)
 
 
     def keyPressEvent(self, event, /):
+
         if event.type() == QtCore.QEvent.Type.KeyPress:
+            # Shortcut for exporting letter
             if event.modifiers() == Qt.KeyboardModifier.ControlModifier:
-                if event.key() == Qt.Key.Key_E:
+                if event.key() == Qt.Key.Key_E or event.key() == Qt.Key.Key_S:
                     self.to_xml()
+
+            # Shortcut for moving between tabs (kinda broken)
             elif event.modifiers() == Qt.KeyboardModifier.AltModifier:
                     next_tab = self.tab_widget.currentIndex()
                     if event.key() == Qt.Key.Key_Right:
@@ -136,10 +165,13 @@ class MainWidget(QtWidgets.QWidget):
 
 
     def to_xml(self):
+        """Writes letter from collected data of all tabs"""
+
         # Generate patient data file
         # TODO: use this to load?
-        data_file = self.configs["save_path"] / f"{self.fields[0].patient_file_name()}.xml"
-        output_file = self.configs["output_path"] / f"{self.fields[0].patient_file_name()}.docx"
+        patient_file_name = self.forms[0].patient_file_name()
+        data_file = self.configs["save_path"] / f"{patient_file_name}.xml"
+        output_file = self.configs["output_path"] / f"{patient_file_name}.docx"
 
         if (data_file.exists()
             and QtWidgets.QMessageBox.StandardButton.Yes != QtWidgets.QMessageBox.question(
@@ -150,11 +182,13 @@ class MainWidget(QtWidgets.QWidget):
         output_file.parent.mkdir(exist_ok=True, parents=True)
 
         # Write patient data file by calling to_xml() on all tabs
+
         with data_file.open("bw+") as fl:
             xml = f"<?xml version=\"1.0\" encoding=\"UTF-8\" ?><data>{''.join(field.to_xml() for field in self.fields)}</data>"
             fl.write(xml.encode())
 
         # Load xsl style sheet and add "data" global variable referring to created data file
+
         with open(self.configs["xsl_file"], "rb") as xsl_file:
             xsl_xml = etree.parse(xsl_file)
             etree.SubElement(
@@ -169,22 +203,29 @@ class MainWidget(QtWidgets.QWidget):
             full_m = m_str[2]
             tag_name = full_m[1:full_m.find('<')]
             tag_name += ''.join(m[1] for m in re.finditer(r"<w:t>(.+?)</w:t>", full_m))
+            # Found immediate opening tag, indicating messed up whitespace
             if m_str[1] is not None:
                 return f"<w:t xml:space=\"preserve\"><{tag_name} />"
             return f"<{tag_name} />"
 
         # Replace docs templates {varname} with <varname /> for xsl processing and load template docs file
+
         with ZipFile(output_file, "w") as output:
             with ZipFile(self.configs["template_file"]) as template:
                 for doc_name in template.infolist():
-                    if doc_name.filename in self.configs["process_files"]:
-                        with template.open(doc_name) as document:
-                            xml_content = re.sub(r"(<w:t>)?(\{.+?})", repl, document.read().decode())
-                            docxml = etree.fromstring(xml_content.encode())
-                        out_xml = transform(docxml)
-                        output.writestr(doc_name, etree.tostring(out_xml))
-                    else:
+
+                    # Just copy files that are not processed
+                    if doc_name.filename not in self.configs["process_files"]:
                         output.writestr(doc_name, template.read(doc_name))
+                        continue
+
+                    # Prepare files for xsl processing by replacing {varname} with <varname />
+                    with template.open(doc_name) as document:
+                        xml_content = re.sub(r"(<w:t>)?(\{.+?})", repl, document.read().decode())
+                        docxml = etree.fromstring(xml_content.encode())
+
+                    out_xml = transform(docxml)
+                    output.writestr(doc_name, etree.tostring(out_xml))
 
         QtWidgets.QMessageBox.information(self, "Brief geschrieben", "Brief wurde fertig gestellt")
 

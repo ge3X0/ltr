@@ -5,6 +5,8 @@ from patient_data import Diagnosis, Medication
 
 
 class DiagnosesTableModel(QtCore.QAbstractTableModel):
+    """Table model to display PatientData Diagnosis"""
+
     def __init__(self, diagnoses: list[Diagnosis]):
         super().__init__()
         self.diagnoses = diagnoses
@@ -28,6 +30,8 @@ class DiagnosesTableModel(QtCore.QAbstractTableModel):
 
 
 class MedicationTableModel(QtCore.QAbstractTableModel):
+    """Table model to display PatientData Medication"""
+
     def __init__(self, base_medication: list[Medication], other_medication: list[Medication]):
         super().__init__()
         self.base_medication = base_medication
@@ -40,6 +44,7 @@ class MedicationTableModel(QtCore.QAbstractTableModel):
         return 7 if not parent.isValid() else 0
 
     def data(self, index, /, role = ...):
+        # Display "Section Headers"
         if index.row() == 0 or index.row() - 1 == len(self.base_medication):
             match role:
                 case Qt.ItemDataRole.DisplayRole:
@@ -57,6 +62,12 @@ class MedicationTableModel(QtCore.QAbstractTableModel):
                 return getattr(self.base_medication[idx], attr_name)
 
             return getattr(self.other_medication[idx - len(self.base_medication) - 1], attr_name)
+
+        elif role == Qt.ItemDataRole.TextAlignmentRole:
+            if index.column() == 0:
+                return Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+            else:
+                return Qt.AlignmentFlag.AlignCenter
 
         return None
 

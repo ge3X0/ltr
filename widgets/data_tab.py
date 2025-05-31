@@ -13,13 +13,23 @@ from models import DiagnosesTableModel, MedicationTableModel
 
 class DataTabWidget(QtWidgets.QWidget):
     def __extract_patient_data(self, patient_data):
+        """Get data from *.docx file
+        :param patient_data: etree object containing docx-tabledata
+        """
+
+        # Define rege patterns
+
         icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s\däöüÄÖÜß]+)\s+([A-Z]\d{2}(?:\.\d+)?)", flags=re.MULTILINE)
+
         md_name = r"([/.\-()\w\s\däöüÄÖÜß]{5,18})"
         md_dosage = r"([\d.,/]+)\s*"
         md_unit = r"((?:g|mg|µg|ug|IE|ml|l|Hub|Kps\.?|Tbl\.?|°|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ml|l))?)"
         n = r"\s*([\d.,/]+°?)\s*"
         med_pattern = re.compile(f"^{md_name}\\s+{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?", flags=re.MULTILINE)
+
         simple_med_pattern = re.compile(f"(?:^|,\\s*)([^,\\n(]+)(?:\\([^)]+)?", flags=re.MULTILINE)
+
+        # Internal method to extract medication from cell
 
         def __read_meds(text_line: str, when_key: str, how_key: str):
             meds = [Medication(
@@ -27,6 +37,7 @@ class DataTabWidget(QtWidgets.QWidget):
                 morning=med[4], noon=med[5], evening=med[6], night=med[7] if med[7] is not None else "0")
                 for med in med_pattern.finditer(text_line)]
 
+            # Try simple pattern if sophisticated didn't match
             if not meds:
                 meds = [Medication(name=med[1])
                         for med in simple_med_pattern.finditer(text_line) if med[1] not in self.configs["ignore_meds"]]
@@ -40,12 +51,16 @@ class DataTabWidget(QtWidgets.QWidget):
         #     text = ''.join(map(lambda x: x.text, cell.iterfind(".//w:t", namespaces=ns)))
         #     print(text)
 
+        # Walk over each cell in table
         for i, cell in enumerate(patient_data.iterfind(".//w:tc", namespaces=ns)):
+
+            # Extract text data, respect w:p tags as newlines
             text = '\n'.join(
                 ''.join(t.text for t in p.iterfind(".//w:t", namespaces=ns))
                 for p in p.iterfind(".//w:p", namespaces=ns)
             )
 
+            # Process per field
             match i:
                 case Field.Name:
                     # TODO: validate, strip
@@ -62,10 +77,11 @@ class DataTabWidget(QtWidgets.QWidget):
                     self.patient_data.occupation = text
 
                 case Field.Doctor:
+                    # Remove "Arzt: "-prefix
                     self.patient_data.doc_name = text[text.find(' ') + 1:].strip()
 
                 case Field.Psychotherapist:
-                    # Removing "Psych.: "-Prefix
+                    # Remove "Psych.: "-prefix
                     self.patient_data.pt_name = text[text.find(' ') + 1:].strip()
 
                 case Field.Admission:
@@ -74,8 +90,7 @@ class DataTabWidget(QtWidgets.QWidget):
                 case Field.Discharge:
                     self.patient_data.discharge = datetime.strptime(text, "%d.%m.%Y")
 
-                case Field.Allergies:
-                    # TODO: standard on empty
+                case Field.Allergies if text:
                     self.patient_data.allergies = text
 
                 case Field.DiagPain | Field.DiagMisuse | Field.DiagPsych | Field.DiagSom:

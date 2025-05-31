@@ -47,6 +47,7 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:template match="//blutdruck"><xsl:value-of select="$data//exam/sys"/> / <xsl:value-of select="$data//exam/dia"/></xsl:template>
     <xsl:template match="//aufnahme"><xsl:value-of select="$data//patient/admission"/></xsl:template>
     <xsl:template match="//entlassung"><xsl:value-of select="$data//patient/discharge"/></xsl:template>
+    <xsl:template match="//ekg2"><xsl:value-of select="$data//patient/ekg2" /></xsl:template>
     <xsl:template match="//arzt"><xsl:value-of select="$data//patient/doctor_name"/></xsl:template>
     <xsl:template match="//psych"><xsl:value-of select="$data//patient/therapist_name"/></xsl:template>
 

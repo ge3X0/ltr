@@ -1,10 +1,25 @@
+# Path to location of data *.docx files
 file_db = "./file_db"
+
+# Path to save processed xml data to
 save_path = "./data"
+
+# Path to save generated *.docx files to
 output_path = "./output"
+
+# Path to template *.docx to copy contents from
 template_file = "./templates/template.docx"
+
+# Path to *.xsl file, which will transform template_file
 xsl_file = "./style/style.xsl"
+
+# Files in *.docx structure of template_file to transform using xsl_file
 process_files = ["word/document.xml", "word/header1.xml"]
-ignore_meds = ["Akut", "Basis", ":", "Akut:", "Basis:"]
-fields = [
+
+# Medication names to ignore while loading
+ignore_meds = ["Akut", "Basis", "Sonstige", ":", "Akut:", "Basis:", "Sonstige:"]
+
+# Forms to load from ./forms/ in order they will appear in the application
+forms = [
     "midas", "treatments", "symptoms", "bdi2", "whodas"
 ]
