@@ -54,6 +54,12 @@ class MainWidget(QtWidgets.QWidget):
         self.tab_widget = QtWidgets.QTabWidget()
         self.layout().addWidget(self.tab_widget)
 
+        # Export Button
+
+        export_button = QtWidgets.QPushButton("Brief exportieren")
+        export_button.clicked.connect(self.to_xml)
+        self.layout().addWidget(export_button)
+
         # Setup tabs
 
         self.fields = [DataTabWidget(self.configs)]
@@ -135,9 +141,9 @@ class MainWidget(QtWidgets.QWidget):
         data_file = self.configs["save_path"] / f"{self.fields[0].patient_file_name()}.xml"
         output_file = self.configs["output_path"] / f"{self.fields[0].patient_file_name()}.docx"
 
-        if data_file.exists():
-            if QtWidgets.QMessageBox.StandardButton.Yes != QtWidgets.QMessageBox.question(
-                    self, "Datei existiert", "Daten-Datei existiert bereits, überschreiben?"):
+        if (data_file.exists()
+            and QtWidgets.QMessageBox.StandardButton.Yes != QtWidgets.QMessageBox.question(
+                    self, "Datei existiert", "Daten-Datei existiert bereits, überschreiben?")):
                 return
 
         data_file.parent.mkdir(exist_ok=True, parents=True)

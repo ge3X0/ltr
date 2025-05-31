@@ -15,7 +15,7 @@ class Field(IntEnum):
     Discharge = 25
     Allergies = 31
     DiagPain = 36
-    DiagMisuse = 29
+    DiagMisuse = 39
     DiagPsych = 42
     DiagSom = 45
     MedCurrAcute = 51

@@ -13,7 +13,7 @@ from models import DiagnosesTableModel, MedicationTableModel
 
 class DataTabWidget(QtWidgets.QWidget):
     def __extract_patient_data(self, patient_data):
-        icd_pattern = re.compile(r"^\s*(\b[,.:\-a-zA-Z\säöüÄÖÜß]+)\s+([A-Z]\d{2}(?:\.\d+)?)", flags=re.MULTILINE)
+        icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s\däöüÄÖÜß]+)\s+([A-Z]\d{2}(?:\.\d+)?)", flags=re.MULTILINE)
         md_name = r"([/.\-()\w\s\däöüÄÖÜß]{5,18})"
         md_dosage = r"([\d.,/]+)\s*"
         md_unit = r"((?:g|mg|µg|ug|IE|ml|l|Hub|Kps\.?|Tbl\.?|°|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ml|l))?)"
@@ -41,7 +41,11 @@ class DataTabWidget(QtWidgets.QWidget):
         #     print(text)
 
         for i, cell in enumerate(patient_data.iterfind(".//w:tc", namespaces=ns)):
-            text = '\n'.join(map(lambda x: x.text, cell.iterfind(".//w:t", namespaces=ns)))
+            text = '\n'.join(
+                ''.join(t.text for t in p.iterfind(".//w:t", namespaces=ns))
+                for p in p.iterfind(".//w:p", namespaces=ns)
+            )
+
             match i:
                 case Field.Name:
                     # TODO: validate, strip
@@ -75,9 +79,11 @@ class DataTabWidget(QtWidgets.QWidget):
                     self.patient_data.allergies = text
 
                 case Field.DiagPain | Field.DiagMisuse | Field.DiagPsych | Field.DiagSom:
-                    # TODO: warn icd10
                     for m in icd_pattern.finditer(text):
-                        self.patient_data.diagnoses.append(Diagnosis(m[1], m[2]))
+                        diag = Diagnosis(m[1], m[2])
+                        if diag.icd10 == "G43.8":
+                            diag.icd10 = "G43.8/3"
+                        self.patient_data.diagnoses.append(diag)
 
                 case Field.MedCurrAcute:
                     __read_meds(text, "current", "acute")
@@ -158,8 +164,7 @@ class DataTabWidget(QtWidgets.QWidget):
     def select_patient(self):
         patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
         if not patient_path.exists():
-            # TODO: throw
-            print("Not found")
+            QtWidgets.QMessageBox.warning(self, "Nicht gefunden", "Der angegebene Patient konnte nicht gefunden werden")
             return
 
         with ZipFile(patient_path) as archive:
@@ -172,11 +177,13 @@ class DataTabWidget(QtWidgets.QWidget):
 
 
     def display_data(self):
+        patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
         self.patient_label.setText(
             f"Datensatz: {self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n\n"
             f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n\n"
             f"Wohnhaft: {self.patient_data.address}\n\n"
             f"Arzt: {self.patient_data.doc_name}\n\nPT: {self.patient_data.pt_name}"
+            f"<a href=\"file://{patient_path.absolute()}\">Schnuppi</a>"
         )
 
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
