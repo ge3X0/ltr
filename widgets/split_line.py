@@ -14,6 +14,8 @@ class SplitLineEdit(QtWidgets.QLineEdit):
         self.__field_id = field_id
         self.__max_entries = max_entries
 
+        self.setToolTip(f"Separierte Zahleneinträge, maximal {max_entries} Einträge")
+
 
     def results(self):
         values = [int(i[0]) for i in re.finditer(r"\d+", self.text())]

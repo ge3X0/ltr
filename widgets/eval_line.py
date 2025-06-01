@@ -14,19 +14,29 @@ class EvalLine(QtWidgets.QLineEdit):
         self.__values = values
         self.__start = start
 
+        self.setToolTip(f"Liste von {len(values)} Zahlen, separiert oder bei Einzelnummern auch ohne Leerzeichen")
+
 
     def to_xml(self) -> str:
-        if ',' not in self.text() and ' ' not in self.text():
-            values = [int(s) for s in self.text()]
-        else:
-            values = [int(s[0]) for s in re.finditer(r"\d+", self.text())]
-
-        while len(values) != len(self.__values):
-            values.append(0)
-
         results = []
-        for v, choices in zip(values, self.__values):
-            results.append(choices.get(str(v - self.__start), "Unbekannter Wert"))
+        it = self.text() if ',' not in self.text() and ' ' not in self.text() else re.finditer(r"\d+", self.text())
+
+        for val_idx, s in enumerate(it):
+            if val_idx >= len(self.__values):
+                QtWidgets.QMessageBox.warning(self, "Eval Line", f"Zu viele Einträge in {self.__field_id}")
+                break
+
+            if not s.isdigit():
+                QtWidgets.QMessageBox.warning(self, "Eval Line", f"Unerwartetes Zeichen '{s}' in {self.__field_id}")
+                continue
+
+            if -1 < (idx := int(s) - self.__start) < len(self.__values[val_idx]):
+                results.append(self.__values[val_idx][str(idx)])
+            else:
+                results.append("Unbekannter Wert")
+
+        while len(results) < len(self.__values):
+            results.append(self.__values[len(results)]["0"])
 
         values = ''.join(f"<value>{v}</value>" for v in results)
         return f"""<field name="{self.__field_id}">{values}</field>"""

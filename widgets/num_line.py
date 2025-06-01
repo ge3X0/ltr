@@ -14,6 +14,8 @@ class NumLineEdit(QtWidgets.QLineEdit):
         self.__result_list: list[str] = result_list
         self.__start: int = start
 
+        self.setToolTip(f"Separierte Zahleneinträge zwischen {start} und {len(result_list) + start}, auch Blöcke z.B. 2-15 sind möglich")
+
 
     def to_xml(self) -> str:
         result = []
@@ -26,7 +28,7 @@ class NumLineEdit(QtWidgets.QLineEdit):
 
             dig = int(token[0]) - self.__start
             if span and result:
-                result.extend([i for i in range(result[-1] + 1, dig + 1)])
+                result.extend([i for i in range(result[-1] + 1, dig)])
             result.append(dig)
             span = False
 

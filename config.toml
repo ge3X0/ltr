@@ -18,7 +18,7 @@ process_files = ["word/document.xml", "word/header1.xml"]
 
 # Forms to load from ./forms/ in order they will appear in the application
 forms = [
-    "midas", "treatments", "symptoms_box", "bdi2", "whodas"
+    "midas", "treatments", "symptoms", "bdi2", "whodas"
 ]
 
 # Medication names to ignore while loading

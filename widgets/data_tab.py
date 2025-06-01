@@ -151,6 +151,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
         search_button = QtWidgets.QPushButton("Neu laden")
         search_button.setShortcut("F5")
+        search_button.setToolTip("Lade Daten erneut [F5]")
         search_button.pressed.connect(self.select_patient)
 
         search_box = QtWidgets.QHBoxLayout()
@@ -166,6 +167,8 @@ class DataTabWidget(QtWidgets.QWidget):
         sheet_layout.addWidget(QtWidgets.QLabel("\nPatientendaten\n"))
 
         self.data_sheet_button = QtWidgets.QPushButton("Schnuppi öffnen")
+        self.data_sheet_button.setShortcut("Ctrl+I")
+        self.data_sheet_button.setToolTip("Datenblatt öffnen [Strg + I]")
         self.data_sheet_button.clicked.connect(self.show_data_sheet)
         self.data_sheet_button.setVisible(False)
         sheet_layout.addWidget(self.data_sheet_button)
