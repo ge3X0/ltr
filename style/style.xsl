@@ -50,6 +50,7 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:template match="//ekg_zeit"><xsl:value-of select="$data//patient/ekg2" /></xsl:template>
     <xsl:template match="//arzt"><xsl:value-of select="$data//patient/doctor_name"/></xsl:template>
     <xsl:template match="//psych"><xsl:value-of select="$data//patient/therapist_name"/></xsl:template>
+    <xsl:template match="//allergien"><xsl:value-of select="$data//patient/allergies"/></xsl:template>
 
     <!-- Gender templates !-->
 

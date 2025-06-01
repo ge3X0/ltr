@@ -201,7 +201,7 @@ class MainWidget(QtWidgets.QWidget):
         def repl(m_str) -> str:
             full_m = m_str[2]
             tag_name = full_m[1:full_m.find('<')]
-            tag_name += ''.join(m[1] for m in re.finditer(r"<w:t>(.+?)</w:t>", full_m))
+            tag_name += ''.join(m[1] for m in re.finditer(r"<w:t>(.+?)(?:</w:t>|})", full_m))
             # Found immediate opening tag, indicating messed up whitespace
             if m_str[1] is not None:
                 return f"<w:t xml:space=\"preserve\"><{tag_name} />"
