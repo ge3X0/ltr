@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt
 from datetime import datetime
 from zipfile import ZipFile
 import re
+import subprocess
 
 from lxml import etree
 
@@ -19,28 +20,34 @@ class DataTabWidget(QtWidgets.QWidget):
 
         # Define rege patterns
 
-        icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s\däöüÄÖÜß]+)\s+([A-Z]\d{2}(?:\.\d+)?)", flags=re.MULTILINE)
+        icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s\däöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$", flags=re.MULTILINE)
 
-        md_name = r"([/.\-()\w\s\däöüÄÖÜß]{5,18})"
+        md_name = r"([/.\-()\w\s\däöüÄÖÜß]+?)"
         md_dosage = r"([\d.,/]+)\s*"
-        md_unit = r"((?:g|mg|µg|ug|IE|ml|l|Hub|Kps\.?|Tbl\.?|°|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ml|l))?)"
+        md_unit = r"((?:g|mg|µg|ug|IE|ml|l|Hub|Kapsel|Kps\.?|Tablette|Tbl\.?|°|Tropfen|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ml|l))?)"
         n = r"\s*([\d.,/]+°?)\s*"
-        med_pattern = re.compile(f"^{md_name}\\s+{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?", flags=re.MULTILINE)
+        med_pattern = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
 
+        # TODO: find dosages
         simple_med_pattern = re.compile(f"(?:^|,\\s*)([^,\\n(]+)(?:\\([^)]+)?", flags=re.MULTILINE)
 
         # Internal method to extract medication from cell
 
         def __read_meds(text_line: str, when_key: str, how_key: str):
             meds = [Medication(
-                name=med[1], dosis=med[2], unit=med[3],
+                name=med[1].strip(), dosis=med[2], unit=med[3],
                 morning=med[4], noon=med[5], evening=med[6], night=med[7] if med[7] is not None else "0")
-                for med in med_pattern.finditer(text_line)]
+                for med in (med_pattern.match(line) for line in text_line.splitlines()) if med]
 
             # Try simple pattern if sophisticated didn't match
             if not meds:
-                meds = [Medication(name=med[1])
-                        for med in simple_med_pattern.finditer(text_line) if med[1] not in self.configs["ignore_meds"]]
+                meds = [Medication(name=med[1].strip())
+                        for med in simple_med_pattern.finditer(text_line) if med[0] not in self.configs["ignore_meds"]]
+
+            # This is horrible TODO: make it better
+            for md in meds:
+                for word, subst in self.configs["substitute_meds"].items():
+                    md.name = md.name.replace(word, subst)
 
             self.patient_data.medication[when_key][how_key] = meds
 
@@ -70,6 +77,7 @@ class DataTabWidget(QtWidgets.QWidget):
                     self.patient_data.birthday = datetime.strptime(text, "%d.%m.%Y")
 
                 case Field.Address:
+                    # TODO: get phone number?
                     self.patient_data.address = text.replace('\n', '').strip()
 
                 case Field.Occupation:
@@ -95,8 +103,8 @@ class DataTabWidget(QtWidgets.QWidget):
 
                 case Field.DiagPain | Field.DiagMisuse | Field.DiagPsych | Field.DiagSom:
                     for m in icd_pattern.finditer(text):
-                        diag = Diagnosis(m[1], m[2])
-                        if diag.icd10 == "G43.8":
+                        diag = Diagnosis(m[1].strip(), m[2])
+                        if diag.icd10 == "G43.8" or diag.icd10 == "G43.3":
                             diag.icd10 = "G43.8/3"
                         self.patient_data.diagnoses.append(diag)
 
@@ -128,7 +136,6 @@ class DataTabWidget(QtWidgets.QWidget):
         # Setup Search bar and completer
 
         self.search_bar = QtWidgets.QLineEdit()
-        self.search_bar.setStyleSheet("padding: 12px")
         self.search_bar.returnPressed.connect(self.select_patient)
 
         file_completer = QtWidgets.QCompleter(
@@ -137,7 +144,7 @@ class DataTabWidget(QtWidgets.QWidget):
         self.search_bar.setCompleter(file_completer)
 
         search_button = QtWidgets.QPushButton("Neu laden")
-        search_button.setStyleSheet("padding: 12px")
+        search_button.setShortcut("F5")
         search_button.pressed.connect(self.select_patient)
 
         search_box = QtWidgets.QHBoxLayout()
@@ -148,7 +155,15 @@ class DataTabWidget(QtWidgets.QWidget):
 
         # Setup Data display
 
-        dt_layout.addWidget(QtWidgets.QLabel("\nPatientendaten\n"))
+        sheet_layout = QtWidgets.QHBoxLayout()
+        dt_layout.addLayout(sheet_layout)
+        sheet_layout.addWidget(QtWidgets.QLabel("\nPatientendaten\n"))
+
+        self.data_sheet_button = QtWidgets.QPushButton("Schnuppi öffnen")
+        self.data_sheet_button.clicked.connect(self.show_data_sheet)
+        self.data_sheet_button.setVisible(False)
+        sheet_layout.addWidget(self.data_sheet_button)
+
         self.patient_label = QtWidgets.QLabel()
         dt_layout.addWidget(self.patient_label)
 
@@ -176,6 +191,16 @@ class DataTabWidget(QtWidgets.QWidget):
 
 
     @QtCore.Slot()
+    def show_data_sheet(self):
+        patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
+        if not patient_path.exists():
+            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {patient_path} nicht öffnen")
+            return
+
+        subprocess.run(f"powershell -Command \"& {{Start-Process '{patient_path.absolute()}'\"}}")
+
+
+    @QtCore.Slot()
     def select_patient(self):
         patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
         if not patient_path.exists():
@@ -192,14 +217,14 @@ class DataTabWidget(QtWidgets.QWidget):
 
 
     def display_data(self):
-        patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
+        # self.patient_label.setTextFormat(Qt.TextFormat.RichText)
         self.patient_label.setText(
             f"Datensatz: {self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n\n"
             f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n\n"
             f"Wohnhaft: {self.patient_data.address}\n\n"
             f"Arzt: {self.patient_data.doc_name}\n\nPT: {self.patient_data.pt_name}"
-            f"<a href=\"file://{patient_path.absolute()}\">Schnuppi</a>"
         )
+        self.data_sheet_button.setVisible(True)
 
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
         self.diagnoses_table.resizeColumnsToContents()

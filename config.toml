@@ -16,10 +16,24 @@ xsl_file = "./style/style.xsl"
 # Files in *.docx structure of template_file to transform using xsl_file
 process_files = ["word/document.xml", "word/header1.xml"]
 
-# Medication names to ignore while loading
-ignore_meds = ["Akut", "Basis", "Sonstige", ":", "Akut:", "Basis:", "Sonstige:"]
-
 # Forms to load from ./forms/ in order they will appear in the application
 forms = [
     "midas", "treatments", "symptoms_box", "bdi2", "whodas"
 ]
+
+# Medication names to ignore while loading
+ignore_meds = ["Akut:", "Basis:", "Sonstige:"]
+
+# Substitute medication names
+[substitute_meds]
+PCM = "Paracetamol"
+ASS = "Aspirin"
+Ibu = "Ibuprofen"
+Dolormin = "Ibuprofen"
+Tempil = "Sumatriptan s.c."
+Relpax = "Eletriptan"
+Maxalt = "Rizatriptan"
+Aimovig = "Erenumab"
+Ajovy = "Fremanezumab"
+Emgality = "Galcanezumab"
+Vyepti = "Eptinezumab"

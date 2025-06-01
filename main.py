@@ -35,27 +35,35 @@ class MainWidget(QtWidgets.QWidget):
 
         # Load Configuration
 
-        self.configs = {}
+        self.configs = {
+            "forms": [],
+            "ignore_meds": [],
+            "substitute_meds": {},
+            "process_files": ["word/document.xml", "word/header1.xml"],
+        }
         if Path("config.toml").exists():
             with open("config.toml", "rb") as config_file:
-                self.configs = toml.load(config_file)
+                self.configs.update(toml.load(config_file))
 
         # TODO: all standards?
-        self.configs["forms"] = self.configs.get("forms", [])
-        self.configs["ignore_meds"] = self.configs.get("ignore_meds", [])
-        self.configs["process_files"] = self.configs.get("process_files", ["word/document.xml", "word/header1.xml"])
         self.configs["file_db"] = Path(self.configs.get("file_db", "./"))
         self.configs["save_path"] = Path(self.configs.get("save_path", "./data"))
         self.configs["output_path"] = Path(self.configs.get("output_path", "./output"))
 
         # TODO: Do we want to proceed, if these are missing?
-        self.configs["template_file"] = Path(self.configs.get("template_file", "./dummy_938928477"))
-        if not self.configs["template_file"].exists():
-            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "config.toml beinhaltet keine template_file Option")
+        if "template_file" not in self.configs:
+            QtWidgets.QMessageBox.warning(self, "Fehler in config.toml", "config.toml muss Schlüssel template_file beinhalten")
 
-        self.configs["xsl_file"] = Path(self.configs.get("xsl_file", "./dummy_938928477"))
+        self.configs["template_file"] = Path(self.configs["template_file"])
+        if not self.configs["template_file"].exists():
+            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "template_file existiert nicht")
+
+        if "xsl_file" not in self.configs:
+            QtWidgets.QMessageBox.warning(self, "Fehler in config.toml", "config.toml muss Schlüssel xsl_file beinhalten")
+
+        self.configs["xsl_file"] = Path(self.configs["xsl_file"])
         if not self.configs["xsl_file"].exists():
-            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "config.toml beinhaltet keine xsl_file Option")
+            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "xsl_file existiert nicht")
 
         # Tab Widget is central widget
 
@@ -68,6 +76,7 @@ class MainWidget(QtWidgets.QWidget):
 
         export_button = QtWidgets.QPushButton("Brief exportieren")
         export_button.clicked.connect(self.to_xml)
+        export_button.setShortcut("Ctrl+E")
         self.layout().addWidget(export_button)
 
         # Setup tabs
@@ -85,7 +94,6 @@ class MainWidget(QtWidgets.QWidget):
 
         # Tabs loaded from ./forms
 
-        # for form_file in Path("./forms/").glob("*.toml"):
         for form_file_name in self.configs["forms"]:
             form_file = Path("./forms") / f"{form_file_name}.toml"
 
@@ -145,13 +153,8 @@ class MainWidget(QtWidgets.QWidget):
     def keyPressEvent(self, event, /):
 
         if event.type() == QtCore.QEvent.Type.KeyPress:
-            # Shortcut for exporting letter
-            if event.modifiers() == Qt.KeyboardModifier.ControlModifier:
-                if event.key() == Qt.Key.Key_E or event.key() == Qt.Key.Key_S:
-                    self.to_xml()
-
             # Shortcut for moving between tabs (kinda broken)
-            elif event.modifiers() == Qt.KeyboardModifier.AltModifier:
+            if event.modifiers() == Qt.KeyboardModifier.AltModifier:
                     next_tab = self.tab_widget.currentIndex()
                     if event.key() == Qt.Key.Key_Right:
                         next_tab += 1
@@ -184,7 +187,7 @@ class MainWidget(QtWidgets.QWidget):
         # Write patient data file by calling to_xml() on all tabs
 
         with data_file.open("bw+") as fl:
-            xml = f"<?xml version=\"1.0\" encoding=\"UTF-8\" ?><data>{''.join(field.to_xml() for field in self.fields)}</data>"
+            xml = f"<?xml version=\"1.0\" encoding=\"UTF-8\" ?><data>{''.join(field.to_xml() for field in self.forms)}</data>"
             fl.write(xml.encode())
 
         # Load xsl style sheet and add "data" global variable referring to created data file
@@ -233,6 +236,10 @@ class MainWidget(QtWidgets.QWidget):
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
 
+    app.setStyleSheet("""
+    QPushButton { padding: 12px; }
+    QLineEdit { padding: 12px; }
+    """)
     app.setFont(QtGui.QFont("Arial", 14))
 
     widget = MainWidget()
