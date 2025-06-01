@@ -17,10 +17,6 @@ from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, E
 #   - Status für spätere Bearbeitung speichern?
 #   - (Word Datei bearbeiten)
 
-# TODO:
-#   - Ask if overwrite is wanted on new load
-
-
 class MainWidget(QtWidgets.QWidget):
     """
     :ivar configs: Dictionary loaded from configs.toml

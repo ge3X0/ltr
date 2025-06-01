@@ -1,7 +1,7 @@
-name = "&Allgemeine Symptome"
+name = "&Symptome"
 
 [[field]]
-caption = "Symptome"
+caption = "Häufiges Auftreten von"
 id = "symptoms"
 field_type = "xbox"
 rows = 32

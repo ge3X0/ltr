@@ -462,31 +462,7 @@
                                 <w:t>Migräne ohne Aura </w:t>
                             </w:r>
                         </w:p>
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00932F5E">
-                            <w:pPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="1701"/>
-                                    <w:tab w:val="left" w:pos="2268"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:jc w:val="both"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
-                            </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
-                                <w:t>(nach der Schmerzmittelpause)</w:t>
-                            </w:r>
-                        </w:p>
+                        <xsl:call-template name="nach_pause"/>
                     </w:tc>
                     <w:tc>
                         <w:tcPr>
@@ -795,31 +771,7 @@
                                 <w:t>Migräne mit Aura </w:t>
                             </w:r>
                         </w:p>
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="004814EE">
-                            <w:pPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="1701"/>
-                                    <w:tab w:val="left" w:pos="2268"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:jc w:val="both"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
-                            </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
-                                <w:t>(nach der Schmerzmittelpause)</w:t>
-                            </w:r>
-                        </w:p>
+                        <xsl:call-template name="nach_pause"/>
                     </w:tc>
                     <w:tc>
                         <w:tcPr>
@@ -937,14 +889,15 @@
             </xsl:if>
 
             <xsl:if test="$diag_status_migrainosus">
-                <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
+                <w:tr>
                     <w:trPr>
                         <w:gridAfter w:val="1"/>
                         <w:wAfter w:w="20" w:type="dxa"/>
                     </w:trPr>
                     <w:tc>
                         <w:tcPr>
-                            <w:tcW w:w="3691" w:type="dxa"/>
+                            <w:tcW w:w="3706" w:type="dxa"/>
+                            <w:gridSpan w:val="2"/>
                         </w:tcPr>
                         <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="00746F90">
                             <w:pPr>
@@ -1009,7 +962,7 @@
                     </w:tc>
                     <w:tc>
                         <w:tcPr>
-                            <w:tcW w:w="5386" w:type="dxa"/>
+                            <w:tcW w:w="5391" w:type="dxa"/>
                             <w:gridSpan w:val="2"/>
                         </w:tcPr>
                         <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="00746F90">
