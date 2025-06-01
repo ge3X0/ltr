@@ -57,7 +57,7 @@ class DataTabWidget(QtWidgets.QWidget):
             # Extract text data, respect w:p tags as newlines
             text = '\n'.join(
                 ''.join(t.text for t in p.iterfind(".//w:t", namespaces=ns))
-                for p in p.iterfind(".//w:p", namespaces=ns)
+                for p in cell.iterfind(".//w:p", namespaces=ns)
             )
 
             # Process per field

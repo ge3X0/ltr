@@ -1,7 +1,3 @@
-# eval_line bietet eine Eingabezeile, die komma/leerzeichen-separierte Zahlen erwartet.
-# Werden keine Kommata oder Leerzeichen gefunden, wird jede eingegebene Ziffer einzeln gewertet
-# Pro Ziffern wird ein entsprechender Textblock aus "values" gewählt und in einer stringliste gespeichert
-
 name = "&BDI-II"
 
 [[field]]
