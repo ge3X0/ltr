@@ -1,3 +1,5 @@
+# Alternative zu symptoms.toml: Bietet ankreuzbare Boxen anstelle von Zahleninput an
+
 name = "&Symptome"
 
 [[field]]

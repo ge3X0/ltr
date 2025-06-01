@@ -3,6 +3,10 @@ import re
 
 
 class NumLineEdit(QtWidgets.QLineEdit):
+    """Sophisticated line input to find values and ranges over values from a string list
+    selected by indices from its input
+    """
+
     def __init__(self, field_id: str, result_list: list[str], start: int = 0, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -22,10 +26,11 @@ class NumLineEdit(QtWidgets.QLineEdit):
 
             dig = int(token[0]) - self.__start
             if span and result:
-                result.extend([i for i in range(result[-1] + 1, dig)])
+                result.extend([i for i in range(result[-1] + 1, dig + 1)])
             result.append(dig)
             span = False
 
+        # TODO: suboptimal, use only one loop
         vals = [self.__result_list[idx] for idx in result if 0 <= idx < len(self.__result_list)]
         values = ''.join(f"<value>{v}</value>" for v in vals)
 

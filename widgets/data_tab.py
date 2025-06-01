@@ -18,7 +18,7 @@ class DataTabWidget(QtWidgets.QWidget):
         :param patient_data: etree object containing docx-tabledata
         """
 
-        # Define rege patterns
+        # Define regex patterns
 
         icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s\däöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$", flags=re.MULTILINE)
 
@@ -31,19 +31,24 @@ class DataTabWidget(QtWidgets.QWidget):
         # TODO: find dosages
         simple_med_pattern = re.compile(f"(?:^|,\\s*)([^,\\n(]+)(?:\\([^)]+)?", flags=re.MULTILINE)
 
-        # Internal method to extract medication from cell
+        # MS Word namespace for work with etree
+        ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
 
+        # Internal method to extract medication from cell
         def __read_meds(text_line: str, when_key: str, how_key: str):
+            # Try to find medication pattern per line of input
             meds = [Medication(
                 name=med[1].strip(), dosis=med[2], unit=med[3],
                 morning=med[4], noon=med[5], evening=med[6], night=med[7] if med[7] is not None else "0")
                 for med in (med_pattern.match(line) for line in text_line.splitlines()) if med]
 
-            # Try simple pattern if sophisticated didn't match
+            # Try simple pattern if sophisticated didn't match anything
+            # TODO: could try to match per line if sophisticated didn't match
             if not meds:
                 meds = [Medication(name=med[1].strip())
                         for med in simple_med_pattern.finditer(text_line) if med[0] not in self.configs["ignore_meds"]]
 
+            # Substitute medication names with alternatives from config.toml
             # This is horrible TODO: make it better
             for md in meds:
                 for word, subst in self.configs["substitute_meds"].items():
@@ -51,7 +56,6 @@ class DataTabWidget(QtWidgets.QWidget):
 
             self.patient_data.medication[when_key][how_key] = meds
 
-        ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
 
         # for i, cell in enumerate(patient_data.iterfind(".//w:tc", namespaces=ns)):
         #     print(i, end=' ')
@@ -70,7 +74,7 @@ class DataTabWidget(QtWidgets.QWidget):
             # Process per field
             match i:
                 case Field.Name:
-                    # TODO: validate, strip
+                    # TODO: validate
                     self.patient_data.last_name, self.patient_data.first_name = map(lambda x: x.strip(), text.splitlines()[0].split(','))
 
                 case Field.Birthday:
@@ -104,6 +108,8 @@ class DataTabWidget(QtWidgets.QWidget):
                 case Field.DiagPain | Field.DiagMisuse | Field.DiagPsych | Field.DiagSom:
                     for m in icd_pattern.finditer(text):
                         diag = Diagnosis(m[1].strip(), m[2])
+
+                        # Special case: chronic migraine
                         if diag.icd10 == "G43.8" or diag.icd10 == "G43.3":
                             diag.icd10 = "G43.8/3"
                         self.patient_data.diagnoses.append(diag)
@@ -173,7 +179,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
         self.diagnoses_table = QtWidgets.QTableView()
         self.diagnoses_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
-        self.diagnoses_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+        # self.diagnoses_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.diagnoses_table.setModel(DiagnosesTableModel([]))
         dt_layout.addWidget(self.diagnoses_table)
 
@@ -183,7 +189,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
         self.medication_table = QtWidgets.QTableView()
         self.medication_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
-        self.medication_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+        # self.medication_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.medication_table.setModel(MedicationTableModel([], []))
         self.medication_table.setSpan(0, 0, 1, 7)
         self.medication_table.setSpan(1, 0, 1, 7)
@@ -192,6 +198,8 @@ class DataTabWidget(QtWidgets.QWidget):
 
     @QtCore.Slot()
     def show_data_sheet(self):
+        """Display Schnuppi for currently loaded patient"""
+
         patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
         if not patient_path.exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {patient_path} nicht öffnen")
@@ -202,9 +210,11 @@ class DataTabWidget(QtWidgets.QWidget):
 
     @QtCore.Slot()
     def select_patient(self):
+        """Load all data for the currently selected patient"""
+
         patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
         if not patient_path.exists():
-            QtWidgets.QMessageBox.warning(self, "Nicht gefunden", "Der angegebene Patient konnte nicht gefunden werden")
+            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {patient_path} nicht öffnen")
             return
 
         with ZipFile(patient_path) as archive:
@@ -217,6 +227,8 @@ class DataTabWidget(QtWidgets.QWidget):
 
 
     def display_data(self):
+        """Shows patient data on label and tables"""
+
         # self.patient_label.setTextFormat(Qt.TextFormat.RichText)
         self.patient_label.setText(
             f"Datensatz: {self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n\n"
@@ -239,6 +251,8 @@ class DataTabWidget(QtWidgets.QWidget):
 
 
     def patient_file_name(self) -> str:
+        """Generate unique filename from loaded patient data"""
+        # TODO: let user define file name via config.toml
         return (f"{self.patient_data.last_name}_{self.patient_data.first_name}_"
                 f"{self.patient_data.birthday.strftime('%d%m%Y')}_{self.patient_data.admission.strftime('%d%m%Y')}")
 

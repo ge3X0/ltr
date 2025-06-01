@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets, QtCore
+from PySide6 import QtWidgets
 import re
 
 
@@ -8,14 +8,6 @@ class EvalLine(QtWidgets.QLineEdit):
     """
 
     def __init__(self, field_id: str, values: list[dict[str, str]], start: int, *args, **kwargs):
-        """
-
-        :param field_id: Identifier for processing in xml
-        :param values: List of values, containing key -> value pairs
-        :param start: value subtracted from each entry in line edit
-        :param args:
-        :param kwargs:
-        """
         super().__init__(*args, **kwargs)
 
         self.__field_id = field_id
