@@ -31,7 +31,7 @@
 
 #### Best-practice Medikamente in Datendatei
 
-> [!INFO]
+> [!NOTE]
 > Medikamente können als "Aliase" definiert werden, indem diese in config.toml unter *substitute_meds* gesetzt werden
 > Medikamente, die nicht eingelesen werden sollen, können mittels *ignore_meds* in config.toml definiert werden
 
@@ -53,7 +53,7 @@ Medikament eins, Medikament zwei (Kommentar zu zwei), Drittes Medikament
 
 ### Brief exportieren
 
-> [!INFO]
+> [!NOTE]
 > Eine Briefschablone als DOCX-Datei muss mittels *template_file* in config.toml definiert sein
 > Eine XSL-Transformationsdatei muss mittels *xsl_file* in config.toml definiert sein
 
@@ -61,7 +61,7 @@ Medikament eins, Medikament zwei (Kommentar zu zwei), Drittes Medikament
 - Durch Auswählen von "Brief exportieren" (Shortcut: Strg + E) wird ein Brief mit aktuellen Daten geschrieben
 - Es ist empfehlenswert, zunächst alle Formulare (s.u.) zu bearbeiten, um einen vollständigen Brief zu generieren
 
-> [!INFO]
+> [!NOTE]
 > Mittels *output_path* kann in config.toml ein Pfad, an dem die generierten Briefe abgelegt werden, definiert werden
 > Mittels *save_path* kann in config.toml ein Pfad, an dem die Datendateien für den Patienten gespeichert werden, definiert werden
 
@@ -71,4 +71,22 @@ Medikament eins, Medikament zwei (Kommentar zu zwei), Drittes Medikament
 
 
 ## Formulare
+
+### Formulare definieren
+
+- Formulare können in dem Ordner ./forms als toml-Dateien definiert werden. Für mögliche Optionen siehe [forms.md].
+- Formulare werden als Tabs geladen. Diese können per Klick, per Alt + Pfeiltasten oder per Alt + Buchstaben direkt umgeschaltet werden
+- Je nach Formularfeld kann die Eingabe variieren:
+
+#### Zeileneingabe
+
+Erwartet meistens Zahlen, entweder durch beliebige nicht-numerische Zeichen getrennt (z.B. Leerzeichen oder Komma) oder
+als einzelnen Zahlenstring (hier nur im BDI2 implementiert).
+
+#### Boxeingabe
+
+Liste von multiple-choice Optionen, die per Maus angesteuert werden können.
+Empfohlen wird, die Shortcuts zu verwenden: Taste x wählt die aktuelle Box aus und springt zur nächsten, Taste y wählt
+die aktuelle Box ab (oder: "nicht aus") und springt zur nächsten. Alternativ kann mittels Tab und Shift + Tab zwischen
+den Boxen gesprungen werden.
 
