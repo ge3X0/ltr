@@ -166,11 +166,27 @@ class MainWidget(QtWidgets.QWidget):
     def to_xml(self):
         """Writes letter from collected data of all tabs"""
 
+        uml = {
+            'Ä': "Ae",
+            'Ö': "Oe",
+            'Ü': "Ue",
+            'ä': "ae",
+            'ö': "oe",
+            'ü': "ue",
+            'ß': "sz",
+        }
+
         # Generate patient data file
         # TODO: use this to load?
         patient_file_name = self.forms[0].patient_file_name()
         data_file = self.configs["save_path"] / f"{patient_file_name}.xml"
         output_file = self.configs["output_path"] / f"{patient_file_name}.docx"
+
+        data_file_name = str(data_file.absolute().as_posix())
+        for c, sub in uml.items():
+            data_file_name = data_file_name.replace(c, sub)
+
+        data_file = Path(data_file_name)
 
         if (data_file.exists()
             and QtWidgets.QMessageBox.StandardButton.Yes != QtWidgets.QMessageBox.question(
@@ -188,13 +204,14 @@ class MainWidget(QtWidgets.QWidget):
 
         # Load xsl style sheet and add "data" global variable referring to created data file
 
+
         with open(self.configs["xsl_file"], "rb") as xsl_file:
             xsl_xml = etree.parse(xsl_file)
             etree.SubElement(
                 xsl_xml.getroot(),
                 "{http://www.w3.org/1999/XSL/Transform}variable",
                 # XSL cannot deal with windows backslashes
-                { "name": "data", "select": f"document('{data_file.absolute().as_posix()}')"})
+                { "name": "data", "select": f"document('{data_file_name}')"})
             transform = etree.XSLT(xsl_xml)
 
         # Internal function to concat docs templates {varname} if word inserted <t></t> tags

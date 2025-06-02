@@ -78,11 +78,14 @@ class DataTabWidget(QtWidgets.QWidget):
                     self.patient_data.last_name, self.patient_data.first_name = map(lambda x: x.strip(), text.splitlines()[0].split(','))
 
                 case Field.Birthday:
-                    self.patient_data.birthday = datetime.strptime(text, "%d.%m.%Y")
+                    self.patient_data.birthday = datetime.strptime(text.splitlines()[0], "%d.%m.%Y")
 
                 case Field.Address:
-                    # TODO: get phone number?
-                    self.patient_data.address = text.replace('\n', '').strip()
+                    line = text.replace('\n', '').strip()
+                    if m := re.match(r"(.*)\s*(\d+)", line):
+                        self.patient_data.address = m[1]
+                    else:
+                        self.patient_data.address = line
 
                 case Field.Occupation:
                     # TODO: extract gdb

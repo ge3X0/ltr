@@ -62,6 +62,14 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template match="//anrede_dat">
+        <xsl:choose>
+            <xsl:when test="$gender = 'm'">Herrn</xsl:when>
+            <xsl:when test="$gender = 'f'">Frau</xsl:when>
+            <xsl:otherwise>Herrn/Frau</xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <xsl:template match="//ersie">
         <xsl:choose>
             <xsl:when test="$gender = 'm'">er</xsl:when>
