@@ -81,11 +81,12 @@ class DataTabWidget(QtWidgets.QWidget):
                     self.patient_data.birthday = datetime.strptime(text.splitlines()[0], "%d.%m.%Y")
 
                 case Field.Address:
-                    line = text.replace('\n', '').strip()
-                    if m := re.match(r"(.*?)\s*(\d{6,15})?", line):
-                        self.patient_data.address = m[1]
+                    line = text.replace('\n', '')
+                    if (m := re.match(r"([\w\s.,]+?)([\d\s]+)$", line)) is not None:
+                        self.patient_data.address = m[1].strip()
+                        self.patient_data.phone = m[2]
                     else:
-                        self.patient_data.address = line
+                        self.patient_data.address = line.strip()
 
                 case Field.Occupation:
                     # TODO: extract gdb
@@ -240,6 +241,7 @@ class DataTabWidget(QtWidgets.QWidget):
             f"Datensatz: {self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n\n"
             f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n\n"
             f"Wohnhaft: {self.patient_data.address}\n\n"
+            f"Telefon: {self.patient_data.phone}\n\n"
             f"Arzt: {self.patient_data.doc_name}\n\nPT: {self.patient_data.pt_name}"
         )
         self.data_sheet_button.setVisible(True)
