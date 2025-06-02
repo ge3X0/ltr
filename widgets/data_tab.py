@@ -23,33 +23,43 @@ class DataTabWidget(QtWidgets.QWidget):
         icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s\däöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$", flags=re.MULTILINE)
 
         md_name = r"([/.\-()\w\s\däöüÄÖÜß]+?)"
-        md_dosage = r"([\d.,/]+)\s*"
+        md_dosage = r"([\-\d.,/]+)\s*"
         md_unit = r"((?:g|mg|µg|ug|IE|ml|l|Hub|Kapsel|Kps\.?|Tablette|Tbl\.?|°|Tropfen|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ml|l))?)"
         n = r"\s*([\d.,/]+°?)\s*"
         med_pattern = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
 
         # TODO: find dosages
-        simple_med_pattern = re.compile(f"(?:^|,\\s*)([^,\\n(]+)(?:\\([^)]+)?", flags=re.MULTILINE)
+        simple_med_pattern = re.compile(f"(?:^|,\\s*)((?:,(?=\\d)|[^,\\n(])+)(?:\\([^)]+)?", flags=re.MULTILINE)
 
         # MS Word namespace for work with etree
         ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
 
         # Internal method to extract medication from cell
         def __read_meds(text_line: str, when_key: str, how_key: str):
-            # Try to find medication pattern per line of input
-            meds = [Medication(
-                name=med[1].strip(), dosis=med[2], unit=med[3],
-                morning=med[4], noon=med[5], evening=med[6], night=med[7] if med[7] is not None else "0")
-                for med in (med_pattern.match(line) for line in text_line.splitlines()) if med]
+            meds = []
 
-            # Try simple pattern if sophisticated didn't match anything
-            # TODO: could try to match per line if sophisticated didn't match
-            if not meds:
-                meds = [Medication(name=med[1].strip())
-                        for med in simple_med_pattern.finditer(text_line) if med[0] not in self.configs["ignore_meds"]]
+            # Match medication per line
+            for entry in text_line.splitlines():
+
+                # Try sophisticated pattern
+                if med := med_pattern.match(entry):
+                    med_name = med[1].strip()
+                    if med_name in self.configs["ignore_meds"]:
+                        continue
+                    meds.append(Medication(
+                        name=med[1].strip(), dosis=med[2], unit=med[3],
+                        morning=med[4], noon=med[5], evening=med[6], night=med[7] if med[7] is not None else "0"
+                    ))
+
+                # If first match didn't find anything, try simple pattern
+                else:
+                    for med in simple_med_pattern.finditer(entry):
+                        med_name = med[1].strip()
+                        if med_name in self.configs["ignore_meds"]:
+                            continue
+                        meds.append(Medication(name=med[1].strip()))
 
             # Substitute medication names with alternatives from config.toml
-            # This is horrible TODO: make it better
             for md in meds:
                 for word, subst in self.configs["substitute_meds"].items():
                     md.name = md.name.replace(word, subst)
@@ -74,8 +84,12 @@ class DataTabWidget(QtWidgets.QWidget):
             # Process per field
             match i:
                 case Field.Name:
-                    # TODO: validate
-                    self.patient_data.last_name, self.patient_data.first_name = map(lambda x: x.strip(), text.splitlines()[0].split(','))
+                    names = list(map(lambda x: x.strip(), text.splitlines()[0].split(',')))
+                    if len(names) != 2:
+                        QtWidgets.QMessageBox.warning(self, "Eingabefehler", "Patientenname in Datendatei scheint falsch formatiert")
+                        continue
+
+                    self.patient_data.last_name, self.patient_data.first_name = names
 
                 case Field.Birthday:
                     self.patient_data.birthday = datetime.strptime(text.splitlines()[0], "%d.%m.%Y")
@@ -261,8 +275,7 @@ class DataTabWidget(QtWidgets.QWidget):
     def patient_file_name(self) -> str:
         """Generate unique filename from loaded patient data"""
         # TODO: let user define file name via config.toml
-        return (f"{self.patient_data.last_name}_{self.patient_data.first_name}_"
-                f"{self.patient_data.birthday.strftime('%d%m%Y')}_{self.patient_data.admission.strftime('%d%m%Y')}")
+        return (f"A-{self.patient_data.last_name}, {self.patient_data.first_name} {self.patient_data.admission.strftime('%d%m%Y')}")
 
 
     def to_xml(self) -> str:
