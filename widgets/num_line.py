@@ -28,7 +28,7 @@ class NumLineEdit(QtWidgets.QLineEdit):
 
             dig = int(token[0]) - self.__start
             if span and result:
-                result.extend([i for i in range(result[-1] + 1, dig)])
+                result.extend(range(result[-1] + 1, dig))
             result.append(dig)
             span = False
 

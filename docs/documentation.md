@@ -56,17 +56,19 @@ Medikament eins, Medikament zwei (Kommentar zu zwei), Drittes Medikament
 
 ### Brief exportieren
 
-> [!NOTE]
+> [!WARNING]
 > Eine Briefschablone als DOCX-Datei muss mittels *template_file* in config.toml definiert sein
 > Eine XSL-Transformationsdatei muss mittels *xsl_file* in config.toml definiert sein
 
 Nach Laden der Patientendaten kann jederzeit ein Brief exportiert werden. Durch Auswählen von "Brief exportieren" [Strg] + [E] wird ein Brief mit aktuellen Daten geschrieben. Es ist empfehlenswert, zunächst alle Formulare (s.u.) zu bearbeiten, um einen vollständigen Brief zu generieren.
 
 > [!NOTE]
-> Mittels *output_path* kann in config.toml ein Pfad, an dem die generierten Briefe abgelegt werden, definiert werden
-> Mittels *save_path* kann in config.toml ein Pfad, an dem die Datendateien für den Patienten gespeichert werden, definiert werden
+> Mittels *output_path* kann in config.toml ein Pfad, an dem die generierten Briefe abgelegt werden, definiert werden.
+> Mittels *save_path* kann in config.toml ein Pfad, an dem die Datendateien für den Patienten gespeichert werden, definiert werden.
+> Der Pfad für die config.toml Option *save_path* sollte keine Leerzeichen, Umlaute oder Sz enthalten, diese werden
+> automatisch durch '_' oder Ae etc. ersetzt
 
-> [!WARNING]
+> [!NOTE]
 > Standardmäßig werden die /word/document.xml und /word/header1.xml Dateien der definierten DOCX-Schablone auf Variablen
 > überprüft. Sollten andere Dateien gewünscht sein (z.B. Footer), können diese mittels *process_files* in config.toml definiert werden
 
