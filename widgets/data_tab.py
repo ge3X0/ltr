@@ -82,7 +82,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
                 case Field.Address:
                     line = text.replace('\n', '').strip()
-                    if m := re.match(r"(.*)\s*(\d+)", line):
+                    if m := re.match(r"(.*?)\s*(\d+)", line):
                         self.patient_data.address = m[1]
                     else:
                         self.patient_data.address = line

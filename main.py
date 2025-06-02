@@ -174,6 +174,7 @@ class MainWidget(QtWidgets.QWidget):
             'ö': "oe",
             'ü': "ue",
             'ß': "sz",
+            ' ': '_'
         }
 
         # Generate patient data file
