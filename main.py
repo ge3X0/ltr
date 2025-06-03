@@ -239,13 +239,15 @@ class MainWidget(QtWidgets.QWidget):
                     out_xml = transform(docxml)
                     output.writestr(doc_name, etree.tostring(out_xml))
 
-        QtWidgets.QMessageBox.information(self, "Brief geschrieben", "Brief wurde fertig gestellt")
-        self.open_output_file()
+        QtWidgets.QMessageBox.information(self, "Brief geschrieben", "Brief wurde fertig gestellt [STRG+O] zum öffnen")
 
 
     def open_output_file(self):
         patient_file_name = self.forms[0].patient_file_name()
         output_file = self.configs["output_path"] / f"{patient_file_name}.docx"
+        if not output_file.exists():
+            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "Für den aktuellen Datensatz kann kein Brief gefunden werden")
+            return
         subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}")
 
 

@@ -102,7 +102,7 @@ class DataTabWidget(QtWidgets.QWidget):
                     line = text.replace('\n', '')
                     if (m := re.match(r"([\w\s.,]+?)([\d\s]+)$", line)) is not None:
                         self.patient_data.address = m[1].strip()
-                        self.patient_data.phone = m[2]
+                        self.patient_data.phone = m[2].strip()
                     else:
                         self.patient_data.address = line.strip()
 
