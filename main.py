@@ -93,7 +93,7 @@ class MainWidget(QtWidgets.QWidget):
         # Examination Tab
 
         self.forms.append(ExamTab())
-        self.forms[0].xmlDataFound.connect(self.forms[1].from_xml)
+        self.forms[0].dataLoaded.connect(self.forms[1].from_xml)
         self.tab_widget.addTab(self.forms[1], "&Untersuchung")
 
         # Tabs loaded from ./forms
@@ -151,7 +151,7 @@ class MainWidget(QtWidgets.QWidget):
                         )
 
                 self.forms.append(new_widget)
-                self.forms[0].xmlDataFound.connect(new_widget.from_xml)
+                self.forms[0].dataLoaded.connect(new_widget.from_xml)
                 field_layout.addWidget(new_widget)
 
 

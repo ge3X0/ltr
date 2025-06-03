@@ -63,6 +63,15 @@ class ExamTab(QtWidgets.QWidget):
 
     @QtCore.Slot()
     def from_xml(self, xml):
+        if xml is None:
+            self.gender_btn_group.buttons()[1].setChecked(True)
+            self.height_inp.setText("")
+            self.weight_inp.setText("")
+            self.sys_inp.setText("")
+            self.dia_inp.setText("")
+            self.p_inp.setText("")
+            return
+
         gender = dict(zip(["m", "f", "d"], self.gender_btn_group.buttons()))
         exam = xml.find(".//exam")
 

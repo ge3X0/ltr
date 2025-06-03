@@ -15,7 +15,7 @@ from util import process_filename
 
 
 class DataTabWidget(QtWidgets.QWidget):
-    xmlDataFound = QtCore.Signal(etree.ElementBase)
+    dataLoaded = QtCore.Signal(etree.ElementBase | None)
 
     def __extract_patient_data(self, patient_data):
         """Get data from *.docx file
@@ -255,10 +255,12 @@ class DataTabWidget(QtWidgets.QWidget):
         data_file_name = process_filename(self.configs["save_path"] / f"{self.patient_file_name()}.xml")
         data_file = Path(data_file_name)
 
+        xml = None
         if data_file.exists():
             with data_file.open("rb") as fl:
                 xml = etree.parse(fl)
-            self.xmlDataFound.emit(xml)
+
+        self.dataLoaded.emit(xml)
 
 
     def display_data(self):

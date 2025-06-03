@@ -52,8 +52,14 @@ class XBox(QtWidgets.QWidget):
         values = ''.join(f"<value>{v}</value>" for v in self.results())
         return f"""<field name="{self.__field_id}">{values}</field>"""
 
+
     @QtCore.Slot()
     def from_xml(self, xml):
+        if xml is None:
+            for cb in self.__checkboxes:
+                cb.setChecked(False)
+            return
+
         element = xml.find(f'.//field[@name="{self.__field_id}"]')
 
         text_list = [e.text for e in element.iter("value")]

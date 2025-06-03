@@ -40,5 +40,9 @@ class NumLineEdit(QtWidgets.QLineEdit):
 
     @QtCore.Slot()
     def from_xml(self, xml):
+        if xml is None:
+            self.setText("")
+            return
+
         element = xml.find(f'.//field[@name="{self.__field_id}"]')
         self.setText(", ".join([e.text for e in element.iter("value")]))

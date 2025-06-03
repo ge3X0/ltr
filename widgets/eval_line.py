@@ -44,6 +44,10 @@ class EvalLine(QtWidgets.QLineEdit):
 
     @QtCore.Slot()
     def from_xml(self, xml):
+        if xml is None:
+            self.setText("")
+            return
+
         element = xml.find(f'.//field[@name="{self.__field_id}"]')
         vals = []
 
