@@ -10,7 +10,7 @@ import subprocess
 from lxml import etree
 
 from patient_data import PatientData
-from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, ExamTab
+from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, ExamTab, LoadingDialog
 from util import process_filename
 
 # TODO:
@@ -248,6 +248,7 @@ class MainWidget(QtWidgets.QWidget):
         if not output_file.exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "Für den aktuellen Datensatz kann kein Brief gefunden werden")
             return
+
         subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}")
 
 
