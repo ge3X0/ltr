@@ -5,11 +5,13 @@ from pathlib import Path
 import tomllib as toml
 from zipfile import ZipFile
 import re
+import subprocess
 
 from lxml import etree
 
 from patient_data import PatientData
 from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, ExamTab
+from util import process_filename
 
 # TODO:
 #   - Fragebögen eingeben
@@ -74,6 +76,11 @@ class MainWidget(QtWidgets.QWidget):
         export_button.clicked.connect(self.to_xml)
         export_button.setShortcut("Ctrl+E")
         self.layout().addWidget(export_button)
+
+        # Shortcut definition
+
+        open_output_shortcut = QtGui.QShortcut("Ctrl+O", self)
+        open_output_shortcut.activated.connect(self.open_output_file)
 
         # Setup tabs
 
@@ -143,6 +150,7 @@ class MainWidget(QtWidgets.QWidget):
                         )
 
                 self.forms.append(new_widget)
+                self.forms[0].xmlDataFound.connect(new_widget.from_xml)
                 field_layout.addWidget(new_widget)
 
 
@@ -166,27 +174,13 @@ class MainWidget(QtWidgets.QWidget):
     def to_xml(self):
         """Writes letter from collected data of all tabs"""
 
-        uml = {
-            'Ä': "Ae",
-            'Ö': "Oe",
-            'Ü': "Ue",
-            'ä': "ae",
-            'ö': "oe",
-            'ü': "ue",
-            'ß': "sz",
-            ' ': '_'
-        }
-
         # Generate patient data file
         # TODO: use this to load?
         patient_file_name = self.forms[0].patient_file_name()
         data_file = self.configs["save_path"] / f"{patient_file_name}.xml"
         output_file = self.configs["output_path"] / f"{patient_file_name}.docx"
 
-        data_file_name = str(data_file.absolute().as_posix())
-        for c, sub in uml.items():
-            data_file_name = data_file_name.replace(c, sub)
-
+        data_file_name = process_filename(data_file)
         data_file = Path(data_file_name)
 
         if (data_file.exists()
@@ -245,6 +239,13 @@ class MainWidget(QtWidgets.QWidget):
                     output.writestr(doc_name, etree.tostring(out_xml))
 
         QtWidgets.QMessageBox.information(self, "Brief geschrieben", "Brief wurde fertig gestellt")
+        self.open_output_file()
+
+
+    def open_output_file(self):
+        patient_file_name = self.forms[0].patient_file_name()
+        output_file = self.configs["output_path"] / f"{patient_file_name}.docx"
+        subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}")
 
 
 if __name__ == "__main__":
@@ -257,7 +258,7 @@ if __name__ == "__main__":
     app.setFont(QtGui.QFont("Arial", 14))
 
     widget = MainWidget()
-    widget.resize(800, 600)
+    widget.showMaximized()
     widget.show()
 
     exit(app.exec())

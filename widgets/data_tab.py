@@ -3,6 +3,7 @@ from PySide6.QtCore import Qt
 
 from datetime import datetime
 from zipfile import ZipFile
+from pathlib import Path
 import re
 import subprocess
 
@@ -10,9 +11,12 @@ from lxml import etree
 
 from patient_data import Medication, Diagnosis, Field, PatientData
 from models import DiagnosesTableModel, MedicationTableModel
+from util import process_filename
 
 
 class DataTabWidget(QtWidgets.QWidget):
+    xmlDataFound = QtCore.Signal(etree.ElementBase)
+
     def __extract_patient_data(self, patient_data):
         """Get data from *.docx file
         :param patient_data: etree object containing docx-tabledata
@@ -20,10 +24,10 @@ class DataTabWidget(QtWidgets.QWidget):
 
         # Define regex patterns
 
-        icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s\däöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$", flags=re.MULTILINE)
+        icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s?äöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$", flags=re.MULTILINE)
 
         md_name = r"([/.\-()\w\s\däöüÄÖÜß]+?)"
-        md_dosage = r"([\-\d.,/]+)\s*"
+        md_dosage = r"([\-\d?.,/]+)\s*"
         md_unit = r"((?:g|mg|µg|ug|IE|ml|l|Hub|Kapsel|Kps\.?|Tablette|Tbl\.?|°|Tropfen|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ml|l))?)"
         n = r"\s*([\d.,/]+°?)\s*"
         med_pattern = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
@@ -246,11 +250,22 @@ class DataTabWidget(QtWidgets.QWidget):
         self.__extract_patient_data(patient_data)
         self.display_data()
 
+        # Check for loadable data
+
+        data_file_name = process_filename(self.configs["save_path"] / f"{self.patient_file_name()}.xml")
+        data_file = Path(data_file_name)
+
+        if data_file.exists():
+            with data_file.open("rb") as fl:
+                xml = etree.parse(fl)
+            self.xmlDataFound.emit(xml)
+
 
     def display_data(self):
         """Shows patient data on label and tables"""
 
         # self.patient_label.setTextFormat(Qt.TextFormat.RichText)
+        # TODO: As Table
         self.patient_label.setText(
             f"Datensatz: {self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n\n"
             f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n\n"

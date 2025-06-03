@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtCore
 
 import re
 
@@ -25,3 +25,8 @@ class SplitLineEdit(QtWidgets.QLineEdit):
     def to_xml(self) -> str:
         values = ''.join(f"<value>{v}</value>" for v in self.results())
         return f"""<field name="{self.__field_id}">{values}</field>"""
+
+    @QtCore.Slot()
+    def from_xml(self, xml):
+        element = xml.find('//field[@name="{self.__field_id}"]')
+        self.setText(", ".join([e.text for e in element.iter("value")]))

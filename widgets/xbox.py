@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtCore
 from PySide6.QtCore import Qt
 from itertools import batched
 
@@ -51,3 +51,11 @@ class XBox(QtWidgets.QWidget):
     def to_xml(self) -> str:
         values = ''.join(f"<value>{v}</value>" for v in self.results())
         return f"""<field name="{self.__field_id}">{values}</field>"""
+
+    @QtCore.Slot()
+    def from_xml(self, xml):
+        element = xml.find('//field[@name="{self.__field_id}"]')
+
+        text_list = [e.text for e in element.iter("value")]
+        for cb in self.__checkboxes:
+            cb.setChecked(cb.text() in text_list)

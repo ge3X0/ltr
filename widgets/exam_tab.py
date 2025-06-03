@@ -61,5 +61,16 @@ class ExamTab(QtWidgets.QWidget):
         <pulse>{self.p_inp.text()}</pulse>
         </exam>"""
 
+    @QtCore.Slot()
+    def from_xml(self, xml):
+        gender = dict(zip(["m", "f", "d"], self.gender_btn_group.buttons()))
+        gender[xml.find("//exam/gender").text].setChecked(True)
+
+        self.height_inp.setText(xml.find("//exam/height").text)
+        self.weight_inp.setText(xml.find("//exam/weight").text)
+        self.sys_inp.setText(xml.find("//exam/sys").text)
+        self.dia_inp.setText(xml.find("//exam/dia").text)
+        self.p_inp.setText(xml.find("//exam/pulse").text)
+
 
 

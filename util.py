@@ -2,6 +2,25 @@ from datetime import datetime
 from zipfile import ZipFile, ZipInfo
 from operator import attrgetter
 
+from pathlib import Path
+
+def process_filename(filename: Path) -> str:
+    uml = {
+        'Ä': "Ae",
+        'Ö': "Oe",
+        'Ü': "Ue",
+        'ä': "ae",
+        'ö': "oe",
+        'ü': "ue",
+        'ß': "sz",
+        ' ': '_'
+    }
+
+    data_file_name = str(filename.absolute().as_posix())
+    for c, sub in uml.items():
+        data_file_name = data_file_name.replace(c, sub)
+    return data_file_name
+
 
 def pdate(dt: datetime) -> str:
     return dt.strftime("%d.%m.%Y")

@@ -37,3 +37,8 @@ class NumLineEdit(QtWidgets.QLineEdit):
         values = ''.join(f"<value>{v}</value>" for v in vals)
 
         return f"""<field name="{self.__field_id}">{values}</field>"""
+
+    @QtCore.Slot()
+    def from_xml(self, xml):
+        element = xml.find('//field[@name="{self.__field_id}"]')
+        self.setText(", ".join([e.text for e in element.iter("value")]))
