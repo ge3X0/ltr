@@ -15,7 +15,7 @@ from util import process_filename
 
 
 class DataTabWidget(QtWidgets.QWidget):
-    dataLoaded = QtCore.Signal(etree.ElementBase | None)
+    dataLoaded = QtCore.Signal(etree.ElementBase)
 
     def __extract_patient_data(self, patient_data):
         """Get data from *.docx file

@@ -57,7 +57,7 @@ class EvalLine(QtWidgets.QLineEdit):
 
             for val, stm in self.__values[idx].items():
                 if stm == e.text:
-                    vals.append(val)
+                    vals.append(str(int(val) + self.__start))
                     break
             else:
                 vals.append(str(self.__start))
