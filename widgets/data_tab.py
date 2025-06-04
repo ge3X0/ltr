@@ -24,7 +24,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
         # Define regex patterns
 
-        icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s?äöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$", flags=re.MULTILINE)
+        icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s?äöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$")
 
         md_name = r"([/.\-()\w\s\däöüÄÖÜß]+?)"
         md_dosage = r"([\-\d?.,/]+)\s*"

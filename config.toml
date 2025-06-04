@@ -28,7 +28,6 @@ ignore_meds = ["Akut:", "Basis:", "Sonstige:"]
 [substitute_meds]
 PCM = "Paracetamol"
 ASS = "Aspirin"
-Ibu = "Ibuprofen"
 Dolormin = "Ibuprofen"
 Tempil = "Sumatriptan s.c."
 Relpax = "Eletriptan"
