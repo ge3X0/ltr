@@ -6,7 +6,7 @@ name = "&Symptome"
 caption = "Häufiges Auftreten von"
 id = "symptoms"
 field_type = "xbox"
-rows = 32
+rows = 33
 values = [
     "Kreuz- oder Rückenschmerzen",
     "Überempfindlichkeit gegen Wärme",

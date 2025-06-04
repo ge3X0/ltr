@@ -1,7 +1,8 @@
 from PySide6 import QtCore, QtGui
 from PySide6.QtCore import Qt
 
-from patient_data import Diagnosis, Medication
+from .patient_data import Diagnosis, Medication
+
 
 
 class DiagnosesTableModel(QtCore.QAbstractTableModel):

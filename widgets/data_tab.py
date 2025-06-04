@@ -9,8 +9,7 @@ import subprocess
 
 from lxml import etree
 
-from patient_data import Medication, Diagnosis, Field, PatientData
-from models import DiagnosesTableModel, MedicationTableModel
+from models import Medication, Diagnosis, Field, PatientData, DiagnosesTableModel, MedicationTableModel
 from util import process_filename
 
 
@@ -26,14 +25,14 @@ class DataTabWidget(QtWidgets.QWidget):
 
         icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s?äöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$")
 
-        md_name = r"([/.\-()\w\s\däöüÄÖÜß]+?)"
+        md_name = r"([/.\-()\w\s\däöüÄÖÜß?]+?)"
         md_dosage = r"([\-\d?.,/]+)\s*"
-        md_unit = r"((?:g|mg|µg|ug|IE|ml|l|Hub|Kapsel|Kps\.?|Tablette|Tbl\.?|°|Tropfen|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ml|l))?)"
+        md_unit = r"((?:g|mg|µg|ug|ng|IE|ml|l|Hub|Kapsel|Kps\.?|Tablette|Tbl\.?|°|Tropfen|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ng|ml|l|d|Tag|h|Stunde))?)"
         n = r"\s*([\d.,/]+°?)\s*"
         med_pattern = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
 
         # TODO: find dosages
-        simple_med_pattern = re.compile(f"(?:^|,\\s*)((?:,(?=\\d)|[^,\\n(])+)(?:\\([^)]+)?", flags=re.MULTILINE)
+        simple_med_pattern = re.compile(f"(?:^|,\\s*)((?:,(?=\\d)|[^,\\n(])+?)(?:\\([^)]+)?", flags=re.MULTILINE)
 
         # MS Word namespace for work with etree
         ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
@@ -128,13 +127,14 @@ class DataTabWidget(QtWidgets.QWidget):
                     self.patient_data.allergies = text
 
                 case Field.DiagPain | Field.DiagMisuse | Field.DiagPsych | Field.DiagSom:
-                    for m in icd_pattern.finditer(text):
-                        diag = Diagnosis(m[1].strip(), m[2])
+                    for line in text.splitlines():
+                        for m in icd_pattern.finditer(line):
+                            diag = Diagnosis(m[1].strip(), m[2])
 
-                        # Special case: chronic migraine
-                        if diag.icd10 == "G43.8" or diag.icd10 == "G43.3":
-                            diag.icd10 = "G43.8/3"
-                        self.patient_data.diagnoses.append(diag)
+                            # Special case: chronic migraine
+                            if diag.icd10 == "G43.8" or diag.icd10 == "G43.3":
+                                diag.icd10 = "G43.8/3"
+                            self.patient_data.diagnoses.append(diag)
 
                 case Field.MedCurrAcute:
                     __read_meds(text, "current", "acute")
