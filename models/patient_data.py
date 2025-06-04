@@ -47,7 +47,7 @@ class Diagnosis:
 @dataclass
 class Medication:
     name: str = "Unbekannt"
-    dosis: str = "Unbekannt"
+    dosis: str = "?"
     unit: str = ""
     morning: str = "0"
     noon: str = "0"
@@ -97,7 +97,8 @@ class PatientData:
 
     def to_xml(self, date_format: str = "%d.%m.%Y") -> str:
         today = datetime.now()
-        return f"""<patient>
+        return f"""
+<patient>
     <first_name>{self.first_name}</first_name>
     <last_name>{self.last_name}</last_name>
     <birthday>{self.birthday.strftime(date_format)}</birthday>

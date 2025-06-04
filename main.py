@@ -9,14 +9,13 @@ import subprocess
 
 from lxml import etree
 
-from patient_data import PatientData
+from models import PatientData
 from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, ExamTab, LoadingDialog
 from util import process_filename
 
 # TODO:
 #   - Fragebögen eingeben
 #       - Arzt Adresse
-#   - Status für spätere Bearbeitung speichern?
 #   - (Word Datei bearbeiten)
 
 class MainWidget(QtWidgets.QWidget):
@@ -43,7 +42,6 @@ class MainWidget(QtWidgets.QWidget):
             with open("config.toml", "rb") as config_file:
                 self.configs.update(toml.load(config_file))
 
-        # TODO: all standards?
         self.configs["file_db"] = Path(self.configs.get("file_db", "./"))
         self.configs["save_path"] = Path(self.configs.get("save_path", "./data"))
         self.configs["output_path"] = Path(self.configs.get("output_path", "./output"))
