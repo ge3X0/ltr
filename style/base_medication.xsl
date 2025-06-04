@@ -1885,7 +1885,11 @@
                     </w:p>
 
                     <xsl:if test="$base/name[
-                    text() = 'Tramal' or text() = 'Tramadol' or text() = 'Tilidin' or text() = 'MST' or text() = 'Oxycodon' or text() = 'Tapentadol']">
+                    text() = 'Tramal' or text() = 'Tramadol' or text() = 'Tramadol ret.'
+                    or text() = 'Tilidin' or text() = 'Tilidin ret.'
+                    or text() = 'MST' or text() = 'MST ret.'
+                    or text() = 'Oxycodon'
+                    or text() = 'Tapentadol']">
                         <w:p>
                             <w:pPr>
                                 <w:tabs>
