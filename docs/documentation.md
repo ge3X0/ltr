@@ -21,7 +21,7 @@ gefundene werden tabellarisch angezeigt
 
 #### Best-practice Diagnosen in Datendatei
 
-Diagnosen sollten eine Diagnose pro Zeile aufgeführt werden. Dia Diagnosen sollten folgendem Muster entsprechen:
+Diagnosen sollten eine Diagnose pro Zeile aufgeführt werden. Diagnosen sollten folgendem Muster entsprechen:
 
 ```
 Diagnosen-Name ZZ00.99 Kommentare
@@ -47,10 +47,10 @@ Anderes Medikament 40/1 mg/ml 0-0-15°-0
 ```
 
 Andere Muster werden ggf. nicht sicher oder vollständig erkannt. Text nach dem Einnahmemuster wird als Kommentar ignoriert.
-Sind Medikamente als komma-separierte Liste aufgeführt, werden sie als reine Textnamen übernommen. Kommentare können in Klammern den Medikamenten nachgestellt werden.
+Sind Medikamente als komma-separierte Liste aufgeführt, werden sie als reine Textnamen übernommen. Kommentare können in Klammern den Medikamenten nachgestellt werden. Dosierungen können angegeben werden, Komma als Trennstelle und Dezimalzeichen werden zuverlässig unterscheiden.
 
 ```
-Medikament eins, Medikament zwei (Kommentar zu zwei), Drittes Medikament
+Medikament eins 12,5 mg, Medikament zwei (Kommentar zu zwei), Drittes Medikament
 ```
 
 
@@ -91,4 +91,18 @@ Liste von multiple-choice Optionen, die per Maus angesteuert werden können.
 Empfohlen wird, die Shortcuts zu verwenden: Taste x wählt die aktuelle Box aus und springt zur nächsten, Taste y wählt
 die aktuelle Box ab (oder: "nicht aus") und springt zur nächsten. Alternativ kann mittels Tab und Shift + Tab zwischen
 den Boxen gesprungen werden.
+
+
+## Shortcuts
+
+| Aktion                   | Tastenkombination        | Kommentar                                      |
+|--------------------------|--------------------------|------------------------------------------------|
+| Aktuelle Daten neu laden | [F5]                     | Überschreibt ggf. ungespeicherte Formulardaten |
+| Datendatei öffnen        | [STRG] + [I]             |                                                |
+| Brief generieren         | [STRG] + [E]             | Speichert Formulardaten                        |
+| Brief öffnen             | [STRG] + [O]             |                                                |
+| Checkbox: Auswählen      | [X]                      |                                                |
+| Checkbox: Abwählen       | [Y]                      |                                                |
+| Tab wechseln             | [ALT] + [LINKS]/[RECHTS] |                                                |
+| Tab auswählen            | [ALT] + Tab-Buchstabe    |                                                |
 

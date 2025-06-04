@@ -14,11 +14,13 @@ class EvalLine(QtWidgets.QLineEdit):
         self.__values = values
         self.__start = start
 
-        self.setToolTip(f"Liste von {len(values)} Zahlen, separiert oder bei Einzelnummern auch ohne Leerzeichen")
+        self.setToolTip(f"Liste von {len(values)} Zahlen, handelt es sich um einzelne Ziffern pro Posten, kann auf eine Separierung verzichtet werden")
 
 
     def to_xml(self) -> str:
         results = []
+
+        # Test if we look for separations or not
         it = self.text() if ',' not in self.text() and ' ' not in self.text() else re.finditer(r"\d+", self.text())
 
         for val_idx, s in enumerate(it):
@@ -33,10 +35,14 @@ class EvalLine(QtWidgets.QLineEdit):
             if -1 < (idx := int(s) - self.__start) < len(self.__values[val_idx]):
                 results.append(self.__values[val_idx][str(idx)])
             else:
-                results.append("Unbekannter Wert")
+                QtWidgets.QMessageBox.warning(self, "Eval Line", f"Wert {idx} ist kein gültiger Wert an Position {val_idx + 1}")
+                results.append("Unbekannt")
 
-        while len(results) < len(self.__values):
-            results.append(self.__values[len(results)]["0"])
+        if len(results) != len(self.__values):
+            QtWidgets.QMessageBox.information(self, "Eval Line", f"Es wurden {len(results)} von erwarteten {len(self.__values)} gefunden.\nÜbrige Stellen werden mit Standardwerten gefüllt")
+
+            while len(results) < len(self.__values):
+                results.append(self.__values[len(results)]["0"])
 
         values = ''.join(f"<value>{v}</value>" for v in results)
         return f"""<field name="{self.__field_id}">{values}</field>"""
@@ -59,6 +65,8 @@ class EvalLine(QtWidgets.QLineEdit):
                 if stm == e.text:
                     vals.append(str(int(val) + self.__start))
                     break
+
+            # Append standard value, if no other matched
             else:
                 vals.append(str(self.__start))
 
