@@ -7,7 +7,8 @@ from zipfile import ZipFile
 import re
 import subprocess
 
-from lxml import etree
+# from lxml import etree
+from saxonche import PySaxonProcessor
 
 from models import PatientData
 from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, ExamTab, LoadingDialog
@@ -48,18 +49,26 @@ class MainWidget(QtWidgets.QWidget):
 
         # TODO: Do we want to proceed, if these are missing?
         if "template_file" not in self.configs:
-            QtWidgets.QMessageBox.warning(self, "Fehler in config.toml", "config.toml muss Schlüssel template_file beinhalten")
+            QtWidgets.QMessageBox.warning(self,
+            "Fehler in config.toml",
+            "config.toml muss Schlüssel template_file beinhalten")
 
         self.configs["template_file"] = Path(self.configs["template_file"])
         if not self.configs["template_file"].exists():
-            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "template_file existiert nicht")
+            QtWidgets.QMessageBox.warning(self,
+            "Datei nicht gefunden",
+            "template_file existiert nicht")
 
         if "xsl_file" not in self.configs:
-            QtWidgets.QMessageBox.warning(self, "Fehler in config.toml", "config.toml muss Schlüssel xsl_file beinhalten")
+            QtWidgets.QMessageBox.warning(self,
+            "Fehler in config.toml",
+            "config.toml muss Schlüssel xsl_file beinhalten")
 
         self.configs["xsl_file"] = Path(self.configs["xsl_file"])
         if not self.configs["xsl_file"].exists():
-            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "xsl_file existiert nicht")
+            QtWidgets.QMessageBox.warning(self,
+            "Datei nicht gefunden",
+            "xsl_file existiert nicht")
 
         # Tab Widget is central widget
 
@@ -100,7 +109,9 @@ class MainWidget(QtWidgets.QWidget):
             form_file = Path("./forms") / f"{form_file_name}.toml"
 
             if not form_file.exists():
-                QtWidgets.QMessageBox.warning(self, "Formular nicht gefunden", f"Formulardatei '{form_file_name}.toml' nicht gefunden")
+                QtWidgets.QMessageBox.warning(self,
+                "Formular nicht gefunden",
+                f"Formulardatei '{form_file_name}.toml' nicht gefunden")
                 continue
 
             with form_file.open("rb") as fl:
@@ -197,6 +208,8 @@ class MainWidget(QtWidgets.QWidget):
             fl.write(xml.encode())
 
         # Load xsl style sheet and add "data" global variable referring to created data file
+
+        proc = PySaxonProcessor(license=False)
 
 
         with open(self.configs["xsl_file"], "rb") as xsl_file:
