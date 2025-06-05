@@ -32,7 +32,7 @@ class DataTabWidget(QtWidgets.QWidget):
         med_pattern = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
 
         # TODO: find dosages
-        simple_med_pattern = re.compile(f"(?:^|,\\s*)((?:,(?=\\d)|[^,\\n(])+?)(?:\\([^)]+)?", flags=re.MULTILINE)
+        simple_med_pattern = re.compile(f"(?:^|,\\s*)((?:,(?=\\d)|[^,\\n(])+)(?:\\([^)]+)?", flags=re.MULTILINE)
 
         # MS Word namespace for work with etree
         ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
@@ -77,11 +77,10 @@ class DataTabWidget(QtWidgets.QWidget):
 
         # Walk over each cell in table
         for i, cell in enumerate(patient_data.iterfind(".//w:tc", namespaces=ns)):
-
             # Extract text data, respect w:p tags as newlines
             text = '\n'.join(
                 ''.join(t.text for t in p.iterfind(".//w:t", namespaces=ns))
-                for p in cell.iterfind(".//w:p", namespaces=ns)
+                for p in cell.xpath('.//w:p[not(.//w:numPr)]', namespaces=ns)
             )
 
             # Process per field
