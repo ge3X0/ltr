@@ -21,7 +21,7 @@ class EvalLine(QtWidgets.QLineEdit):
         results = []
 
         # Test if we look for separations or not
-        it = self.text() if ',' not in self.text() and ' ' not in self.text() else re.finditer(r"\d+", self.text())
+        it = self.text() if ',' not in self.text() and ' ' not in self.text() else [m[0] for m in re.finditer(r"\d+", self.text())]
 
         for val_idx, s in enumerate(it):
             if val_idx >= len(self.__values):
