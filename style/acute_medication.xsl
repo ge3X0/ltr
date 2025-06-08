@@ -6,7 +6,7 @@
 
     <xsl:template match="akutmedikation_zuvor">
         <xsl:call-template name="string-list">
-            <xsl:with-param name="selection" select="$data//medication[@when = 'former' and @which = 'acute']/entry"/>
+            <xsl:with-param name="selection" select="$data//medication[@when = 'former' and @which = 'acute']/entry/name"/>
         </xsl:call-template>
     </xsl:template>
 

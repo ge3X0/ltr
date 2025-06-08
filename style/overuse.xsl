@@ -6,30 +6,15 @@
 
     <xsl:template name="nach_pause">
         <xsl:if test="$diag_overuse">
-            <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00932F5E">
+            <w:p>
                 <w:pPr>
-                    <w:tabs>
-                        <w:tab w:val="left" w:pos="1701"/>
-                        <w:tab w:val="left" w:pos="2268"/>
-                        <w:tab w:val="left" w:pos="6804"/>
-                    </w:tabs>
                     <w:jc w:val="both"/>
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                  w:cs="Lucida Sans Unicode"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
                 </w:pPr>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                  w:cs="Lucida Sans Unicode"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
-                    <w:t>(nach der Schmerzmittelpause)</w:t>
-                </w:r>
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="text">
+                        <xsl:text>(nach der Schmerzmittelpause)</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
             </w:p>
         </xsl:if>
     </xsl:template>
@@ -48,144 +33,78 @@
         <xsl:if test="$diag_overuse">
             <w:p>
                 <w:pPr>
-                    <w:tabs>
-                        <w:tab w:val="left" w:pos="1701"/>
-                        <w:tab w:val="left" w:pos="6804"/>
-                    </w:tabs>
                     <w:jc w:val="both"/>
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:b/>
-                        <w:bCs/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
                 </w:pPr>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:b/>
-                        <w:bCs/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                    <w:t>Mit Cortison:</w:t>
-                </w:r>
-            </w:p>
-            <w:p w:rsidR="00877D06" w:rsidRPr="00F07558" w:rsidRDefault="00877D06" w:rsidP="00F07558">
-                <w:pPr>
-                    <w:jc w:val="both"/>
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F07558">
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                    <w:t xml:space="preserve">Wir führten eine konsequente </w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F07558">
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:b/>
-                        <w:bCs/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                    <w:t>Medikamenten-Einnahmepause</w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F07558">
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                    <w:t xml:space="preserve"> für jegliche Kopfschmerzakutmedikation durch. Zur Erleichterung der zu erwartenden Umstellungsreaktion erfolgte eine befristete intravenöse und orale Gabe von Prednisolon. Zum Einsatz kamen ebenfalls Dimenhydrinat und Melperon, sowie Infusionen mit Dimenhydrinat und Magnesium.</w:t>
-                </w:r>
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="bold" select="true()"/>
+                    <xsl:with-param name="highlight" select="true()"/>
+                    <xsl:with-param name="text">
+                        <xsl:text>Mit Cortison</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
             </w:p>
 
-            <w:p w:rsidR="00877D06" w:rsidRPr="00F07558" w:rsidRDefault="00877D06" w:rsidP="00F07558">
+            <w:p>
                 <w:pPr>
-                    <w:tabs>
-                        <w:tab w:val="left" w:pos="1701"/>
-                        <w:tab w:val="left" w:pos="6804"/>
-                    </w:tabs>
                     <w:jc w:val="both"/>
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:b/>
-                        <w:bCs/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
                 </w:pPr>
-                <w:r w:rsidRPr="00F07558">
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:b/>
-                        <w:bCs/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                    <w:t>Ohne Cortison</w:t>
-                </w:r>
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="highlight" select="true()"/>
+                    <xsl:with-param name="text">
+                        <xsl:text>Wit führten eine konsequente </xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="bold" select="true()"/>
+                    <xsl:with-param name="highlight" select="true()"/>
+                    <xsl:with-param name="text">
+                        <xsl:text>Medikamenten-Einnahmepause</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="highlight" select="true()"/>
+                    <xsl:with-param name="text">
+                        <xsl:text> für jegliche Kopfschmerzakutmedikation durch. Zur Erleichterung der zu erwartenden Umstellungsreaktion erfolgte eine befristete intravenöse und orale Gabe von Prednisolon. Zum Einsatz kamen ebenfalls Dimenhydrinat und Melperon, sowie Infusionen mit Dimenhydrinat und Magnesium.</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
             </w:p>
 
-            <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="00F07558">
+            <w:p>
                 <w:pPr>
-                    <w:tabs>
-                        <w:tab w:val="left" w:pos="1701"/>
-                        <w:tab w:val="left" w:pos="6804"/>
-                    </w:tabs>
                     <w:jc w:val="both"/>
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
                 </w:pPr>
-                <w:r w:rsidRPr="00F07558">
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                    <w:t xml:space="preserve">Wir führten eine konsequente </w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F07558">
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:b/>
-                        <w:bCs/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                    <w:t>Medikamenten-Einnahmepause</w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F07558">
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                    <w:t xml:space="preserve"> für jegliche Kopfschmerzakutmedikation durch. Dabei wurde auf eine intravenöse und orale Gabe von Prednisolon nach einem festen Zeitschema verzichtet. Bedarfsweise erhielt die Patientin Medikamente zur Schmerzdistanzierung.</w:t>
-                </w:r>
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="bold" select="true()"/>
+                    <xsl:with-param name="highlight" select="true()"/>
+                    <xsl:with-param name="text">
+                        <xsl:text>Ohne Cortison</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+            </w:p>
+
+            <w:p>
+                <w:pPr>
+                    <w:jc w:val="both"/>
+                </w:pPr>
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="highlight" select="true()"/>
+                    <xsl:with-param name="text">
+                        <xsl:text>Wit führten eine konsequente </xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="bold" select="true()"/>
+                    <xsl:with-param name="highlight" select="true()"/>
+                    <xsl:with-param name="text">
+                        <xsl:text>Medikamenten-Einnahmepause</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="highlight" select="true()"/>
+                    <xsl:with-param name="text">
+                        <xsl:text> für jegliche Kopfschmerzakutmedikation durch. Dabei wurde auf eine intravenöse und orale Gabe von Prednisolon nach einem festen Zeitschema verzichtet. Bedarfsweise erhielt die Patientin Medikamente zur Schmerzdistanzierung.</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
             </w:p>
         </xsl:if>
     </xsl:template>

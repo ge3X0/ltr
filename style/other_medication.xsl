@@ -26,56 +26,36 @@
                 <w:gridCol w:w="992"/>
                 <w:gridCol w:w="1134"/>
             </w:tblGrid>
-            <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
+
+            <w:tr>
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="9072" w:type="dxa"/>
                         <w:gridSpan w:val="6"/>
                         <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
+
+                    <w:p>
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="both"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
                         </w:pPr>
-                        <w:r w:rsidRPr="00166F0D">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                            <w:t>Sonstige Medikation</w:t>
-                        </w:r>
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="bold" select="true()"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>Sonstige Medikation</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
                     </w:p>
                 </w:tc>
             </w:tr>
-            <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
+
+            <w:tr>
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="3686" w:type="dxa"/>
                     </w:tcPr>
                     <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="both"/>
                             <w:rPr>
                                 <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"

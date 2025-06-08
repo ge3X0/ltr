@@ -5,22 +5,19 @@
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
     <xsl:template match="basismedikation_zuvor">
-        <xsl:for-each select="$data//medication[@when = 'former' and @which = 'base']/entry">
-            <xsl:value-of select="normalize-space(name)"/>
-            <xsl:if test="position() &lt; last()">
-                <xsl:text>, </xsl:text>
-            </xsl:if>
-        </xsl:for-each>
+        <xsl:call-template name="string-list">
+            <xsl:with-param name="selection" select="$data//medication[@when = 'former' and @which = 'base']/entry/name"/>
+        </xsl:call-template>
     </xsl:template>
 
     <xsl:template match="//w:p[.//basismedikation]">
         <xsl:variable name="base" select="$data//medication[@when = 'current' and @which = 'base']/entry"/>
         <xsl:variable name="tza"
-                      select="$base/name[text() = 'Amitriptylin' or text() = 'Trimipramin' or text() = 'Doxepin']"/>
+                      select="$base/name[contains(text(), 'Amitriptylin') or contains(text(), 'Trimipramin') or contains(text(), 'Doxepin')]"/>
         <xsl:variable name="cgrp"
-                      select="$base/name[text() = 'Erenumab' or text() = 'Fremanezumab' or text() = 'Galcanezumab']"/>
+                      select="$base/name[contains(text(), 'Erenumab') or contains(text(), 'Fremanezumab') or contains(text(), 'Galcanezumab')]"/>
         <xsl:variable name="rr_med"
-                      select="$base/name[text() = 'Amlodipin' or text() = 'Bisoprolol' or text() = 'Metoprolol']"/>
+                      select="$base/name[contains(text(), 'Amlodipin') or contains(text(), 'Bisoprolol') or contains(text(), 'Metoprolol')]"/>
 
         <w:tbl>
             <w:tblPr>
@@ -53,34 +50,14 @@
                         <w:gridSpan w:val="6"/>
                         <w:shd w:val="clear" w:color="auto" w:fill="BFBFBF"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
-                        <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:jc w:val="both"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
-                        <w:r w:rsidRPr="00166F0D">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                            <w:t>Schmerztherapeutische Basismedikation</w:t>
-                        </w:r>
+
+                    <w:p>
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="bold" select="true()"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>Schmerztherapeutische Basismedikation</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
                     </w:p>
                 </w:tc>
             </w:tr>
@@ -90,204 +67,106 @@
                     <w:tcPr>
                         <w:tcW w:w="3686" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
-                        <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:jc w:val="both"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
-                        </w:pPr>
-                        <w:r w:rsidRPr="00166F0D">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
-                            <w:t>Substanz/Medikament</w:t>
-                        </w:r>
+                    <w:p>
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="size" select="14"/>
+                            <xsl:with-param name="bold" select="true()"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>Substanz/Medikament</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
                     </w:p>
                 </w:tc>
+
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="1276" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
-                        <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:jc w:val="both"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
-                        </w:pPr>
-                        <w:r w:rsidRPr="00166F0D">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
-                            <w:t>Dosis</w:t>
-                        </w:r>
+                    <w:p>
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="size" select="14"/>
+                            <xsl:with-param name="bold" select="true()"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>Dosis</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
                     </w:p>
                 </w:tc>
+
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
+
+                    <w:p>
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
                         </w:pPr>
-                        <w:r w:rsidRPr="00166F0D">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
-                            <w:t>07:00</w:t>
-                        </w:r>
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="size" select="14"/>
+                            <xsl:with-param name="bold" select="true()"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>07:00</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
                     </w:p>
                 </w:tc>
+
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
+
+                    <w:p>
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
                         </w:pPr>
-                        <w:r w:rsidRPr="00166F0D">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
-                            <w:t>13:00</w:t>
-                        </w:r>
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="size" select="14"/>
+                            <xsl:with-param name="bold" select="true()"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>13:00</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
                     </w:p>
                 </w:tc>
+
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
+
+                    <w:p>
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
                         </w:pPr>
-                        <w:r w:rsidRPr="00166F0D">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
-                            <w:t>19:00</w:t>
-                        </w:r>
+
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="size" select="14"/>
+                            <xsl:with-param name="bold" select="true()"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>19:00</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
                     </w:p>
                 </w:tc>
+
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="1134" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
+
+                    <w:p>
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
                         </w:pPr>
-                        <w:r w:rsidRPr="00166F0D">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:sz w:val="14"/>
-                                <w:szCs w:val="14"/>
-                            </w:rPr>
-                            <w:t>Zur Nacht</w:t>
-                        </w:r>
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="size" select="14"/>
+                            <xsl:with-param name="bold" select="true()"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>Zur Nacht</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
                     </w:p>
                 </w:tc>
             </w:tr>
@@ -298,210 +177,190 @@
                         <w:tcPr>
                             <w:tcW w:w="3686" w:type="dxa"/>
                         </w:tcPr>
+
                         <w:p>
                             <w:pPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="1701"/>
-                                    <w:tab w:val="left" w:pos="2268"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
                                 <w:jc w:val="both"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
-                                <w:t>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="text">
                                     <xsl:value-of select="name"/>
-                                </w:t>
-                            </w:r>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+<!--                            <w:r>-->
+<!--                                <w:rPr>-->
+<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
+<!--                                              w:cs="Lucida Sans Unicode"/>-->
+<!--                                    <w:sz w:val="18"/>-->
+<!--                                    <w:szCs w:val="18"/>-->
+<!--                                </w:rPr>-->
+<!--                                <w:t>-->
+<!--                                    <xsl:value-of select="name"/>-->
+<!--                                </w:t>-->
+<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
+
                     <w:tc>
                         <w:tcPr>
                             <w:tcW w:w="1276" w:type="dxa"/>
                         </w:tcPr>
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
+
+                        <w:p>
                             <w:pPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="1701"/>
-                                    <w:tab w:val="left" w:pos="2268"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
                                 <w:jc w:val="both"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
-                                <w:t>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="text">
                                     <xsl:value-of select="dosis"/>
                                     <xsl:value-of select="unit"/>
-                                </w:t>
-                            </w:r>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+<!--                            <w:r>-->
+<!--                                <w:rPr>-->
+<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
+<!--                                              w:cs="Lucida Sans Unicode"/>-->
+<!--                                    <w:sz w:val="18"/>-->
+<!--                                    <w:szCs w:val="18"/>-->
+<!--                                </w:rPr>-->
+<!--                                <w:t>-->
+<!--                                    <xsl:value-of select="dosis"/>-->
+<!--                                    <xsl:value-of select="unit"/>-->
+<!--                                </w:t>-->
+<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
+
                     <w:tc>
                         <w:tcPr>
                             <w:tcW w:w="992" w:type="dxa"/>
                         </w:tcPr>
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
+
+                        <w:p>
                             <w:pPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="1701"/>
-                                    <w:tab w:val="left" w:pos="2268"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
                                 <w:jc w:val="center"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
-                                <w:t>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="text">
                                     <xsl:value-of select="morning"/>
-                                </w:t>
-                            </w:r>
+                                </xsl:with-param>
+                            </xsl:call-template>
+<!--                            <w:r>-->
+<!--                                <w:rPr>-->
+<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
+<!--                                              w:cs="Lucida Sans Unicode"/>-->
+<!--                                    <w:sz w:val="18"/>-->
+<!--                                    <w:szCs w:val="18"/>-->
+<!--                                </w:rPr>-->
+<!--                                <w:t>-->
+<!--                                    <xsl:value-of select="morning"/>-->
+<!--                                </w:t>-->
+<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
+
                     <w:tc>
                         <w:tcPr>
                             <w:tcW w:w="992" w:type="dxa"/>
                         </w:tcPr>
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
+
+                        <w:p>
                             <w:pPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="1701"/>
-                                    <w:tab w:val="left" w:pos="2268"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
                                 <w:jc w:val="center"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
-                                <w:t>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="text">
                                     <xsl:value-of select="noon"/>
-                                </w:t>
-                            </w:r>
+                                </xsl:with-param>
+                            </xsl:call-template>
+<!--                            <w:r>-->
+<!--                                <w:rPr>-->
+<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
+<!--                                              w:cs="Lucida Sans Unicode"/>-->
+<!--                                    <w:sz w:val="18"/>-->
+<!--                                    <w:szCs w:val="18"/>-->
+<!--                                </w:rPr>-->
+<!--                                <w:t>-->
+<!--                                    <xsl:value-of select="noon"/>-->
+<!--                                </w:t>-->
+<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
+
                     <w:tc>
                         <w:tcPr>
                             <w:tcW w:w="992" w:type="dxa"/>
                         </w:tcPr>
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
+
+                        <w:p>
                             <w:pPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="1701"/>
-                                    <w:tab w:val="left" w:pos="2268"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
                                 <w:jc w:val="center"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
-                                <w:t>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="text">
                                     <xsl:value-of select="evening"/>
-                                </w:t>
-                            </w:r>
+                                </xsl:with-param>
+                            </xsl:call-template>
+<!--                            <w:r>-->
+<!--                                <w:rPr>-->
+<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
+<!--                                              w:cs="Lucida Sans Unicode"/>-->
+<!--                                    <w:sz w:val="18"/>-->
+<!--                                    <w:szCs w:val="18"/>-->
+<!--                                </w:rPr>-->
+<!--                                <w:t>-->
+<!--                                    <xsl:value-of select="evening"/>-->
+<!--                                </w:t>-->
+<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
+
                     <w:tc>
                         <w:tcPr>
                             <w:tcW w:w="1134" w:type="dxa"/>
                         </w:tcPr>
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
+
+                        <w:p>
                             <w:pPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="1701"/>
-                                    <w:tab w:val="left" w:pos="2268"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
                                 <w:jc w:val="center"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
-                                <w:t>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="text">
                                     <xsl:value-of select="night"/>
-                                </w:t>
-                            </w:r>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+<!--                            <w:r>-->
+<!--                                <w:rPr>-->
+<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
+<!--                                              w:cs="Lucida Sans Unicode"/>-->
+<!--                                    <w:sz w:val="18"/>-->
+<!--                                    <w:szCs w:val="18"/>-->
+<!--                                </w:rPr>-->
+<!--                                <w:t>-->
+<!--                                    <xsl:value-of select="night"/>-->
+<!--                                </w:t>-->
+<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
                 </w:tr>
             </xsl:for-each>
 
-            <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
+            <w:tr>
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="3686" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
+
+                    <w:p>
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="both"/>
                             <w:rPr>
                                 <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -512,17 +371,14 @@
                         </w:pPr>
                     </w:p>
                 </w:tc>
+
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="1276" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
+
+                    <w:p>
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="both"/>
                             <w:rPr>
                                 <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -533,17 +389,14 @@
                         </w:pPr>
                     </w:p>
                 </w:tc>
+
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
+
+                    <w:p>
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="center"/>
                             <w:rPr>
                                 <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -554,17 +407,14 @@
                         </w:pPr>
                     </w:p>
                 </w:tc>
+
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
+
+                    <w:p>
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="center"/>
                             <w:rPr>
                                 <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -575,17 +425,14 @@
                         </w:pPr>
                     </w:p>
                 </w:tc>
+
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
+
+                    <w:p>
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="center"/>
                             <w:rPr>
                                 <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -596,17 +443,14 @@
                         </w:pPr>
                     </w:p>
                 </w:tc>
+
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="1134" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
+
+                    <w:p>
                         <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="1701"/>
-                                <w:tab w:val="left" w:pos="2268"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
                             <w:jc w:val="center"/>
                             <w:rPr>
                                 <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -620,172 +464,103 @@
             </w:tr>
 
             <xsl:if test="$diag_chronic_migraine">
-                <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
+                <w:tr>
                     <w:tc>
                         <w:tcPr>
                             <w:tcW w:w="9072" w:type="dxa"/>
                             <w:gridSpan w:val="6"/>
                         </w:tcPr>
-                        <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
-                            <w:pPr>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
-                            </w:pPr>
-                            <w:r w:rsidRPr="00954E45">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                    <w:highlight w:val="yellow"/>
-                                </w:rPr>
-                                <w:t>Als zusätzliche Prophylaxe setzten wir bei der hier vorliegenden chronischen Migräne Botulinumtoxin Typ A nach dem PREEMPT-Schema ein. Bei guter Wirksamkeit empfehlen wir eine Wiederholung alle 3 Monate.</w:t>
-                            </w:r>
+
+                        <w:p>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="highlight" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Als zusätzliche Prophylaxe setzten wir bei der hier vorliegenden chronischen Migräne Botulinumtoxin Typ A nach dem PREEMPT-Schema ein. Bei guter Wirksamkeit empfehlen wir eine Wiederholung alle 3 Monate.</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </w:tc>
                 </w:tr>
             </xsl:if>
 
-            <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
+            <w:tr>
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="9072" w:type="dxa"/>
                         <w:gridSpan w:val="6"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
-                        <w:pPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="743"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                            <w:t>Regeln zur medikamentösen Basistherapie</w:t>
-                        </w:r>
+
+                    <w:p>
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="text">
+                                <xsl:text>Regeln zur medikamentösen Basistherapie</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
                     </w:p>
 
-                    <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                    <w:p>
                         <w:pPr>
                             <w:numPr>
                                 <w:ilvl w:val="0"/>
                                 <w:numId w:val="21"/>
                             </w:numPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="743"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
                         </w:pPr>
-                        <w:r>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
-                            <w:t>Kontinuierliche Migräne-App (iOS und Android kostenlos) führen</w:t>
-                        </w:r>
+
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="size" select="16"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>Kontinuierliche Migräne-App (iOS und Android kostenlos) führen</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
                     </w:p>
 
-                    <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                    <w:p>
                         <w:pPr>
                             <w:numPr>
                                 <w:ilvl w:val="0"/>
                                 <w:numId w:val="21"/>
                             </w:numPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="743"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
                         </w:pPr>
-                        <w:r w:rsidRPr="00CF4F2F">
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                                <w:highlight w:val="yellow"/>
-                            </w:rPr>
-                            <w:t>Eine Einweisung in das Cefaly-Neuromodulationssystem erfolgte. Eine Weiterbehandlung wird empfohlen.</w:t>
-                        </w:r>
+
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="highlight" select="true()"/>
+                            <xsl:with-param name="size" select="16"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>Eine Einweisung in das Cefaly-Neuromodulationssystem erfolgte. Eine Weiterbehandlung wird empfohlen.</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
                     </w:p>
 
                     <xsl:if test="$cgrp">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00675C3C" w:rsidRDefault="00877D06" w:rsidP="001F38D3">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">Die Gabe von </w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="001F38D3">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Die Gabe von </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
                                     <xsl:value-of select="$cgrp"/>
-                                </w:t>
-                            </w:r>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> sollte 1x monatlich erfolgen. Es sollte eine regelmäßige Überprüfung der Indikation erfolgen sowie der Wirksamkeit. Ein Auslassversuch sollte nach 12 Monaten erfolgen. </w:t>
-                            </w:r>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> sollte 1x monatlich erfolgen. Es sollte eine regelmäßige Überprüfung der Indikation erfolgen sowie der Wirksamkeit. Ein Auslassversuch sollte nach 12 Monaten erfolgen. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
@@ -796,46 +571,28 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">Bei mangelnder Wirksamkeit kann die prophylaktische Therapie mit </w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="001F38D3">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Atogepant 60 mg (Aquipta®)</w:t>
-                            </w:r>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> 1x täglich erwogen werden. Der Wirkeintritt erfolgt meist innerhalb der ersten 4 – 12 Wochen. Atogepant darf nicht mit dem Antibiotikum Clarithromycin und den Pilzmitteln Ketoconazol und Itraconazol kombiniert werden. Für diesen Zeitraum der Einnahme der genannten Medikamente empfehlen wir das Absetzen des Atogepant. Auf den Genuss von Grapefruit oder Grapefruitsaft sollte verzichtet werden. Wir empfehlen eine regelmäßige Überprüfung der Indikation und Wirksamkeit.</w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Bei mangelnder Wirksamkeit kann die prophylaktische Therapie mit </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Atogepant 60 mg (Aquipta®)</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> 1x täglich erwogen werden. Der Wirkeintritt erfolgt meist innerhalb der ersten 4 – 12 Wochen. Atogepant darf nicht mit dem Antibiotikum Clarithromycin und den Pilzmitteln Ketoconazol und Itraconazol kombiniert werden. Für diesen Zeitraum der Einnahme der genannten Medikamente empfehlen wir das Absetzen des Atogepant. Auf den Genuss von Grapefruit oder Grapefruitsaft sollte verzichtet werden. Wir empfehlen eine regelmäßige Überprüfung der Indikation und Wirksamkeit.</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
@@ -846,46 +603,29 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="00BF7770">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Im Verlauf kann bei weiterhin guter Verträglichkeit des</w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00BF7770">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> Venlafaxins</w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00BF7770">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> und nicht ausreichender Wirksamkeit eine weitere Dosisanpassung unter Labor- (u.a. Leberwerte) sowie EKG-Kontrollen erfolgen. Die Zieldosis beträgt hier 75-150 mg. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit und Wirksamkeit frühestens nach 6-9 Monaten. Venlafaxin beim Auslassversuch bitte sukzessive in der Dosis reduzieren, um unangenehme Absetzsymptome (in der Regel grippeartig) zu vermeiden.</w:t>
-                            </w:r>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Im Verlauf kann bei weiterhin guter Verträglichkeit des </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Venlafaxins</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> und nicht ausreichender Wirksamkeit eine weitere Dosisanpassung unter Labor- (u.a. Leberwerte) sowie EKG-Kontrollen erfolgen. Die Zieldosis beträgt hier 75-150 mg. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit und Wirksamkeit frühestens nach 6-9 Monaten. Venlafaxin beim Auslassversuch bitte sukzessive in der Dosis reduzieren, um unangenehme Absetzsymptome (in der Regel grippeartig) zu vermeiden.</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
@@ -896,96 +636,62 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="00872C49">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Im Verlauf kann bei weiterhin guter Verträglichkeit des</w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00872C49">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> <xsl:value-of select="$tza"/></w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00872C49">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> unter Labor- (u.a. Leberwerte) sowie EKG-Kontrollen eine weitere Dosisanpassung erfolgen. Die Zieldosis beträgt aus schmerztherapeutischer Sicht 50-100 mg pro Tag. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit und Wirksamkeit frühestens nach 6-9 Monaten. </w:t>
-                            </w:r>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Im Verlauf kann bei weiterhin guter Verträglichkeit des </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:value-of select="$tza"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> unter Labor- (u.a. Leberwerte) sowie EKG-Kontrollen eine weitere Dosisanpassung erfolgen. Die Zieldosis beträgt aus schmerztherapeutischer Sicht 50-100 mg pro Tag. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit und Wirksamkeit frühestens nach 6-9 Monaten. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
                     <xsl:if test="$base/name[text() = 'Etoricoxib']">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00872C49" w:rsidRDefault="00877D06" w:rsidP="00AD65A9">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">Das nichtsteroidale Antirheumatikum (NSAR) </w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00E57C1F">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Etoricoxib</w:t>
-                            </w:r>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> wirkt schmerzlindernd und entzündungshemmend. Die Behandlungsdauer mit Etoricoxib ist zunächst auf 8 Wochen begrenzt. Anschließend Reevaluation empfohlen. </w:t>
-                            </w:r>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Das nichtsteroidale Antirheumatikum (NSAR) </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Etoricoxib</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> wirkt schmerzlindernd und entzündungshemmend. Die Behandlungsdauer mit Etoricoxib ist zunächst auf 8 Wochen begrenzt. Anschließend Reevaluation empfohlen. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
