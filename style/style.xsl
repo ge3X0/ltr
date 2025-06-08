@@ -21,8 +21,22 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
     <!-- Special Functions !-->
 
-    <xsl:template name="bold-font">
+    <xsl:template name="text-run">
+        <xsl:param name="text"/>
+        <xsl:param name="size" select="18" required="no" />
+        <xsl:param name="highlight" select="false()" required="no"/>
+        <xsl:param name="bold" select="false()" required="no"/>
 
+        <w:r>
+            <w:rPr>
+                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+                <xsl:if test="$bold"><w:b/><w:bCs/></xsl:if>
+                <w:sz w:val="$size"/>
+                <w:szCs w:val="$size"/>
+                <xsl:if test="$highlight"><w:highlight w:val="yellow"/></xsl:if>
+            </w:rPr>
+            <w:t><xsl:value-of select="$text"/></w:t>
+        </w:r>
     </xsl:template>
 
     <xsl:template name="string-list">
@@ -194,11 +208,8 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
                 <xsl:otherwise>sehr schweren</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:variable name="val1" select="$data//field[@name='midas']/value[1]/text()"/>
-        <xsl:variable name="val2" select="$data//field[@name='midas']/value[2]/text()"/>
-        <xsl:variable name="val3" select="$data//field[@name='midas']/value[3]/text()"/>
-        <xsl:variable name="val4" select="$data//field[@name='midas']/value[4]/text()"/>
-        <xsl:variable name="val5" select="$data//field[@name='midas']/value[5]/text()"/>
+
+        <xsl:variable name="val" select="$data//field[@name='midas']/value"/>
 
         <xsl:text>Im MIDAS-Score erreicht </xsl:text>
         <xsl:call-template name="patient"/>
@@ -207,33 +218,33 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
         <xsl:text>, </xsl:text>
         <xsl:value-of select="$severity"/>
         <xsl:text> Beeinträchtigung entsprechend.</xsl:text>
-        <xsl:if test="$val1 != 0">
+        <xsl:if test="$val[1] != 0">
             <xsl:text> An </xsl:text>
-            <xsl:value-of select="$val1"/>
+            <xsl:value-of select="$val[1]"/>
             <xsl:text> Tagen in den letzten 3 Monaten ist </xsl:text>
             <xsl:call-template name="patient"/>
             <xsl:text> wegen der Schmerzen nicht zur Arbeit gegangen.</xsl:text>
         </xsl:if>
-        <xsl:if test="$val2 != 0">
+        <xsl:if test="$val[2] != 0">
             <xsl:text> An </xsl:text>
-            <xsl:value-of select="$val2"/>
+            <xsl:value-of select="$val[2]"/>
             <xsl:text> Tagen in den letzten 3 Monaten war die Leistungsfähigkeit am Arbeitsplatz um die Hälfte oder mehr eingeschränkt.</xsl:text>
         </xsl:if>
-        <xsl:if test="$val3 != 0">
+        <xsl:if test="$val[3] != 0">
             <xsl:text> An </xsl:text>
-            <xsl:value-of select="$val3"/>
+            <xsl:value-of select="$val[3]"/>
             <xsl:text> Tagen in den letzten 3 Monaten konnte </xsl:text>
             <xsl:call-template name="patient"/>
             <xsl:text> wegen der Schmerzen keine Hausarbeit verrichten.</xsl:text>
         </xsl:if>
-        <xsl:if test="$val4 != 0">
+        <xsl:if test="$val[4] != 0">
             <xsl:text> An </xsl:text>
-            <xsl:value-of select="$val4"/>
+            <xsl:value-of select="$val[4]"/>
             <xsl:text> Tagen in den letzten 3 Monaten war die Leistungsfähigkeit im Haushalt um die Hälfte oder mehr eingeschränkt.</xsl:text>
         </xsl:if>
-        <xsl:if test="$val5 != 0">
+        <xsl:if test="$val[5] != 0">
             <xsl:text> An </xsl:text>
-            <xsl:value-of select="$val5"/>
+            <xsl:value-of select="$val[5]"/>
             <xsl:text> Tagen in den letzten 3 Monaten konnte </xsl:text>
             <xsl:call-template name="patient"/>
             <xsl:text> an familiären, sozialen oder Freizeitaktivitäten wegen der Schmerzen nicht teilnehmen.</xsl:text>
@@ -241,9 +252,7 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     </xsl:template>
 
     <xsl:template match="//whodas">
-        <xsl:variable name="val1" select="$data//field[@name='whodas']/value[1]/text()"/>
-        <xsl:variable name="val2" select="$data//field[@name='whodas']/value[2]/text()"/>
-        <xsl:variable name="val3" select="$data//field[@name='whodas']/value[3]/text()"/>
+        <xsl:variable name="val" select="$data//field[@name='whodas']/value"/>
 
         <xsl:text>Diese Angaben spiegeln sich auch im WHODAS-2.0, insbesondere im Bereich </xsl:text>
         <xsl:call-template name="string-list">
@@ -251,15 +260,15 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
         </xsl:call-template>
         <xsl:text> wider.</xsl:text>
 
-        <xsl:if test="$val1 != 0">
+        <xsl:if test="$val[1] != 0">
             <xsl:text> An </xsl:text>
-            <xsl:value-of select="$val1"/>
+            <xsl:value-of select="$val[1]"/>
             <xsl:text> in den letzten 30 Tagen traten diese Schwierigkeiten auf.</xsl:text>
         </xsl:if>
 
-        <xsl:if test="$val2 != 0">
+        <xsl:if test="$val[2] != 0">
             <xsl:text> An </xsl:text>
-            <xsl:value-of select="$val2"/>
+            <xsl:value-of select="$val[2]"/>
             <xsl:text> in den letzten 30 Tagen war </xsl:text>
             <xsl:call-template name="patient"/>
             <xsl:text> aufgrund der Gesundheitsprobleme absolut unfähig alltägliche Aktivitäten oder </xsl:text>
@@ -267,9 +276,9 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
             <xsl:text> Arbeit zu verrichten.</xsl:text>
         </xsl:if>
 
-        <xsl:if test="$val3 != 0">
+        <xsl:if test="$val[3] != 0">
             <xsl:text> An </xsl:text>
-            <xsl:value-of select="$val3"/>
+            <xsl:value-of select="$val[3]"/>
             <xsl:text> Tagen von 30 Tagen musste </xsl:text>
             <xsl:call-template name="patient"/>
             <xsl:text> aufgrund der Gesundheitsprobleme alltägliche Aktivitäten oder </xsl:text>

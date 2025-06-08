@@ -36,6 +36,7 @@
                 </w:tblBorders>
                 <w:tblLook w:val="00A0"/>
             </w:tblPr>
+
             <w:tblGrid>
                 <w:gridCol w:w="3686"/>
                 <w:gridCol w:w="1276"/>
@@ -44,6 +45,7 @@
                 <w:gridCol w:w="992"/>
                 <w:gridCol w:w="1134"/>
             </w:tblGrid>
+
             <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
                 <w:tc>
                     <w:tcPr>
@@ -82,6 +84,7 @@
                     </w:p>
                 </w:tc>
             </w:tr>
+
             <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
                 <w:tc>
                     <w:tcPr>
@@ -782,6 +785,56 @@
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
                                 <w:t xml:space="preserve"> sollte 1x monatlich erfolgen. Es sollte eine regelmäßige Überprüfung der Indikation erfolgen sowie der Wirksamkeit. Ein Auslassversuch sollte nach 12 Monaten erfolgen. </w:t>
+                            </w:r>
+                        </w:p>
+                    </xsl:if>
+
+                    <xsl:if test="$diag_chronic_migraine">
+                        <w:p>
+                            <w:pPr>
+                                <w:numPr>
+                                    <w:ilvl w:val="0"/>
+                                    <w:numId w:val="21"/>
+                                </w:numPr>
+                                <w:tabs>
+                                    <w:tab w:val="left" w:pos="743"/>
+                                    <w:tab w:val="left" w:pos="6804"/>
+                                </w:tabs>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                            </w:pPr>
+                            <w:r>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve">Bei mangelnder Wirksamkeit kann die prophylaktische Therapie mit </w:t>
+                            </w:r>
+                            <w:r w:rsidRPr="001F38D3">
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:b/>
+                                    <w:bCs/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t>Atogepant 60 mg (Aquipta®)</w:t>
+                            </w:r>
+                            <w:r>
+                                <w:rPr>
+                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
+                                              w:cs="Lucida Sans Unicode"/>
+                                    <w:sz w:val="16"/>
+                                    <w:szCs w:val="16"/>
+                                </w:rPr>
+                                <w:t xml:space="preserve"> 1x täglich erwogen werden. Der Wirkeintritt erfolgt meist innerhalb der ersten 4 – 12 Wochen. Atogepant darf nicht mit dem Antibiotikum Clarithromycin und den Pilzmitteln Ketoconazol und Itraconazol kombiniert werden. Für diesen Zeitraum der Einnahme der genannten Medikamente empfehlen wir das Absetzen des Atogepant. Auf den Genuss von Grapefruit oder Grapefruitsaft sollte verzichtet werden. Wir empfehlen eine regelmäßige Überprüfung der Indikation und Wirksamkeit.</w:t>
                             </w:r>
                         </w:p>
                     </xsl:if>
