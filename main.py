@@ -11,7 +11,6 @@ from saxonche import PySaxonProcessor
 
 from models import PatientData
 from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, ExamTab, LoadingDialog
-from util import process_filename
 
 # TODO:
 #       - Arzt Adresse
@@ -122,13 +121,11 @@ class MainWidget(QtWidgets.QWidget):
             form_group.setLayout(QtWidgets.QVBoxLayout())
             self.tab_widget.addTab(form_group, form_data.get("name", "Unbenannt"))
 
-            for field in form_data["field"]:
+            for field in form_data.get("field", []):
                 field_group = QtWidgets.QGroupBox(title=field.get("caption", ""))
                 field_layout = QtWidgets.QVBoxLayout(field_group)
                 field_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
                 form_group.layout().addWidget(field_group)
-
-                new_widget = None
 
                 match field["field_type"]:
                     case "split_line":
@@ -158,39 +155,36 @@ class MainWidget(QtWidgets.QWidget):
                             start=field.get("start", 0)
                         )
 
+                    case _:
+                        continue
+
                 self.forms.append(new_widget)
                 self.forms[0].dataLoaded.connect(new_widget.from_xml)
                 field_layout.addWidget(new_widget)
 
 
     def keyPressEvent(self, event, /):
-
-        if event.type() == QtCore.QEvent.Type.KeyPress:
-            # Shortcut for moving between tabs (kinda broken)
-            if event.modifiers() == Qt.KeyboardModifier.AltModifier:
-                    next_tab = self.tab_widget.currentIndex()
-                    if event.key() == Qt.Key.Key_Right:
-                        next_tab += 1
-                        if next_tab >= self.tab_widget.count():
-                            next_tab = 0
-                    elif event.key() == Qt.Key.Key_Left:
-                        next_tab -= 1
-                        if next_tab < 0:
-                            next_tab = self.tab_widget.count() - 1
-                    self.tab_widget.setCurrentIndex(next_tab)
+        if (event.type() == QtCore.QEvent.Type.KeyPress
+            and event.modifiers() == Qt.KeyboardModifier.AltModifier):
+                next_tab = self.tab_widget.currentIndex()
+                if event.key() == Qt.Key.Key_Right:
+                    next_tab += 1
+                    if next_tab >= self.tab_widget.count():
+                        next_tab = 0
+                elif event.key() == Qt.Key.Key_Left:
+                    next_tab -= 1
+                    if next_tab < 0:
+                        next_tab = self.tab_widget.count() - 1
+                self.tab_widget.setCurrentIndex(next_tab)
 
 
     def to_xml(self):
         """Writes letter from collected data of all tabs"""
 
         # Generate patient data file
-        # TODO: use this to load?
         patient_file_name = self.forms[0].patient_file_name()
         data_file = self.configs["save_path"] / f"{patient_file_name}.xml"
         output_file = self.configs["output_path"] / f"{patient_file_name}.docx"
-
-        data_file_name = process_filename(data_file)
-        data_file = Path(data_file_name)
 
         if (data_file.exists()
             and QtWidgets.QMessageBox.StandardButton.Yes != QtWidgets.QMessageBox.question(
@@ -209,7 +203,7 @@ class MainWidget(QtWidgets.QWidget):
         # Load xsl style sheet and add "data" global variable referring to created data file
 
         xslt_proc = self.proc.new_xslt30_processor()
-        xslt_proc.set_parameter("data_file", self.proc.make_string_value(data_file_name))
+        xslt_proc.set_parameter("data_file", self.proc.make_string_value(str(data_file.absolute().as_posix())))
         transform = xslt_proc.compile_stylesheet(stylesheet_file=str(self.configs["xsl_file"].absolute()))
 
         # Internal function to concat docs templates {varname} if word inserted <t></t> tags
@@ -217,6 +211,7 @@ class MainWidget(QtWidgets.QWidget):
             full_m = m_str[2]
             tag_name = full_m[1:full_m.find('<')]
             tag_name += ''.join(m[1] for m in re.finditer(r"<w:t>(.+?)(?:</w:t>|})", full_m))
+
             # Found immediate opening tag, indicating messed up whitespace
             if m_str[1] is not None:
                 return f"<w:t xml:space=\"preserve\"><{tag_name} />"

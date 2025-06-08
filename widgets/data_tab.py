@@ -7,12 +7,9 @@ from pathlib import Path
 import re
 import subprocess
 
-# from lxml import etree
-# import xml.etree.ElementTree as ElementTree
 from saxonche import PySaxonProcessor, PyXdmNode, PyXPathProcessor
 
 from models import Medication, Diagnosis, Field, PatientData, DiagnosesTableModel, MedicationTableModel
-from util import process_filename
 
 
 class DataTabWidget(QtWidgets.QWidget):
@@ -202,7 +199,6 @@ class DataTabWidget(QtWidgets.QWidget):
 
         self.diagnoses_table = QtWidgets.QTableView()
         self.diagnoses_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
-        # self.diagnoses_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.diagnoses_table.setModel(DiagnosesTableModel([]))
         dt_layout.addWidget(self.diagnoses_table)
 
@@ -212,7 +208,6 @@ class DataTabWidget(QtWidgets.QWidget):
 
         self.medication_table = QtWidgets.QTableView()
         self.medication_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
-        # self.medication_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.medication_table.setModel(MedicationTableModel([], []))
         self.medication_table.setSpan(0, 0, 1, 7)
         self.medication_table.setSpan(1, 0, 1, 7)
@@ -249,19 +244,15 @@ class DataTabWidget(QtWidgets.QWidget):
         self.display_data()
 
         # Check for loadable data
-
-        data_file_name = process_filename(self.configs["save_path"] / f"{self.patient_file_name()}.xml")
-        data_file = Path(data_file_name)
+        data_file = Path(self.configs["save_path"] / f"{self.patient_file_name()}.xml")
 
         if not data_file.exists():
             self.dataLoaded.emit(None)
             return
 
-        xml = self.proc.parse_xml(xml_file_name=str(data_file.absolute()))
+        xml = self.proc.parse_xml(xml_file_name=str(data_file.absolute().as_posix()))
         xpath = self.proc.new_xpath_processor()
         xpath.set_context(xdm_item=xml)
-            # with data_file.open("rb") as fl:
-            #     xml = ElementTree.fromstring(fl.read().decode())
 
         self.dataLoaded.emit(xpath)
 
