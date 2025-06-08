@@ -19,6 +19,28 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:variable name="diag_spaks" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.2']"/>
     <xsl:variable name="age" select="$data//patient/age"/>
 
+    <!-- Special Functions !-->
+
+    <xsl:template name="bold-font">
+
+    </xsl:template>
+
+    <xsl:template name="string-list">
+        <xsl:param name="selection"/>
+
+        <xsl:for-each select="$selection[not(. = '')]">
+            <xsl:value-of select="." />
+            <xsl:if test="last() != 1">
+                <xsl:if test="position() &lt; last() - 1">
+                    <xsl:text>, </xsl:text>
+                </xsl:if>
+                <xsl:if test="position() = last() - 1">
+                    <xsl:text> und </xsl:text>
+                </xsl:if>
+            </xsl:if>
+        </xsl:for-each>
+    </xsl:template>
+
     <!-- Include Files !-->
 
     <xsl:include href="overuse.xsl"/>
@@ -163,12 +185,12 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
     <xsl:template match="//midas">
         <xsl:variable name="val_sum" select="sum($data//field[@name='midas']/value)"/>
-        <xsl:variable name="comment">
+        <xsl:variable name="severity">
             <xsl:choose>
                 <xsl:when test="$val_sum &lt; 6">keiner</xsl:when>
-                <xsl:when test="$val_sum &lt; 11">leichten</xsl:when>
-                <xsl:when test="$val_sum &lt; 21">mäßigen</xsl:when>
-                <xsl:when test="$val_sum &lt; 31">schweren</xsl:when>
+                <xsl:when test="$val_sum &lt; 11">einer leichten</xsl:when>
+                <xsl:when test="$val_sum &lt; 21">einer mäßigen</xsl:when>
+                <xsl:when test="$val_sum &lt; 31">einer schweren</xsl:when>
                 <xsl:otherwise>sehr schweren</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
@@ -182,8 +204,8 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
         <xsl:call-template name="patient"/>
         <xsl:text> einen Wert von </xsl:text>
         <xsl:value-of select="$val_sum"/>
-        <xsl:text>, einer </xsl:text>
-        <xsl:value-of select="$comment"/>
+        <xsl:text>, </xsl:text>
+        <xsl:value-of select="$severity"/>
         <xsl:text> Beeinträchtigung entsprechend.</xsl:text>
         <xsl:if test="$val1 != 0">
             <xsl:text> An </xsl:text>
@@ -219,28 +241,22 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     </xsl:template>
 
     <xsl:template match="//whodas">
-        <xsl:variable name="area">
-            <xsl:for-each select="$data//field[@name='sections']/value">
-                <xsl:value-of select="." />
-                <xsl:if test="position() &lt; last() - 1">
-                    <xsl:text>, </xsl:text>
-                </xsl:if>
-                <xsl:if test="position() = last() - 1">
-                    <xsl:text> und </xsl:text>
-                </xsl:if>
-            </xsl:for-each>
-        </xsl:variable>
         <xsl:variable name="val1" select="$data//field[@name='whodas']/value[1]/text()"/>
         <xsl:variable name="val2" select="$data//field[@name='whodas']/value[2]/text()"/>
         <xsl:variable name="val3" select="$data//field[@name='whodas']/value[3]/text()"/>
+
         <xsl:text>Diese Angaben spiegeln sich auch im WHODAS-2.0, insbesondere im Bereich </xsl:text>
-        <xsl:value-of select="$area"/>
+        <xsl:call-template name="string-list">
+            <xsl:with-param name="selection" select="$data//field[@name='sections']/value"/>
+        </xsl:call-template>
         <xsl:text> wider.</xsl:text>
+
         <xsl:if test="$val1 != 0">
             <xsl:text> An </xsl:text>
             <xsl:value-of select="$val1"/>
             <xsl:text> in den letzten 30 Tagen traten diese Schwierigkeiten auf.</xsl:text>
         </xsl:if>
+
         <xsl:if test="$val2 != 0">
             <xsl:text> An </xsl:text>
             <xsl:value-of select="$val2"/>
@@ -250,6 +266,7 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
             <xsl:call-template name="seineihre"/>
             <xsl:text> Arbeit zu verrichten.</xsl:text>
         </xsl:if>
+
         <xsl:if test="$val3 != 0">
             <xsl:text> An </xsl:text>
             <xsl:value-of select="$val3"/>
@@ -259,66 +276,31 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
             <xsl:call-template name="seineihre"/>
             <xsl:text> Arbeit reduzieren.</xsl:text>
         </xsl:if>
+
         <xsl:text> Somit besteht eine ausgeprägte Beeinträchtigung sowohl der Lebensqualität als auch der Arbeitsfähigkeit.</xsl:text>
     </xsl:template>
 
     <xsl:template match="//vorbehandlungen">
-        <xsl:variable name="docs">
-            <xsl:for-each select="$data//field[@name='treatments']/value">
-                <xsl:value-of select="." />
-                <xsl:if test="position() &lt; last() - 1">
-                    <xsl:text>, </xsl:text>
-                </xsl:if>
-                <xsl:if test="position() = last() - 1">
-                    <xsl:text> und </xsl:text>
-                </xsl:if>
-            </xsl:for-each>
-        </xsl:variable>
-        <xsl:value-of select="$docs"/>
+        <xsl:call-template name="string-list">
+            <xsl:with-param name="selection" select="$data//field[@name='treatments']/value"/>
+        </xsl:call-template>
     </xsl:template>
 
     <xsl:template match="symptome">
-        <xsl:variable name="s">
-            <xsl:for-each select="$data//field[@name='symptoms']/value">
-                <xsl:if test="text() != ''">
-                    <xsl:value-of select="." />
-                    <xsl:if test="position() &lt; last()">
-                        <xsl:text>, </xsl:text>
-                    </xsl:if>
-                </xsl:if>
-            </xsl:for-each>
-        </xsl:variable>
-        <xsl:value-of select="$s"/>
+        <xsl:call-template name="string-list">
+            <xsl:with-param name="selection" select="$data//field[@name='symptoms']/value"/>
+        </xsl:call-template>
     </xsl:template>
 
     <xsl:template match="bdi_ii">
-        <xsl:variable name="s">
-            <xsl:for-each select="$data//field[@name='bdi_ii']/value">
-                <xsl:if test="text() != ''">
-                    <xsl:value-of select="." />
-                    <xsl:if test="position() &lt; last() - 1">
-                        <xsl:text>, </xsl:text>
-                    </xsl:if>
-                    <xsl:if test="position() = last() - 1">
-                        <xsl:text> und </xsl:text>
-                    </xsl:if>
-                </xsl:if>
-            </xsl:for-each>
-        </xsl:variable>
-        <xsl:value-of select="$s"/>
+        <xsl:call-template name="string-list">
+            <xsl:with-param name="selection" select="$data//field[@name='bdi_ii']/value"/>
+        </xsl:call-template>
     </xsl:template>
 
     <xsl:template match="chronisch">
-        <xsl:variable name="s">
-            <xsl:for-each select="$data//field[@name='chronisch']/value">
-                <xsl:if test="text() != ''">
-                    <xsl:value-of select="." />
-                    <xsl:if test="position() &lt; last()">
-                        <xsl:text>, </xsl:text>
-                    </xsl:if>
-                </xsl:if>
-            </xsl:for-each>
-        </xsl:variable>
-        <xsl:value-of select="$s"/>
+        <xsl:call-template name="string-list">
+            <xsl:with-param name="selection" select="$data//field[@name='chronisch']/value"/>
+        </xsl:call-template>
     </xsl:template>
 </xsl:stylesheet>
