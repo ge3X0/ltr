@@ -7,7 +7,6 @@ from zipfile import ZipFile
 import re
 import subprocess
 
-# from lxml import etree
 from saxonche import PySaxonProcessor
 
 from models import PatientData
@@ -15,7 +14,6 @@ from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, E
 from util import process_filename
 
 # TODO:
-#   - Fragebögen eingeben
 #       - Arzt Adresse
 #   - (Word Datei bearbeiten)
 
@@ -29,6 +27,7 @@ class MainWidget(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
 
+        self.proc = PySaxonProcessor(license=False)
         self.patient_data = PatientData()
 
         # Load Configuration
@@ -93,7 +92,7 @@ class MainWidget(QtWidgets.QWidget):
 
         # Data Tab
 
-        self.forms = [DataTabWidget(self.configs)]
+        self.forms = [DataTabWidget(self.proc, self.configs)]
         self.tab_widget.addTab(self.forms[0], "&Patient")
         self.forms[0].search_bar.setFocus()
 
@@ -209,19 +208,9 @@ class MainWidget(QtWidgets.QWidget):
 
         # Load xsl style sheet and add "data" global variable referring to created data file
 
-        proc = PySaxonProcessor(license=False)
-        xslt_proc = proc.new_xslt30_processor()
-        xslt_proc.set_parameter("data_file", proc.make_string_value(data_file_name))
+        xslt_proc = self.proc.new_xslt30_processor()
+        xslt_proc.set_parameter("data_file", self.proc.make_string_value(data_file_name))
         transform = xslt_proc.compile_stylesheet(stylesheet_file=str(self.configs["xsl_file"].absolute()))
-
-        # with open(self.configs["xsl_file"], "rb") as xsl_file:
-        #     xsl_xml = etree.parse(xsl_file)
-        #     etree.SubElement(
-        #         xsl_xml.getroot(),
-        #         "{http://www.w3.org/1999/XSL/Transform}variable",
-        #         # XSL cannot deal with windows backslashes
-        #         { "name": "data", "select": f"document('{data_file_name}')"})
-        #     transform = etree.XSLT(xsl_xml)
 
         # Internal function to concat docs templates {varname} if word inserted <t></t> tags
         def repl(m_str) -> str:
@@ -237,8 +226,8 @@ class MainWidget(QtWidgets.QWidget):
 
         with ZipFile(output_file, "w") as output:
             with ZipFile(self.configs["template_file"]) as template:
-                for doc_name in template.infolist():
 
+                for doc_name in template.infolist():
                     # Just copy files that are not processed
                     if doc_name.filename not in self.configs["process_files"]:
                         output.writestr(doc_name, template.read(doc_name))
@@ -247,13 +236,10 @@ class MainWidget(QtWidgets.QWidget):
                     # Prepare files for xsl processing by replacing {varname} with <varname />
                     with template.open(doc_name) as document:
                         xml_content = re.sub(r"(<w:t>)?(\{.+?})", repl, document.read().decode())
-                        # docxml = etree.fromstring(xml_content.encode())
 
-                    docxml = proc.parse_xml(xml_text=xml_content)
-                    # out_xml = transform(docxml)
+                    docxml = self.proc.parse_xml(xml_text=xml_content)
                     out_str = transform.transform_to_string(xdm_node=docxml)
                     output.writestr(doc_name, out_str)
-                    # output.writestr(doc_name, etree.tostring(out_xml))
 
         QtWidgets.QMessageBox.information(self, "Brief geschrieben", "Brief wurde fertig gestellt [STRG+O] zum öffnen")
 

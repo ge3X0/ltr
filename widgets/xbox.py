@@ -1,5 +1,6 @@
 from PySide6 import QtWidgets, QtCore
 from PySide6.QtCore import Qt
+from saxonche import PyXPathProcessor
 from itertools import batched
 
 
@@ -54,14 +55,13 @@ class XBox(QtWidgets.QWidget):
 
 
     @QtCore.Slot()
-    def from_xml(self, xml):
-        if xml is None:
+    def from_xml(self, xpath: PyXPathProcessor | None):
+        if (xpath is None
+        or (elements := xpath.evaluate(f'.//field[@name="{self.__field_id}"]/value')) is None):
             for cb in self.__checkboxes:
                 cb.setChecked(False)
             return
 
-        element = xml.find(f'.//field[@name="{self.__field_id}"]')
-
-        text_list = [e.text for e in element.iter("value")]
+        text_list = [e.string_value for e in elements]
         for cb in self.__checkboxes:
             cb.setChecked(cb.text() in text_list)

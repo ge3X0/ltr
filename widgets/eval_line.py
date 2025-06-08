@@ -1,5 +1,8 @@
 from PySide6 import QtWidgets, QtCore
+from saxonche import PyXPathProcessor
+
 import re
+
 
 
 class EvalLine(QtWidgets.QLineEdit):
@@ -49,20 +52,20 @@ class EvalLine(QtWidgets.QLineEdit):
 
 
     @QtCore.Slot()
-    def from_xml(self, xml):
-        if xml is None:
+    def from_xml(self, xpath: PyXPathProcessor | None):
+        if (xpath is None
+        or (elements := xpath.evaluate(f'.//field[@name="{self.__field_id}"]/value')) is None):
             self.setText("")
             return
 
-        element = xml.find(f'.//field[@name="{self.__field_id}"]')
         vals = []
 
-        for idx, e in enumerate(element.iter("value")):
+        for idx, e in enumerate(elements):
             if idx >= len(self.__values):
                 break
 
             for val, stm in self.__values[idx].items():
-                if stm == e.text:
+                if stm == e.string_value:
                     vals.append(str(int(val) + self.__start))
                     break
 

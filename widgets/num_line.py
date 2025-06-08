@@ -1,4 +1,5 @@
 from PySide6 import QtWidgets, QtCore
+from saxonche import PyXPathProcessor
 import re
 
 
@@ -39,10 +40,10 @@ class NumLineEdit(QtWidgets.QLineEdit):
         return f"""<field name="{self.__field_id}">{values}</field>"""
 
     @QtCore.Slot()
-    def from_xml(self, xml):
-        if xml is None:
+    def from_xml(self, xpath: PyXPathProcessor | None):
+        if (xpath is None
+        or (elements := xpath.evaluate(f'.//field[@name="{self.__field_id}"]/value')) is None):
             self.setText("")
             return
 
-        element = xml.find(f'.//field[@name="{self.__field_id}"]')
-        self.setText(", ".join([e.text for e in element.iter("value")]))
+        self.setText(", ".join([e.string_value for e in elements]))

@@ -7,84 +7,71 @@ from pathlib import Path
 import re
 import subprocess
 
-from lxml import etree
+# from lxml import etree
+# import xml.etree.ElementTree as ElementTree
+from saxonche import PySaxonProcessor, PyXdmNode, PyXPathProcessor
 
 from models import Medication, Diagnosis, Field, PatientData, DiagnosesTableModel, MedicationTableModel
 from util import process_filename
 
 
 class DataTabWidget(QtWidgets.QWidget):
-    dataLoaded = QtCore.Signal(etree.ElementBase)
+    dataLoaded = QtCore.Signal(PyXPathProcessor)
 
-    def __extract_patient_data(self, patient_data):
+    # Internal method to extract medication from cell
+    def __read_meds(self, text_line: str, when_key: str, how_key: str):
+        meds = []
+
+        # Match medication per line
+        for entry in text_line.splitlines():
+
+            # Try sophisticated pattern
+            if med := self.med_pattern.match(entry):
+                med_name = med[1].strip()
+                if med_name in self.configs["ignore_meds"]:
+                    continue
+                meds.append(Medication(
+                    name=med[1].strip(), dosis=med[2], unit=med[3],
+                    morning=med[4], noon=med[5], evening=med[6], night=med[7] if med[7] is not None else "0"
+                ))
+
+            # If first match didn't find anything, try simple pattern
+            else:
+                for med in self.simple_med_pattern.finditer(entry):
+                    med_name = med[1].strip()
+                    if med_name in self.configs["ignore_meds"]:
+                        continue
+                    meds.append(Medication(name=med[1].strip()))
+
+        # Substitute medication names with alternatives from config.toml
+        for md in meds:
+            for word, subst in self.configs["substitute_meds"].items():
+                md.name = md.name.replace(word, subst)
+
+        self.patient_data.medication[when_key][how_key] = meds
+
+
+    def __extract_patient_data(self, patient_data: PyXdmNode):
         """Get data from *.docx file
         :param patient_data: etree object containing docx-tabledata
         """
 
-        # Define regex patterns
+        xpath = self.proc.new_xpath_processor()
+        xpath.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
+        xpath.set_context(xdm_item=patient_data)
 
-        icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s?äöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$")
-
-        md_name = r"([/.\-()\w\s\däöüÄÖÜß?]+?)"
-        md_dosage = r"([\-\d?.,/]+)\s*"
-        md_unit = r"((?:g|mg|µg|ug|ng|IE|ml|l|Hub|Kapsel|Kps\.?|Tablette|Tbl\.?|°|Tropfen|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ng|ml|l|d|Tag|h|Stunde))?)"
-        n = r"\s*([\d.,/]+°?)\s*"
-        med_pattern = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
-
-        # TODO: find dosages
-        simple_med_pattern = re.compile(f"(?:^|,\\s*)((?:,(?=\\d)|[^,\\n(])+)(?:\\([^)]+)?", flags=re.MULTILINE)
-
-        # MS Word namespace for work with etree
-        ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
-
-        # Internal method to extract medication from cell
-        def __read_meds(text_line: str, when_key: str, how_key: str):
-            meds = []
-
-            # Match medication per line
-            for entry in text_line.splitlines():
-
-                # Try sophisticated pattern
-                if med := med_pattern.match(entry):
-                    med_name = med[1].strip()
-                    if med_name in self.configs["ignore_meds"]:
-                        continue
-                    meds.append(Medication(
-                        name=med[1].strip(), dosis=med[2], unit=med[3],
-                        morning=med[4], noon=med[5], evening=med[6], night=med[7] if med[7] is not None else "0"
-                    ))
-
-                # If first match didn't find anything, try simple pattern
-                else:
-                    for med in simple_med_pattern.finditer(entry):
-                        med_name = med[1].strip()
-                        if med_name in self.configs["ignore_meds"]:
-                            continue
-                        meds.append(Medication(name=med[1].strip()))
-
-            # Substitute medication names with alternatives from config.toml
-            for md in meds:
-                for word, subst in self.configs["substitute_meds"].items():
-                    md.name = md.name.replace(word, subst)
-
-            self.patient_data.medication[when_key][how_key] = meds
-
-
-        # for i, cell in enumerate(patient_data.iterfind(".//w:tc", namespaces=ns)):
-        #     print(i, end=' ')
-        #     text = ''.join(map(lambda x: x.text, cell.iterfind(".//w:t", namespaces=ns)))
-        #     print(text)
+        xpath_t = self.proc.new_xpath_processor()
+        xpath_t.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
 
         # Walk over each cell in table
-        for i, cell in enumerate(patient_data.iterfind(".//w:tc", namespaces=ns)):
-            # Extract text data, respect w:p tags as newlines
-            text = '\n'.join(
-                ''.join(t.text for t in p.iterfind(".//w:t", namespaces=ns))
-                for p in cell.xpath('.//w:p[not(.//w:numPr)]', namespaces=ns)
-            )
+        for cell_idx, cell in enumerate(xpath.evaluate(".//w:tc")):
+            xpath.set_context(xdm_item=cell)
+            if (p_nodes := xpath.evaluate(".//w:p[not(.//w:numPr)]")) is None:
+                continue
+            text = '\n'.join(p.string_value for p in p_nodes)
 
             # Process per field
-            match i:
+            match cell_idx:
                 case Field.Name:
                     names = list(map(lambda x: x.strip(), text.splitlines()[0].split(',')))
                     if len(names) != 2:
@@ -127,7 +114,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
                 case Field.DiagPain | Field.DiagMisuse | Field.DiagPsych | Field.DiagSom:
                     for line in text.splitlines():
-                        for m in icd_pattern.finditer(line):
+                        for m in self.icd_pattern.finditer(line):
                             diag = Diagnosis(m[1].strip(), m[2])
 
                             # Special case: chronic migraine
@@ -136,23 +123,35 @@ class DataTabWidget(QtWidgets.QWidget):
                             self.patient_data.diagnoses.append(diag)
 
                 case Field.MedCurrAcute:
-                    __read_meds(text, "current", "acute")
+                    self.__read_meds(text, "current", "acute")
 
                 case Field.MedCurrBase:
-                    __read_meds(text, "current", "base")
+                    self.__read_meds(text, "current", "base")
 
                 case Field.MedCurrOther:
-                    __read_meds(text, "current", "other")
+                    self.__read_meds(text, "current", "other")
 
                 case Field.MedFormAcute:
-                    __read_meds(text, "former", "acute")
+                    self.__read_meds(text, "former", "acute")
 
                 case Field.MedFormBase:
-                    __read_meds(text, "former", "base")
+                    self.__read_meds(text, "former", "base")
 
 
-    def __init__(self, configs: dict, *args, **kwargs):
+    def __init__(self, proc: PySaxonProcessor, configs: dict, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.proc = proc
+        self.icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s?äöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$")
+
+        md_name = r"([/.\-()\w\säöüÄÖÜß?]+?)"
+        md_dosage = r"([\-\d?.,/]+)\s*"
+        md_unit = r"((?:g|mg|µg|ug|ng|IE|ml|l|Hub|Kapsel|Kps\.?|Tablette|Tbl\.?|°|Tropfen|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ng|ml|l|d|Tag|h|Stunde))?)"
+        n = r"\s*([\d.,/]+°?)\s*"
+        self.med_pattern = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
+
+        # TODO: find dosages
+        self.simple_med_pattern = re.compile(f"(?:^|,\\s*)((?:,(?=\\d)|[^,\\n(])+)(?:\\([^)]+)?", flags=re.MULTILINE)
 
         self.patient_data = PatientData()
         self.configs = configs
@@ -243,7 +242,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
         with ZipFile(patient_path) as archive:
             with archive.open("word/document.xml") as fl:
-                patient_data = etree.parse(fl)
+                patient_data = self.proc.parse_xml(xml_text=fl.read().decode())
 
         self.patient_data = PatientData()
         self.__extract_patient_data(patient_data)
@@ -254,12 +253,17 @@ class DataTabWidget(QtWidgets.QWidget):
         data_file_name = process_filename(self.configs["save_path"] / f"{self.patient_file_name()}.xml")
         data_file = Path(data_file_name)
 
-        xml = None
-        if data_file.exists():
-            with data_file.open("rb") as fl:
-                xml = etree.parse(fl)
+        if not data_file.exists():
+            self.dataLoaded.emit(None)
+            return
 
-        self.dataLoaded.emit(xml)
+        xml = self.proc.parse_xml(xml_file_name=str(data_file.absolute()))
+        xpath = self.proc.new_xpath_processor()
+        xpath.set_context(xdm_item=xml)
+            # with data_file.open("rb") as fl:
+            #     xml = ElementTree.fromstring(fl.read().decode())
+
+        self.dataLoaded.emit(xpath)
 
 
     def display_data(self):
@@ -291,7 +295,7 @@ class DataTabWidget(QtWidgets.QWidget):
     def patient_file_name(self) -> str:
         """Generate unique filename from loaded patient data"""
         # TODO: let user define file name via config.toml
-        return (f"A-{self.patient_data.last_name}, {self.patient_data.first_name} {self.patient_data.admission.strftime('%d%m%Y')}")
+        return f"A-{self.patient_data.last_name}, {self.patient_data.first_name} {self.patient_data.admission.strftime('%d%m%Y')}"
 
 
     def to_xml(self) -> str:

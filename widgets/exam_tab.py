@@ -1,4 +1,5 @@
 from PySide6 import QtWidgets, QtCore
+from saxonche import PyXPathProcessor
 
 
 class ExamTab(QtWidgets.QWidget):
@@ -62,8 +63,8 @@ class ExamTab(QtWidgets.QWidget):
         </exam>"""
 
     @QtCore.Slot()
-    def from_xml(self, xml):
-        if xml is None:
+    def from_xml(self, xpath: PyXPathProcessor | None):
+        if xpath is None or xpath.evaluate_single(".//exam") is None:
             self.gender_btn_group.buttons()[1].setChecked(True)
             self.height_inp.setText("")
             self.weight_inp.setText("")
@@ -73,15 +74,14 @@ class ExamTab(QtWidgets.QWidget):
             return
 
         gender = dict(zip(["m", "f", "d"], self.gender_btn_group.buttons()))
-        exam = xml.find(".//exam")
 
-        gender[exam.find("gender").text].setChecked(True)
+        gender[xpath.evaluate_single(".//exam/gender").string_value].setChecked(True)
 
-        self.height_inp.setText(exam.find("height").text)
-        self.weight_inp.setText(exam.find("weight").text)
-        self.sys_inp.setText(exam.find("sys").text)
-        self.dia_inp.setText(exam.find("dia").text)
-        self.p_inp.setText(exam.find("pulse").text)
+        self.height_inp.setText(xpath.evaluate_single(".//exam/height").string_value)
+        self.weight_inp.setText(xpath.evaluate_single(".//exam/weight").string_value)
+        self.sys_inp.setText(xpath.evaluate_single(".//exam/sys").string_value)
+        self.dia_inp.setText(xpath.evaluate_single(".//exam/dia").string_value)
+        self.p_inp.setText(xpath.evaluate_single(".//exam/pulse").string_value)
 
 
 
