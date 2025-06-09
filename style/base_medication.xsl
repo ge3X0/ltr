@@ -632,37 +632,20 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="000936AD">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Duloxetin</w:t>
-                            </w:r>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> kann im Verlauf bei guter Verträglichkeit und unter Leberwert- und EKG-Kontrollen vorsichtig weiter aufdosiert werden. Die Zieldosis aus schmerztherapeutischer Sicht sind hierbei 60 mg pro Tag. </w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Duloxetin</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> kann im Verlauf bei guter Verträglichkeit und unter Leberwert- und EKG-Kontrollen vorsichtig weiter aufdosiert werden. Die Zieldosis aus schmerztherapeutischer Sicht sind hierbei 60 mg pro Tag. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
@@ -673,241 +656,145 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="002F48AE">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Escitalopram</w:t>
-                            </w:r>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> dient neben der Förderung der Neuroplastizität auch der Stimmungsaufhellung und Anxiolyse. Eine Dosisanpassung bis 10mg/d kann bei guter Verträglichkeit und Wirksamkeit unter Labor- (u.a. Leberwerte) sowie EKG-Kontrollen erfolgen. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit und Wirksamkeit frühestens nach 9-12 Monaten. SSRI beim Auslassversuch bitte sukzessive in der Dosis reduzieren, um unangenehme Absetzsymptome zu vermeiden.</w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Escitalopram</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> dient neben der Förderung der Neuroplastizität auch der Stimmungsaufhellung und Anxiolyse. Eine Dosisanpassung bis 10mg/d kann bei guter Verträglichkeit und Wirksamkeit unter Labor- (u.a. Leberwerte) sowie EKG-Kontrollen erfolgen. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit und Wirksamkeit frühestens nach 9-12 Monaten. SSRI beim Auslassversuch bitte sukzessive in der Dosis reduzieren, um unangenehme Absetzsymptome zu vermeiden.</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
                     <xsl:if test="$base/name[text() = 'Mirtazapin']">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00A24C84" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
                                 <w:jc w:val="both"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="00784B1F">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">Evaluation der Wirksamkeit 8 Wochen nach der hier erreichten Zieldosis des </w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="0063630E">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Mirtazapins</w:t>
-                            </w:r>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>. Diese ist aus schmerztherapeutischer Sicht 30-45 mg. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit nach 6-9 Monaten. </w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Evaluation der Wirksamkeit 8 Wochen nach der hier erreichten Zieldosis des </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Mirtazapins</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>. Diese ist aus schmerztherapeutischer Sicht 30-45 mg. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit nach 6-9 Monaten. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
                     <xsl:if test="$base/name[text() = 'Opipramol']">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00DB3F3C" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
                                 <w:ind w:left="714" w:hanging="357"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
 
-                            <w:r w:rsidRPr="00432507">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">Evaluation der Wirksamkeit 8 Wochen nach der hier erreichten Zieldosis des </w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00432507">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Opipramols</w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00432507">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>. Zieldosis aus schmerztherapeutischer Sicht sind hierbei 100-150 mg. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit nach 6-9 Monaten. </w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Evaluation der Wirksamkeit 8 Wochen nach der hier erreichten Zieldosis des </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Opipramols</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>. Zieldosis aus schmerztherapeutischer Sicht sind hierbei 100-150 mg. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit nach 6-9 Monaten. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
                     <xsl:if test="$base/name[text() = 'Pregabalin']">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00DB3F3C" w:rsidRDefault="00877D06" w:rsidP="00635C56">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">Die Gabe von </w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00A364B9">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Pregabalin</w:t>
-                            </w:r>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> ist zeitlich nicht befristet. Die Dosis des Pregabalins kann abhängig vom klinischen Verlauf bei guter Verträglichkeit und unter Leberwert- und Elektrolytkontrolle weiter erhöht werden. Zieldosis aus schmerztherapeutischer Sicht ist 150-300 mg pro Tag.</w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Die Gabe von </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Pregabalin</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> ist zeitlich nicht befristet. Die Dosis des Pregabalins kann abhängig vom klinischen Verlauf bei guter Verträglichkeit und unter Leberwert- und Elektrolytkontrolle weiter erhöht werden. Zieldosis aus schmerztherapeutischer Sicht ist 150-300 mg pro Tag.</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
                     <xsl:if test="$base/name[text() = 'Topiramat']">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00DB3F3C" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
                                 <w:ind w:left="714" w:hanging="357"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="00432507">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">Evaluation der Wirksamkeit 8 Wochen nach der hier erreichten Zieldosis des </w:t>
-                            </w:r>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Topiramats</w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00432507">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">. Zieldosis aus schmerztherapeutischer Sicht ist hierbei 25-100 mg/Tag. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit nach 6-9 Monaten. </w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Evaluation der Wirksamkeit 8 Wochen nach der hier erreichten Zieldosis des </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Topiramat</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>. Zieldosis aus schmerztherapeutischer Sicht ist hierbei 25-100 mg/Tag. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit nach 6-9 Monaten. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
@@ -918,332 +805,192 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="00B104BB">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Candesartan</w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00B104BB">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> dient neben der Einstellung des erhöhten Blutdrucks auch zur Migräneprophylaxe, bei arterieller Hypertonie ist die Einnahme nicht primär zeitlich begrenzt. Unter der Eindosierung sollen regelmäßige Blutdruckkontrollen erfolgen. Eine Dosisanpassung kann ebenfalls entsprechend der Blutdruckeinstellung erfolgen. Zieldosis aus schmerztherapeutischer Sicht sind 16 mg/Tag.</w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Candesartan</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> dient neben der Einstellung des erhöhten Blutdrucks auch zur Migräneprophylaxe, bei arterieller Hypertonie ist die Einnahme nicht primär zeitlich begrenzt. Unter der Eindosierung sollen regelmäßige Blutdruckkontrollen erfolgen. Eine Dosisanpassung kann ebenfalls entsprechend der Blutdruckeinstellung erfolgen. Zieldosis aus schmerztherapeutischer Sicht sind 16 mg/Tag.</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
                     <xsl:if test="$rr_med">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00E0410B" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="00E0410B">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
                                     <xsl:value-of select="$rr_med"/>
-                                </w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00E0410B">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> dient neben der Einstellung des erhöhten Blutdrucks auch der Migräneprophylaxe. Bei arterieller Hypertonie ist die Einnahme nicht primär zeitlich begrenzt. Eine Dosisanpassung kann ebenfalls entsprechend der Blutdruckeinstellung erfolgen. </w:t>
-                            </w:r>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> dient neben der Einstellung des erhöhten Blutdrucks auch der Migräneprophylaxe. Bei arterieller Hypertonie ist die Einnahme nicht primär zeitlich begrenzt. Eine Dosisanpassung kann ebenfalls entsprechend der Blutdruckeinstellung erfolgen. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$base/name[text() = 'Magnesium' or text() = 'Vitamin B2' or text() = 'Vit. B2' or text() = 'Riboflavin']">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00DB3F3C" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                    <xsl:if test="$base/name[contains(text(), 'Magnesium') or contains(text(), 'Vitamin B2') or contains(text(), 'Vit. B2') or contains(text(), 'Riboflavin')]">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="00DB3F3C">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">Die Einnahme von </w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00DB3F3C">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Magnesium und Vitamin B2</w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00DB3F3C">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> sollte nach 1-2 Monaten in seiner Wirkung evaluiert werden. Magnesium und Vitamin B2 sind als Kombinationspräparat (z.B. Migravent) erhältlich.</w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Die Einnahme von </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Magnesium und Vitamin B2</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> sollte nach 1-2 Monaten in seiner Wirkung evaluiert werden. Magnesium und Vitamin B2 sind als Kombinationspräparat (z.B. Migravent) erhältlich.</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
                     <xsl:if test="$base/name[text() = 'Sertralin']">
-                        <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">Sertralin </w:t>
-                            </w:r>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>ist ein Antidepressivum aus der Wirkstoffgruppe der selektiven Serotonin-Wiederaufnahme-Inhibitoren (SSRI) und wird zur Behandlung und Prophylaxe von Depressionen, Panik, Angststörung sowie posttraumatischen Belastungsstörungen angewendet. </w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Sertralin</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> ist ein Antidepressivum aus der Wirkstoffgruppe der selektiven Serotonin-Wiederaufnahme-Inhibitoren (SSRI) und wird zur Behandlung und Prophylaxe von Depressionen, Panik, Angststörung sowie posttraumatischen Belastungsstörungen angewendet. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$base/name[text() = 'Anafranil' or text() = 'Clompipramin']">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00675C3C" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                    <xsl:if test="$base/name[text() = 'Clompipramin']">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Evaluation der Wirksamkeit 8 Wochen nach Erreichen der Zieldosis des</w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00CE18C6">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Anafranils</w:t>
-                            </w:r>
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">. Dies sind aus schmerztherapeutischer Sicht 75 mg/Tag. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit und unter Labor- und Leberwerte- sowie EKG- und Blutdruckkontrollen unter Berücksichtigung des thymoleptischen Effektes nach 6-9 Monaten. </w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Evaluation der Wirksamkeit 8 Wochen nach Erreichen der Zieldosis des </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Anafranils</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>. Dies sind aus schmerztherapeutischer Sicht 75 mg/Tag. Eine Überprüfung der Indikation empfehlen wir bei guter Verträglichkeit und unter Labor- und Leberwerte- sowie EKG- und Blutdruckkontrollen unter Berücksichtigung des thymoleptischen Effektes nach 6-9 Monaten. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
                     <xsl:if test="$base/name[text() = 'Carbamazepin']">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00675C3C" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="00675C3C">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Carbamazepin</w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00675C3C">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> kann im Verlauf bei guter Verträglichkeit und unter Leberwert- und Elektrolytwertkontrolle vorsichtig weiter aufdosiert werden. </w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Carbamazepin</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> kann im Verlauf bei guter Verträglichkeit und unter Leberwert- und Elektrolytwertkontrolle vorsichtig weiter aufdosiert werden. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
                     <xsl:if test="$base/name[text() = 'Gabapentin']">
-                        <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="00675C3C">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">Die Dosis des </w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00675C3C">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Gabapentin</w:t>
-                            </w:r>
-                            <w:r w:rsidRPr="00675C3C">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> kann abhängig vom klinischen Verlauf bei guter Verträglichkeit und unter Leberwert- und Elektrolytkontrolle weiter erhöht werden. Zieldosis aus schmerztherapeutischer Sicht sind 1.200-2.400 mg/Tag. </w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Die Dosis von </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Gabapentin</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text> kann abhängig vom klinischen Verlauf bei guter Verträglichkeit und unter Leberwert- und Elektrolytkontrolle weiter erhöht werden. Zieldosis aus schmerztherapeutischer Sicht sind 1.200-2.400 mg/Tag. </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
                     <xsl:if test="$base/name[text() = 'Tizanidin']">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00675C3C" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r>
                                 <w:rPr>
@@ -1574,11 +1321,11 @@
                     </w:p>
 
                     <xsl:if test="$base/name[
-                    text() = 'Tramal' or text() = 'Tramadol' or text() = 'Tramadol ret.'
-                    or text() = 'Tilidin' or text() = 'Tilidin ret.'
-                    or text() = 'MST' or text() = 'MST ret.'
-                    or text() = 'Oxycodon'
-                    or text() = 'Tapentadol']">
+                    contains(text(), 'Tramal') or contains(text(), 'Tramadol') or contains(text(), 'Tramadol ret.')
+                    or contains(text(), 'Tilidin') or contains(text(), 'Tilidin ret.')
+                    or contains(text(), 'MST') or contains(text(), 'MST ret.')
+                    or contains(text(), 'Oxycodon') or contains(text(), 'Oxygesic')
+                    or contains(text(), 'Tapentadol') or contains(text(), 'Palexia')]">
                         <w:p>
                             <w:pPr>
                                 <w:tabs>
@@ -2075,7 +1822,6 @@
                                 <w:t>Wir bitten um Kontrolluntersuchung der o.g. Medikation</w:t>
                             </w:r>
                         </w:p>
-
                     </xsl:if>
                 </w:tc>
             </w:tr>

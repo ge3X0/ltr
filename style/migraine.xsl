@@ -4,7 +4,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
-    <xsl:template match="//w:p[.//ohneaura_akut]">
+    <xsl:template match="//w:p[.//mitaura_akut]">
         <xsl:if test="$diag_migraine_with_aura">
             <w:p>
                 <xsl:call-template name="text-run">

@@ -13,7 +13,7 @@ oder Klick auf "Neu laden" geladen.
 
 ### Überprüfen der geladenen Daten
 
-Die allgemeinen Patientendaten werden angezeigt und können überprüft werden. Durch Klick auf "Schnuppi anzeigen"
+Die allgemeinen Patientendaten werden angezeigt und können überprüft werden. Durch Klick auf "Schnuppi anzeigen" ([Alt] + [I])
 lässt sich jederzeit die zugehörige Datendatei öffnen und bearbeiten. Nach Bearbeitung müssen die Daten durch Klick
 auf "Neu laden" [F5] neu geladen werden. Diagnosen und regelmäßig eingenommene Medikamente werden gesucht,
 gefundene werden tabellarisch angezeigt
@@ -25,6 +25,8 @@ Diagnosen sollten eine Diagnose pro Zeile aufgeführt werden. Diagnosen sollten 
 
 ```
 Diagnosen-Name ZZ00.99 Kommentare
+    - Listen unter Diagnosen werden ignoriert
+    Eingerückte Diagnose ZZ02.23 Wird gefunden
 ```
 
 Hinter dem ICD10-Schlüssel aufgeführter Text wird nicht übernommen.
@@ -43,7 +45,7 @@ Feste Medikamente sollten als ein Medikament pro Zeile dem Muster folgen:
 
 ```
 Medikament Name 10 mg 1-0-0
-Anderes Medikament 40/1 mg/ml 0-0-15°-0
+Anderes Medikament 40,43/12,5 mg/ml 0 - 0 - 15° - 0 (Dies ist ein Kommentar, wird ignoriert)
 ```
 
 Andere Muster werden ggf. nicht sicher oder vollständig erkannt. Text nach dem Einnahmemuster wird als Kommentar ignoriert.
@@ -65,20 +67,19 @@ Nach Laden der Patientendaten kann jederzeit ein Brief exportiert werden. Durch 
 > [!NOTE]
 > Mittels *output_path* kann in config.toml ein Pfad, an dem die generierten Briefe abgelegt werden, definiert werden.
 > Mittels *save_path* kann in config.toml ein Pfad, an dem die Datendateien für den Patienten gespeichert werden, definiert werden.
-> Der Pfad für die config.toml Option *save_path* sollte keine Leerzeichen, Umlaute oder Sz enthalten, diese werden
-> automatisch durch '_' oder Ae etc. ersetzt
 
 > [!NOTE]
 > Standardmäßig werden die /word/document.xml und /word/header1.xml Dateien der definierten DOCX-Schablone auf Variablen
 > überprüft. Sollten andere Dateien gewünscht sein (z.B. Footer), können diese mittels *process_files* in config.toml definiert werden
 
+Nachdem ein Brief erstellt wurde, kann er mittels [STRG] + [O] geöffnet werden.
 
 ## Formulare
 
 ### Formulare definieren
 
 Formulare können in dem Ordner *./forms/* als toml-Dateien definiert werden. Für mögliche Optionen siehe [forms.md](forms.md).
-Formulare werden als Tabs geladen. Diese können per Klick, per [Alt] + [Pfeiltasten] oder per [Alt] + [Buchstaben] direkt umgeschaltet werden. Je nach Formularfeld kann die Eingabe variieren:
+Formulare werden als Tabs geladen. Diese können per Klick oder per [Alt] + [Buchstaben] direkt umgeschaltet werden. Je nach Formularfeld kann die Eingabe variieren:
 
 #### Zeileneingabe
 
@@ -95,14 +96,15 @@ den Boxen gesprungen werden.
 
 ## Shortcuts
 
-| Aktion                   | Tastenkombination        | Kommentar                                      |
-|--------------------------|--------------------------|------------------------------------------------|
-| Aktuelle Daten neu laden | [F5]                     | Überschreibt ggf. ungespeicherte Formulardaten |
-| Datendatei öffnen        | [STRG] + [I]             |                                                |
-| Brief generieren         | [STRG] + [E]             | Speichert Formulardaten                        |
-| Brief öffnen             | [STRG] + [O]             |                                                |
-| Checkbox: Auswählen      | [X]                      |                                                |
-| Checkbox: Abwählen       | [Y]                      |                                                |
-| Tab wechseln             | [ALT] + [LINKS]/[RECHTS] |                                                |
-| Tab auswählen            | [ALT] + Tab-Buchstabe    |                                                |
+| Aktion                    | Tastenkombination     | Kommentar                                      |
+|---------------------------|-----------------------|------------------------------------------------|
+| Aktuelle Daten neu laden  | [F5]                  | Überschreibt ggf. ungespeicherte Formulardaten |
+| Datendatei öffnen         | [STRG] + [I]          |                                                |
+| Brief generieren          | [STRG] + [E]          | Speichert Formulardaten                        |
+| Brief öffnen              | [STRG] + [O]          |                                                |
+| Checkbox: Auswählen       | [X]                   |                                                |
+| Checkbox: Abwählen        | [Y]                   |                                                |
+| Nächstes Element wählen   | [TAB]                 |                                                |
+| Vorheriges Element wählen | [SHIFT] + [TAB]       |                                                |
+| Tab auswählen             | [ALT] + Tab-Buchstabe |                                                |
 
