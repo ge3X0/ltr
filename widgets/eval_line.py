@@ -28,7 +28,6 @@ class EvalLine(QtWidgets.QLineEdit):
 
         for val_idx, s in enumerate(it):
             if val_idx >= len(self.__values):
-                QtWidgets.QMessageBox.warning(self, "Eval Line", f"Zu viele Einträge in {self.__field_id}")
                 break
 
             if not s.isdigit():
@@ -42,7 +41,7 @@ class EvalLine(QtWidgets.QLineEdit):
                 results.append("Unbekannt")
 
         if len(results) != len(self.__values):
-            QtWidgets.QMessageBox.information(self, "Eval Line", f"Es wurden {len(results)} von erwarteten {len(self.__values)} gefunden.\nÜbrige Stellen werden mit Standardwerten gefüllt")
+            QtWidgets.QMessageBox.information(self, "Eval Line", f"Es wurden {len(results)} von erwarteten {len(self.__values)} in {self.__field_id} gefunden.\nÜbrige Stellen werden mit Standardwerten gefüllt, überhängige werden ignoriert")
 
             while len(results) < len(self.__values):
                 results.append(self.__values[len(results)]["0"])

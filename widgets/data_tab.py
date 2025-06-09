@@ -17,27 +17,34 @@ class DataTabWidget(QtWidgets.QWidget):
 
     # Internal method to extract medication from cell
     def __read_meds(self, text_line: str, when_key: str, how_key: str):
+        """Tries to read medication from string
+        :param text_line: str, Multiline text to extract medication from
+        :param when_key: str, Used to sort into medication
+        :param how_key: str, Used to sort into medication
+        """
+
         meds = []
 
         # Match medication per line
         for entry in text_line.splitlines():
-
-            # Try sophisticated pattern
             if med := self.med_pattern.match(entry):
                 med_name = med[1].strip()
+
                 if med_name in self.configs["ignore_meds"]:
                     continue
+
                 meds.append(Medication(
                     name=med[1].strip(), dosis=med[2], unit=med[3],
                     morning=med[4], noon=med[5], evening=med[6], night=med[7] if med[7] is not None else "0"
                 ))
 
-            # If first match didn't find anything, try simple pattern
             else:
                 for med in self.simple_med_pattern.finditer(entry):
                     med_name = med[1].strip()
+
                     if med_name in self.configs["ignore_meds"]:
                         continue
+
                     meds.append(Medication(name=med[1].strip()))
 
         # Substitute medication names with alternatives from config.toml
@@ -57,12 +64,14 @@ class DataTabWidget(QtWidgets.QWidget):
         xpath.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
         xpath.set_context(xdm_item=patient_data)
 
-        xpath_t = self.proc.new_xpath_processor()
-        xpath_t.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
+        # xpath_t = self.proc.new_xpath_processor()
+        # xpath_t.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
 
         # Walk over each cell in table
         for cell_idx, cell in enumerate(xpath.evaluate(".//w:tc")):
             xpath.set_context(xdm_item=cell)
+
+            # Group by paragraph, ignore lists
             if (p_nodes := xpath.evaluate(".//w:p[not(.//w:numPr)]")) is None:
                 continue
             text = '\n'.join(p.string_value for p in p_nodes)

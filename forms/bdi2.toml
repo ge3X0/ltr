@@ -124,11 +124,15 @@ start = 1
 2 = "sei für viele Routineaktivitäten zu erschöpft"
 3 = "sei so müde und erschöpft, dass nichts mehr möglich sei"
 
+# Feld Sexualität soll nicht übernommen werden
 [[field.values]]
 0 = ""
-1 = "interessiere sich weniger für Sexualität als früher"
-2 = "habe viel weniger Interesse an Sexualität"
-3 = "habe das Interesse an Sexualität völlig verloren"
+1 = ""
+2 = ""
+3 = ""
+#1 = "interessiere sich weniger für Sexualität als früher"
+#2 = "habe viel weniger Interesse an Sexualität"
+#3 = "habe das Interesse an Sexualität völlig verloren"
 
 
 [[field]]
