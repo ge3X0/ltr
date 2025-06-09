@@ -187,18 +187,6 @@
                                     <xsl:value-of select="name"/>
                                 </xsl:with-param>
                             </xsl:call-template>
-
-<!--                            <w:r>-->
-<!--                                <w:rPr>-->
-<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
-<!--                                              w:cs="Lucida Sans Unicode"/>-->
-<!--                                    <w:sz w:val="18"/>-->
-<!--                                    <w:szCs w:val="18"/>-->
-<!--                                </w:rPr>-->
-<!--                                <w:t>-->
-<!--                                    <xsl:value-of select="name"/>-->
-<!--                                </w:t>-->
-<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
 
@@ -218,19 +206,6 @@
                                     <xsl:value-of select="unit"/>
                                 </xsl:with-param>
                             </xsl:call-template>
-
-<!--                            <w:r>-->
-<!--                                <w:rPr>-->
-<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
-<!--                                              w:cs="Lucida Sans Unicode"/>-->
-<!--                                    <w:sz w:val="18"/>-->
-<!--                                    <w:szCs w:val="18"/>-->
-<!--                                </w:rPr>-->
-<!--                                <w:t>-->
-<!--                                    <xsl:value-of select="dosis"/>-->
-<!--                                    <xsl:value-of select="unit"/>-->
-<!--                                </w:t>-->
-<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
 
@@ -249,17 +224,6 @@
                                     <xsl:value-of select="morning"/>
                                 </xsl:with-param>
                             </xsl:call-template>
-<!--                            <w:r>-->
-<!--                                <w:rPr>-->
-<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
-<!--                                              w:cs="Lucida Sans Unicode"/>-->
-<!--                                    <w:sz w:val="18"/>-->
-<!--                                    <w:szCs w:val="18"/>-->
-<!--                                </w:rPr>-->
-<!--                                <w:t>-->
-<!--                                    <xsl:value-of select="morning"/>-->
-<!--                                </w:t>-->
-<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
 
@@ -278,17 +242,6 @@
                                     <xsl:value-of select="noon"/>
                                 </xsl:with-param>
                             </xsl:call-template>
-<!--                            <w:r>-->
-<!--                                <w:rPr>-->
-<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
-<!--                                              w:cs="Lucida Sans Unicode"/>-->
-<!--                                    <w:sz w:val="18"/>-->
-<!--                                    <w:szCs w:val="18"/>-->
-<!--                                </w:rPr>-->
-<!--                                <w:t>-->
-<!--                                    <xsl:value-of select="noon"/>-->
-<!--                                </w:t>-->
-<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
 
@@ -307,17 +260,6 @@
                                     <xsl:value-of select="evening"/>
                                 </xsl:with-param>
                             </xsl:call-template>
-<!--                            <w:r>-->
-<!--                                <w:rPr>-->
-<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
-<!--                                              w:cs="Lucida Sans Unicode"/>-->
-<!--                                    <w:sz w:val="18"/>-->
-<!--                                    <w:szCs w:val="18"/>-->
-<!--                                </w:rPr>-->
-<!--                                <w:t>-->
-<!--                                    <xsl:value-of select="evening"/>-->
-<!--                                </w:t>-->
-<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
 
@@ -336,18 +278,6 @@
                                     <xsl:value-of select="night"/>
                                 </xsl:with-param>
                             </xsl:call-template>
-
-<!--                            <w:r>-->
-<!--                                <w:rPr>-->
-<!--                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"-->
-<!--                                              w:cs="Lucida Sans Unicode"/>-->
-<!--                                    <w:sz w:val="18"/>-->
-<!--                                    <w:szCs w:val="18"/>-->
-<!--                                </w:rPr>-->
-<!--                                <w:t>-->
-<!--                                    <xsl:value-of select="night"/>-->
-<!--                                </w:t>-->
-<!--                            </w:r>-->
                         </w:p>
                     </w:tc>
                 </w:tr>

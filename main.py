@@ -23,7 +23,7 @@ class MainWidget(QtWidgets.QWidget):
 
     """
 
-    def __init__(self):
+    def __init__(self, configs: dict):
         super().__init__()
 
         self.proc = PySaxonProcessor(license=False)
@@ -37,36 +37,14 @@ class MainWidget(QtWidgets.QWidget):
             "substitute_meds": {},
             "process_files": ["word/document.xml", "word/header1.xml"],
         }
-        if Path("config.toml").exists():
-            with open("config.toml", "rb") as config_file:
-                self.configs.update(toml.load(config_file))
+
+        self.configs.update(configs)
+
+        # Set standard Path values, important paths are handled before init
 
         self.configs["file_db"] = Path(self.configs.get("file_db", "./"))
         self.configs["save_path"] = Path(self.configs.get("save_path", "./data"))
         self.configs["output_path"] = Path(self.configs.get("output_path", "./output"))
-
-        # TODO: Do we want to proceed, if these are missing?
-        if "template_file" not in self.configs:
-            QtWidgets.QMessageBox.warning(self,
-            "Fehler in config.toml",
-            "config.toml muss Schlüssel template_file beinhalten")
-
-        self.configs["template_file"] = Path(self.configs["template_file"])
-        if not self.configs["template_file"].exists():
-            QtWidgets.QMessageBox.warning(self,
-            "Datei nicht gefunden",
-            "template_file existiert nicht")
-
-        if "xsl_file" not in self.configs:
-            QtWidgets.QMessageBox.warning(self,
-            "Fehler in config.toml",
-            "config.toml muss Schlüssel xsl_file beinhalten")
-
-        self.configs["xsl_file"] = Path(self.configs["xsl_file"])
-        if not self.configs["xsl_file"].exists():
-            QtWidgets.QMessageBox.warning(self,
-            "Datei nicht gefunden",
-            "xsl_file existiert nicht")
 
         # Tab Widget is central widget
 
@@ -75,7 +53,6 @@ class MainWidget(QtWidgets.QWidget):
         self.layout().addWidget(self.tab_widget)
 
         # Export Button
-        # TODO: Better location?
 
         export_button = QtWidgets.QPushButton("Brief exportieren")
         export_button.clicked.connect(self.to_xml)
@@ -163,21 +140,6 @@ class MainWidget(QtWidgets.QWidget):
                 field_layout.addWidget(new_widget)
 
 
-    def keyPressEvent(self, event, /):
-        if (event.type() == QtCore.QEvent.Type.KeyPress
-            and event.modifiers() == Qt.KeyboardModifier.AltModifier):
-                next_tab = self.tab_widget.currentIndex()
-                if event.key() == Qt.Key.Key_Right:
-                    next_tab += 1
-                    if next_tab >= self.tab_widget.count():
-                        next_tab = 0
-                elif event.key() == Qt.Key.Key_Left:
-                    next_tab -= 1
-                    if next_tab < 0:
-                        next_tab = self.tab_widget.count() - 1
-                self.tab_widget.setCurrentIndex(next_tab)
-
-
     def to_xml(self):
         """Writes letter from collected data of all tabs"""
 
@@ -186,6 +148,7 @@ class MainWidget(QtWidgets.QWidget):
         data_file = self.configs["save_path"] / f"{patient_file_name}.xml"
         output_file = self.configs["output_path"] / f"{patient_file_name}.docx"
 
+        # Make sure we really want to overwrite existing files
         if (data_file.exists()
             and QtWidgets.QMessageBox.StandardButton.Yes != QtWidgets.QMessageBox.question(
                     self, "Datei existiert", "Daten-Datei existiert bereits, überschreiben?")):
@@ -258,7 +221,40 @@ if __name__ == "__main__":
     """)
     app.setFont(QtGui.QFont("Arial", 14))
 
-    widget = MainWidget()
+    if not Path("config.toml").exists():
+        QtWidgets.QMessageBox.warning(None, "Config nicht gefunden", "Eine config.toml Datei muss erstellt werden")
+        exit(app.exit(0))
+
+    with open("config.toml", "rb") as config_file:
+        configs = toml.load(config_file)
+
+    if "template_file" not in configs:
+        QtWidgets.QMessageBox.warning(None,
+                                      "Fehler in config.toml",
+                                      "config.toml muss Schlüssel template_file beinhalten")
+        exit(app.exit(0))
+
+    configs["template_file"] = Path(configs["template_file"])
+    if not configs["template_file"].exists():
+        QtWidgets.QMessageBox.warning(None,
+                                      "Datei nicht gefunden",
+                                      "template_file existiert nicht")
+        exit(app.exit(0))
+
+    if "xsl_file" not in configs:
+        QtWidgets.QMessageBox.warning(None,
+                                      "Fehler in config.toml",
+                                      "config.toml muss Schlüssel xsl_file beinhalten")
+        exit(app.exit(0))
+
+    configs["xsl_file"] = Path(configs["xsl_file"])
+    if not configs["xsl_file"].exists():
+        QtWidgets.QMessageBox.warning(None,
+                                      "Datei nicht gefunden",
+                                      "xsl_file existiert nicht")
+        exit(app.exit(0))
+
+    widget = MainWidget(configs)
     widget.showMaximized()
     widget.show()
 
