@@ -162,12 +162,16 @@ class DataTabWidget(QtWidgets.QWidget):
         self.patient_data = PatientData()
         self.configs = configs
 
-        dt_layout = QtWidgets.QVBoxLayout(self)
-        dt_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        main_layout = QtWidgets.QVBoxLayout(self)
+        main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Setup Search bar and completer
 
+        search_box = QtWidgets.QHBoxLayout()
+
         self.search_bar = QtWidgets.QLineEdit()
+        search_box.addWidget(self.search_bar)
+
         self.search_bar.returnPressed.connect(self.select_patient)
 
         file_completer = QtWidgets.QCompleter(
@@ -176,51 +180,59 @@ class DataTabWidget(QtWidgets.QWidget):
         self.search_bar.setCompleter(file_completer)
 
         search_button = QtWidgets.QPushButton("Neu laden")
+        search_box.addWidget(search_button)
+
         search_button.setShortcut("F5")
         search_button.setToolTip("Lade Daten erneut [F5]")
         search_button.pressed.connect(self.select_patient)
 
-        search_box = QtWidgets.QHBoxLayout()
-        search_box.addWidget(self.search_bar)
-        search_box.addWidget(search_button)
-
-        dt_layout.addLayout(search_box)
+        main_layout.addLayout(search_box)
 
         # Setup Data display
 
         sheet_layout = QtWidgets.QHBoxLayout()
-        dt_layout.addLayout(sheet_layout)
-        sheet_layout.addWidget(QtWidgets.QLabel("\nPatientendaten\n"))
+        main_layout.addLayout(sheet_layout)
+
+        self.patient_label = QtWidgets.QLabel("\nPatientendaten:")
+        sheet_layout.addWidget(self.patient_label)
+
+        buttons_layout = QtWidgets.QVBoxLayout()
+        buttons_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        sheet_layout.addLayout(buttons_layout)
 
         self.data_sheet_button = QtWidgets.QPushButton("Schnuppi öffnen")
         self.data_sheet_button.setShortcut("Ctrl+I")
-        self.data_sheet_button.setToolTip("Datenblatt öffnen [Strg + I]")
+        self.data_sheet_button.setToolTip("Datenblatt öffnen [Strg+I]")
         self.data_sheet_button.clicked.connect(self.show_data_sheet)
         self.data_sheet_button.setVisible(False)
-        sheet_layout.addWidget(self.data_sheet_button)
+        buttons_layout.addWidget(self.data_sheet_button)
 
-        self.patient_label = QtWidgets.QLabel()
-        dt_layout.addWidget(self.patient_label)
+        self.letter_button = QtWidgets.QPushButton("Brief öffnen")
+        self.letter_button.setShortcut("Ctrl+O")
+        self.letter_button.setToolTip("Brief öffnen [Strg+O]")
+        self.letter_button.clicked.connect(self.show_letter)
+        self.letter_button.setVisible(False)
+        buttons_layout.addWidget(self.letter_button)
 
         # Setup ICD10 Table
 
-        dt_layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
+        main_layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
 
         self.diagnoses_table = QtWidgets.QTableView()
         self.diagnoses_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.diagnoses_table.setModel(DiagnosesTableModel([]))
-        dt_layout.addWidget(self.diagnoses_table)
+        main_layout.addWidget(self.diagnoses_table)
 
         # Setup Medication Table
 
-        dt_layout.addWidget(QtWidgets.QLabel("\nAktuelle Dauermedikation\n"))
+        main_layout.addWidget(QtWidgets.QLabel("\nAktuelle Dauermedikation\n"))
 
         self.medication_table = QtWidgets.QTableView()
         self.medication_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.medication_table.setModel(MedicationTableModel([], []))
         self.medication_table.setSpan(0, 0, 1, 7)
         self.medication_table.setSpan(1, 0, 1, 7)
-        dt_layout.addWidget(self.medication_table)
+        main_layout.addWidget(self.medication_table)
 
 
     @QtCore.Slot()
@@ -233,6 +245,18 @@ class DataTabWidget(QtWidgets.QWidget):
             return
 
         subprocess.run(f"powershell -Command \"& {{Start-Process '{patient_path.absolute()}'\"}}")
+
+
+    @QtCore.Slot()
+    def show_letter(self):
+        """Display Schnuppi for currently loaded patient"""
+
+        output_file = self.configs["output_path"] / f"{self.patient_file_name()}.docx"
+        if not output_file.exists():
+            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {output_file} nicht öffnen")
+            return
+
+        subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}")
 
 
     @QtCore.Slot()
@@ -256,8 +280,11 @@ class DataTabWidget(QtWidgets.QWidget):
         data_file = Path(self.configs["save_path"] / f"{self.patient_file_name()}.xml")
 
         if not data_file.exists():
+            self.letter_button.setVisible(False)
             self.dataLoaded.emit(None)
             return
+
+        self.letter_button.setVisible(True)
 
         xml = self.proc.parse_xml(xml_file_name=str(data_file.absolute().as_posix()))
         xpath = self.proc.new_xpath_processor()
@@ -272,6 +299,7 @@ class DataTabWidget(QtWidgets.QWidget):
         # self.patient_label.setTextFormat(Qt.TextFormat.RichText)
         # TODO: As Table
         self.patient_label.setText(
+            "\nPatientendaten:\n\n"
             f"Datensatz: {self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n\n"
             f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n\n"
             f"Wohnhaft: {self.patient_data.address}\n\n"
