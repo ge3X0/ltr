@@ -1031,16 +1031,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="00DB3F3C">
                                 <w:rPr>
@@ -1081,16 +1071,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="00233748">
                                 <w:rPr>
@@ -1142,16 +1122,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="001F0DE9">
                                 <w:rPr>
@@ -1181,16 +1151,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="001F0DE9">
                                 <w:rPr>
@@ -1218,17 +1178,7 @@
 
                         <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
                             <w:pPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
                                 <w:ind w:left="815"/>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="00C64365">
                                 <w:rPr>
@@ -1270,16 +1220,6 @@
                                 <w:ilvl w:val="0"/>
                                 <w:numId w:val="21"/>
                             </w:numPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="743"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
                         </w:pPr>
                         <w:r w:rsidRPr="004D192F">
                             <w:rPr>
@@ -1298,16 +1238,6 @@
                                 <w:ilvl w:val="0"/>
                                 <w:numId w:val="21"/>
                             </w:numPr>
-                            <w:tabs>
-                                <w:tab w:val="left" w:pos="743"/>
-                                <w:tab w:val="left" w:pos="6804"/>
-                            </w:tabs>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="16"/>
-                                <w:szCs w:val="16"/>
-                            </w:rPr>
                         </w:pPr>
                         <w:r w:rsidRPr="004D192F">
                             <w:rPr>
@@ -1356,7 +1286,7 @@
                             </w:r>
                         </w:p>
 
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00C64365" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
@@ -1439,16 +1369,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="00675C3C">
                                 <w:rPr>
@@ -1466,16 +1386,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="00675C3C">
                                 <w:rPr>
@@ -1493,16 +1403,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="00675C3C">
                                 <w:rPr>
@@ -1527,16 +1427,6 @@
                         </w:p>
                         <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="00810AB5">
                             <w:pPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="18"/>
-                                    <w:szCs w:val="18"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r>
                                 <w:rPr>
@@ -1554,16 +1444,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="004F573F">
                                 <w:rPr>
@@ -1581,16 +1461,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r>
                                 <w:rPr>
@@ -1608,16 +1478,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r>
                                 <w:rPr>
@@ -1635,16 +1495,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r>
                                 <w:rPr>
@@ -1662,16 +1512,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="004C2EB7">
                                 <w:rPr>
@@ -1691,16 +1531,6 @@
                                         <w:ilvl w:val="0"/>
                                         <w:numId w:val="21"/>
                                     </w:numPr>
-                                    <w:tabs>
-                                        <w:tab w:val="left" w:pos="743"/>
-                                        <w:tab w:val="left" w:pos="6804"/>
-                                    </w:tabs>
-                                    <w:rPr>
-                                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                                  w:cs="Lucida Sans Unicode"/>
-                                        <w:sz w:val="16"/>
-                                        <w:szCs w:val="16"/>
-                                    </w:rPr>
                                 </w:pPr>
                                 <w:r>
                                     <w:rPr>
@@ -1718,16 +1548,6 @@
                                         <w:ilvl w:val="0"/>
                                         <w:numId w:val="21"/>
                                     </w:numPr>
-                                    <w:tabs>
-                                        <w:tab w:val="left" w:pos="743"/>
-                                        <w:tab w:val="left" w:pos="6804"/>
-                                    </w:tabs>
-                                    <w:rPr>
-                                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                                  w:cs="Lucida Sans Unicode"/>
-                                        <w:sz w:val="16"/>
-                                        <w:szCs w:val="16"/>
-                                    </w:rPr>
                                 </w:pPr>
                                 <w:r w:rsidRPr="004C2EB7">
                                     <w:rPr>
@@ -1747,16 +1567,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r>
                                 <w:rPr>
@@ -1774,16 +1584,6 @@
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="004C2EB7">
                                 <w:rPr>
@@ -1795,24 +1595,14 @@
                                 <w:t xml:space="preserve">Kein Nitrospray bei Clusterkopfschmerzen </w:t>
                             </w:r>
                         </w:p>
-                        <w:p w:rsidR="00877D06" w:rsidRPr="004C2EB7" w:rsidRDefault="00877D06" w:rsidP="00810AB5">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
                                     <w:numId w:val="21"/>
                                 </w:numPr>
-                                <w:tabs>
-                                    <w:tab w:val="left" w:pos="743"/>
-                                    <w:tab w:val="left" w:pos="6804"/>
-                                </w:tabs>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
                             </w:pPr>
-                            <w:r w:rsidRPr="004C2EB7">
+                            <w:r>
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
                                               w:cs="Lucida Sans Unicode"/>
