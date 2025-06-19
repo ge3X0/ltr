@@ -61,15 +61,6 @@
                 <w:pPr>
                     <w:jc w:val="both"/>
                 </w:pPr>
-<!--                <w:r>-->
-<!--                    <w:rPr>-->
-<!--                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>-->
-<!--                        <w:sz w:val="18"/>-->
-<!--                        <w:szCs w:val="18"/>-->
-<!--                        <w:highlight w:val="yellow"/>-->
-<!--                    </w:rPr>-->
-<!--                    <w:t xml:space="preserve">Zur Prophylaxe der Migräne erhielt <xsl:call-template name="patient"/> die hochdosierten Nahrungsergänzungsmittel </w:t>-->
-<!--                </w:r>-->
 
                 <xsl:call-template name="text-run">
                     <xsl:with-param name="highlight" select="true()"/>
