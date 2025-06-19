@@ -43,9 +43,9 @@ class MainWidget(QtWidgets.QWidget):
 
         # Set standard Path values, important paths are handled before init
 
-        self.configs["file_db"] = Path(self.configs.get("file_db", "./"))
-        self.configs["save_path"] = Path(self.configs.get("save_path", "./data"))
-        self.configs["output_path"] = Path(self.configs.get("output_path", "./output"))
+        self.configs["file_db"] = self.configs["base_path"] / self.configs.get("file_db", ".")
+        self.configs["save_path"] = self.configs["base_path"] / self.configs.get("save_path", "data")
+        self.configs["output_path"] = self.configs["base_path"] / self.configs.get("output_path", "output")
 
         # Tab Widget is central widget
 
@@ -223,12 +223,22 @@ if __name__ == "__main__":
     """)
     app.setFont(QtGui.QFont("Arial", 14))
 
-    if not Path("config.toml").exists():
+    config_path = Path.home() / ".ltr/config.toml"
+    print(config_path)
+
+    if not config_path.exists():
+        config_path = Path("config.toml")
+
+    base_path = config_path.parent
+
+    if not config_path.exists():
         QtWidgets.QMessageBox.warning(None, "Config nicht gefunden", "Eine config.toml Datei muss erstellt werden")
         exit(app.exit(0))
 
-    with open("config.toml", "rb") as config_file:
+    with config_path.open("rb") as config_file:
         configs = toml.load(config_file)
+
+    configs["base_path"] = base_path
 
     if "template_file" not in configs:
         QtWidgets.QMessageBox.warning(None,
@@ -236,7 +246,7 @@ if __name__ == "__main__":
                                       "config.toml muss Schlüssel template_file beinhalten")
         exit(app.exit(0))
 
-    configs["template_file"] = Path(configs["template_file"])
+    configs["template_file"] = base_path / configs["template_file"]
     if not configs["template_file"].exists():
         QtWidgets.QMessageBox.warning(None,
                                       "Datei nicht gefunden",
@@ -249,7 +259,7 @@ if __name__ == "__main__":
                                       "config.toml muss Schlüssel xsl_file beinhalten")
         exit(app.exit(0))
 
-    configs["xsl_file"] = Path(configs["xsl_file"])
+    configs["xsl_file"] = base_path / configs["xsl_file"]
     if not configs["xsl_file"].exists():
         QtWidgets.QMessageBox.warning(None,
                                       "Datei nicht gefunden",
