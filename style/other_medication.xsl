@@ -191,7 +191,9 @@
                             </w:pPr>
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
-                                    <xsl:value-of select="dosis" /> <xsl:value-of select="unit"/>
+                                    <xsl:value-of select="dosis" />
+                                    <xsl:text> </xsl:text>
+                                    <xsl:value-of select="unit"/>
                                 </xsl:with-param>
                             </xsl:call-template>
                         </w:p>

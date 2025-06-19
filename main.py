@@ -1,4 +1,4 @@
-from PySide6 import QtWidgets, QtGui, QtCore
+from PySide6 import QtWidgets, QtGui
 from PySide6.QtCore import Qt
 
 from pathlib import Path
@@ -10,10 +10,11 @@ import subprocess
 from saxonche import PySaxonProcessor
 
 from models import PatientData
-from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, ExamTab, LoadingDialog
+from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, ExamTab
 
 # TODO:
 #       - Arzt Adresse
+#       - Zentral gelegen, lokale Optionen
 #   - (Word Datei bearbeiten)
 
 class MainWidget(QtWidgets.QWidget):
