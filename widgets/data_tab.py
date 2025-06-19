@@ -26,7 +26,7 @@ class DataTabWidget(QtWidgets.QWidget):
         meds = []
 
         # Match medication per line
-        for entry in text_line.splitlines():
+        for entry in map(lambda l: re.sub(r"\(.+?\)", "", l).strip(),text_line.splitlines()):
             if med := self.med_pattern.match(entry):
                 med_name = med[1].strip()
 
@@ -34,7 +34,7 @@ class DataTabWidget(QtWidgets.QWidget):
                     continue
 
                 meds.append(Medication(
-                    name=med[1].strip(), dosis=med[2], unit=med[3],
+                    name=med_name, dosis=med[2], unit=med[3],
                     morning=med[4], noon=med[5], evening=med[6], night=med[7] if med[7] is not None else "0"
                 ))
 
@@ -45,7 +45,11 @@ class DataTabWidget(QtWidgets.QWidget):
                     if med_name in self.configs["ignore_meds"]:
                         continue
 
-                    meds.append(Medication(name=med[1].strip()))
+                    meds.append(Medication(
+                        name=med_name,
+                        dosis=med[2] if med[2] is not None else "?",
+                        unit=med[3] if med[3] is not None else "",
+                    ))
 
         # Substitute medication names with alternatives from config.toml
         for md in meds:
@@ -157,7 +161,13 @@ class DataTabWidget(QtWidgets.QWidget):
         self.med_pattern = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
 
         # TODO: find dosages
-        self.simple_med_pattern = re.compile(f"(?:^|,\\s*)((?:,(?=\\d)|[^,\\n(])+)(?:\\([^)]+)?", flags=re.MULTILINE)
+        self.simple_med_pattern = re.compile(
+            f"(?:^|,\\s*)"      # Start of line or after comma
+            # f"((?:,(?=\\d)|[^,(])+?)"
+            f"{md_name}"
+            f"(?:\\s{md_dosage}{md_unit})?"
+            # f"(?:\\s\\([^)]+)?"
+            f"(?=$|,\\s)")
 
         self.patient_data = PatientData()
         self.configs = configs

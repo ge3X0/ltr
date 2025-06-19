@@ -200,6 +200,7 @@ class MainWidget(QtWidgets.QWidget):
                     output.writestr(doc_name, out_str)
 
         QtWidgets.QMessageBox.information(self, "Brief geschrieben", "Brief wurde fertig gestellt [STRG+O] zum öffnen")
+        self.forms[0].letter_button.setVisible(True)
 
 
     def open_output_file(self):
