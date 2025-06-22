@@ -16,6 +16,7 @@ if __name__ == "__main__":
     app.setStyleSheet("""
     QPushButton { padding: 12px; }
     QLineEdit { padding: 12px; }
+    QComboBox { padding: 12px; }
     """)
     app.setFont(QtGui.QFont("Arial", 14))
 

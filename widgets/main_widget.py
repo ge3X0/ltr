@@ -5,7 +5,6 @@ from pathlib import Path
 import tomllib as toml
 from zipfile import ZipFile
 import re
-import subprocess
 
 from saxonche import PySaxonProcessor
 
@@ -27,7 +26,7 @@ class MainWidget(QtWidgets.QWidget):
     @Slot()
     def template_changed(self, index: int):
         if 0 <= index < len(self.configs["template_files"]):
-            self.current_template = self.configs["template_files"][index]
+            self.configs["current_template"] = self.configs["template_files"][index]
 
 
     def __init__(self, configs: dict):
@@ -53,27 +52,30 @@ class MainWidget(QtWidgets.QWidget):
         self.configs["save_path"] = self.configs["base_path"] / self.configs.get("save_path", "data")
         self.configs["output_path"] = self.configs["base_path"] / self.configs.get("output_path", "output")
 
-        self.current_template: Path = self.configs["template_files"][0]
+        # Easy transfer of template change to other widgets
+        self.configs["current_template"]: Path = self.configs["template_files"][0]
 
         # Tab Widget is central widget
 
         self.setLayout(QtWidgets.QVBoxLayout())
-
-
-        template_picker = QtWidgets.QComboBox(self)
-        self.layout().addWidget(template_picker)
-        template_picker.addItems([str(f) for f in self.configs["template_files"]])
-        template_picker.currentIndexChanged.connect(self.template_changed)
 
         self.tab_widget = QtWidgets.QTabWidget()
         self.layout().addWidget(self.tab_widget)
 
         # Export Button
 
-        export_button = QtWidgets.QPushButton("Dokument exportieren")
+        export_layout = QtWidgets.QHBoxLayout()
+        self.layout().addLayout(export_layout)
+
+        export_button = QtWidgets.QPushButton("Dokument exportieren: ")
+        export_layout.addWidget(export_button)
         export_button.clicked.connect(self.to_xml)
         export_button.setShortcut("Ctrl+E")
-        self.layout().addWidget(export_button)
+
+        template_picker = QtWidgets.QComboBox(self)
+        export_layout.addWidget(template_picker)
+        template_picker.addItems([str(f.stem) for f in self.configs["template_files"]])
+        template_picker.currentIndexChanged.connect(self.template_changed)
 
 
         # Setup tabs
@@ -87,7 +89,7 @@ class MainWidget(QtWidgets.QWidget):
         # Shortcut definition
 
         open_output_shortcut = QtGui.QShortcut("Ctrl+O", self)
-        open_output_shortcut.activated.connect(self.forms[0].show_letter)
+        open_output_shortcut.activated.connect(self.forms[0].show_document)
         open_data_shortcut = QtGui.QShortcut("Ctrl+I", self)
         open_data_shortcut.activated.connect(self.forms[0].show_data_sheet)
         save_data_shortcut = QtGui.QShortcut("Ctrl+S", self)
@@ -191,7 +193,7 @@ class MainWidget(QtWidgets.QWidget):
 
         # Generate patient data file
         patient_file_name = self.forms[0].patient_file_name()
-        output_file = self.configs["output_path"] / self.current_template.stem / f"{patient_file_name}.docx"
+        output_file = self.configs["output_path"] / self.configs["current_template"].stem / f"{patient_file_name}.docx"
 
         if (output_file.exists()
             and QtWidgets.QMessageBox.StandardButton.Yes != QtWidgets.QMessageBox.question(
@@ -223,7 +225,7 @@ class MainWidget(QtWidgets.QWidget):
         # Replace docs templates {varname} with <varname /> for xsl processing and load template docs file
 
         with ZipFile(output_file, "w") as output:
-            with ZipFile(self.current_template) as template:
+            with ZipFile(self.configs["current_template"]) as template:
 
                 for doc_name in template.infolist():
                     # Just copy files that are not processed
@@ -241,15 +243,3 @@ class MainWidget(QtWidgets.QWidget):
 
         QtWidgets.QMessageBox.information(self, "Dokument geschrieben", "Dokument wurde fertig gestellt [STRG+O] zum öffnen")
         self.forms[0].letter_button.setVisible(True)
-
-
-    # @Slot()
-    # def open_output_file(self):
-    #     patient_file_name = self.forms[0].patient_file_name()
-    #     output_file = self.configs["output_path"] / f"{patient_file_name}.docx"
-    #     if not output_file.exists():
-    #         QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", "Für den aktuellen Datensatz kann kein Dokument gefunden werden")
-    #         return
-    #
-    #     subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}")
-

@@ -218,7 +218,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
         self.letter_button = QtWidgets.QPushButton("Brief öffnen")
         self.letter_button.setToolTip("Brief öffnen [Strg+O]")
-        self.letter_button.clicked.connect(self.show_letter)
+        self.letter_button.clicked.connect(self.show_document)
         self.letter_button.setVisible(False)
         buttons_layout.addWidget(self.letter_button)
 
@@ -256,10 +256,9 @@ class DataTabWidget(QtWidgets.QWidget):
 
 
     @QtCore.Slot()
-    def show_letter(self):
+    def show_document(self):
         """Display Schnuppi for currently loaded patient"""
-        # TODO adjust path
-        output_file = self.configs["output_path"] / f"{self.patient_file_name()}.docx"
+        output_file = self.configs["output_path"] / self.configs["current_template"].stem / f"{self.patient_file_name()}.docx"
         if not output_file.exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {output_file} nicht öffnen")
             return

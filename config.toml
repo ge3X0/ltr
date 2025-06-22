@@ -3,7 +3,7 @@ file_db = "./file_db"
 
 # Path to template *.docx to copy contents from (required)
 template_files = [
-    "./templates/Brief.docx",
+    "./templates/Arztbrief.docx",
     "./templates/Arbeitgebervorlage.docx",
     "./templates/Einverständnisserklärung Minderjährige.docx",
     "./templates/Krankenhaustagegeldversicherung.docx"
