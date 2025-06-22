@@ -5,9 +5,10 @@ from widgets import MainWidget
 
 
 # TODO:
-#       - Arzt Adresse
-#       - Zentral gelegen, lokale Optionen
-#   - (Word Datei bearbeiten)
+#  Read template variables from docs files
+#  Edit docx files and re-insert variables
+
+LTR_VERSION = "v0.2.1"
 
 
 if __name__ == "__main__":
@@ -29,6 +30,7 @@ if __name__ == "__main__":
     if not config_path.exists():
         config_path = Path("config.toml")
 
+    # TODO: "Merge" local and central configs?
     base_path = config_path.parent
 
     if not config_path.exists():
@@ -98,6 +100,7 @@ if __name__ == "__main__":
     # Start program
 
     widget = MainWidget(configs)
+    widget.setWindowTitle(f"LTR - Klinisches Schreibprogramm ({LTR_VERSION})")
     widget.showMaximized()
     widget.show()
 

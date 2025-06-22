@@ -102,7 +102,6 @@ class DataTabWidget(QtWidgets.QWidget):
                         self.patient_data.address = line.strip()
 
                 case Field.Occupation:
-                    # TODO: extract gdb
                     self.patient_data.occupation = text
 
                 case Field.Doctor:
@@ -160,7 +159,6 @@ class DataTabWidget(QtWidgets.QWidget):
         n = r"\s*([\d.,/]+°?)\s*"
         self.med_pattern = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
 
-        # TODO: find dosages
         self.simple_med_pattern = re.compile(
             f"(?:^|,\\s*)"      # Start of line or after comma
             # f"((?:,(?=\\d)|[^,(])+?)"
@@ -216,8 +214,8 @@ class DataTabWidget(QtWidgets.QWidget):
         self.data_sheet_button.setVisible(False)
         buttons_layout.addWidget(self.data_sheet_button)
 
-        self.letter_button = QtWidgets.QPushButton("Brief öffnen")
-        self.letter_button.setToolTip("Brief öffnen [Strg+O]")
+        self.letter_button = QtWidgets.QPushButton("Dokument öffnen")
+        self.letter_button.setToolTip("Dokument öffnen [Strg+O]")
         self.letter_button.clicked.connect(self.show_document)
         self.letter_button.setVisible(False)
         buttons_layout.addWidget(self.letter_button)
@@ -329,9 +327,14 @@ class DataTabWidget(QtWidgets.QWidget):
 
     def patient_file_name(self) -> str:
         """Generate unique filename from loaded patient data"""
-        # TODO: Remove .. and /
+
+        # Remove directory string parts
+
+        first_name = self.patient_data.first_name.replace("..", "")
+        last_name = self.patient_data.last_name.replace("..", "")
+
         # TODO: let user define file name via config.toml
-        return f"A-{self.patient_data.last_name}, {self.patient_data.first_name} {self.patient_data.admission.strftime('%d%m%Y')}"
+        return f"A-{last_name}, {first_name} {self.patient_data.admission.strftime('%d%m%Y')}"
 
 
     def to_xml(self) -> str:
