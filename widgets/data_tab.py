@@ -211,14 +211,12 @@ class DataTabWidget(QtWidgets.QWidget):
         sheet_layout.addLayout(buttons_layout)
 
         self.data_sheet_button = QtWidgets.QPushButton("Schnuppi öffnen")
-        self.data_sheet_button.setShortcut("Ctrl+I")
         self.data_sheet_button.setToolTip("Datenblatt öffnen [Strg+I]")
         self.data_sheet_button.clicked.connect(self.show_data_sheet)
         self.data_sheet_button.setVisible(False)
         buttons_layout.addWidget(self.data_sheet_button)
 
         self.letter_button = QtWidgets.QPushButton("Brief öffnen")
-        self.letter_button.setShortcut("Ctrl+O")
         self.letter_button.setToolTip("Brief öffnen [Strg+O]")
         self.letter_button.clicked.connect(self.show_letter)
         self.letter_button.setVisible(False)
@@ -260,7 +258,7 @@ class DataTabWidget(QtWidgets.QWidget):
     @QtCore.Slot()
     def show_letter(self):
         """Display Schnuppi for currently loaded patient"""
-
+        # TODO adjust path
         output_file = self.configs["output_path"] / f"{self.patient_file_name()}.docx"
         if not output_file.exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {output_file} nicht öffnen")
@@ -332,6 +330,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
     def patient_file_name(self) -> str:
         """Generate unique filename from loaded patient data"""
+        # TODO: Remove .. and /
         # TODO: let user define file name via config.toml
         return f"A-{self.patient_data.last_name}, {self.patient_data.first_name} {self.patient_data.admission.strftime('%d%m%Y')}"
 
