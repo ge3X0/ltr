@@ -319,19 +319,19 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template match="symptome">
+    <xsl:template match="//symptome">
         <xsl:call-template name="string-list">
             <xsl:with-param name="selection" select="$data//field[@name='symptoms']/value"/>
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template match="bdi_ii">
+    <xsl:template match="//bdi_ii">
         <xsl:call-template name="string-list">
             <xsl:with-param name="selection" select="$data//field[@name='bdi_ii']/value"/>
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template match="chronisch">
+    <xsl:template match="//chronisch">
         <xsl:call-template name="string-list">
             <xsl:with-param name="selection" select="$data//field[@name='chronisch']/value"/>
         </xsl:call-template>

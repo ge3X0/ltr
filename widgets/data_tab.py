@@ -26,7 +26,7 @@ class DataTabWidget(QtWidgets.QWidget):
         meds = []
 
         # Match medication per line
-        for entry in text_line.splitlines():
+        for entry in map(lambda l: re.sub(r"\(.+?\)", "", l).strip(),text_line.splitlines()):
             if med := self.med_pattern.match(entry):
                 med_name = med[1].strip()
 
@@ -34,7 +34,7 @@ class DataTabWidget(QtWidgets.QWidget):
                     continue
 
                 meds.append(Medication(
-                    name=med[1].strip(), dosis=med[2], unit=med[3],
+                    name=med_name, dosis=med[2], unit=med[3],
                     morning=med[4], noon=med[5], evening=med[6], night=med[7] if med[7] is not None else "0"
                 ))
 
@@ -45,7 +45,11 @@ class DataTabWidget(QtWidgets.QWidget):
                     if med_name in self.configs["ignore_meds"]:
                         continue
 
-                    meds.append(Medication(name=med[1].strip()))
+                    meds.append(Medication(
+                        name=med_name,
+                        dosis=med[2] if med[2] is not None else "?",
+                        unit=med[3] if med[3] is not None else "",
+                    ))
 
         # Substitute medication names with alternatives from config.toml
         for md in meds:
@@ -98,7 +102,6 @@ class DataTabWidget(QtWidgets.QWidget):
                         self.patient_data.address = line.strip()
 
                 case Field.Occupation:
-                    # TODO: extract gdb
                     self.patient_data.occupation = text
 
                 case Field.Doctor:
@@ -156,18 +159,27 @@ class DataTabWidget(QtWidgets.QWidget):
         n = r"\s*([\d.,/]+°?)\s*"
         self.med_pattern = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
 
-        # TODO: find dosages
-        self.simple_med_pattern = re.compile(f"(?:^|,\\s*)((?:,(?=\\d)|[^,\\n(])+)(?:\\([^)]+)?", flags=re.MULTILINE)
+        self.simple_med_pattern = re.compile(
+            f"(?:^|,\\s*)"      # Start of line or after comma
+            # f"((?:,(?=\\d)|[^,(])+?)"
+            f"{md_name}"
+            f"(?:\\s{md_dosage}{md_unit})?"
+            # f"(?:\\s\\([^)]+)?"
+            f"(?=$|,\\s)")
 
         self.patient_data = PatientData()
         self.configs = configs
 
-        dt_layout = QtWidgets.QVBoxLayout(self)
-        dt_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        main_layout = QtWidgets.QVBoxLayout(self)
+        main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Setup Search bar and completer
 
+        search_box = QtWidgets.QHBoxLayout()
+
         self.search_bar = QtWidgets.QLineEdit()
+        search_box.addWidget(self.search_bar)
+
         self.search_bar.returnPressed.connect(self.select_patient)
 
         file_completer = QtWidgets.QCompleter(
@@ -176,51 +188,57 @@ class DataTabWidget(QtWidgets.QWidget):
         self.search_bar.setCompleter(file_completer)
 
         search_button = QtWidgets.QPushButton("Neu laden")
+        search_box.addWidget(search_button)
+
         search_button.setShortcut("F5")
         search_button.setToolTip("Lade Daten erneut [F5]")
         search_button.pressed.connect(self.select_patient)
 
-        search_box = QtWidgets.QHBoxLayout()
-        search_box.addWidget(self.search_bar)
-        search_box.addWidget(search_button)
-
-        dt_layout.addLayout(search_box)
+        main_layout.addLayout(search_box)
 
         # Setup Data display
 
         sheet_layout = QtWidgets.QHBoxLayout()
-        dt_layout.addLayout(sheet_layout)
-        sheet_layout.addWidget(QtWidgets.QLabel("\nPatientendaten\n"))
+        main_layout.addLayout(sheet_layout)
+
+        self.patient_label = QtWidgets.QLabel("\nPatientendaten:")
+        sheet_layout.addWidget(self.patient_label)
+
+        buttons_layout = QtWidgets.QVBoxLayout()
+        buttons_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        sheet_layout.addLayout(buttons_layout)
 
         self.data_sheet_button = QtWidgets.QPushButton("Schnuppi öffnen")
-        self.data_sheet_button.setShortcut("Ctrl+I")
-        self.data_sheet_button.setToolTip("Datenblatt öffnen [Strg + I]")
+        self.data_sheet_button.setToolTip("Datenblatt öffnen [Strg+I]")
         self.data_sheet_button.clicked.connect(self.show_data_sheet)
         self.data_sheet_button.setVisible(False)
-        sheet_layout.addWidget(self.data_sheet_button)
+        buttons_layout.addWidget(self.data_sheet_button)
 
-        self.patient_label = QtWidgets.QLabel()
-        dt_layout.addWidget(self.patient_label)
+        self.letter_button = QtWidgets.QPushButton("Dokument öffnen")
+        self.letter_button.setToolTip("Dokument öffnen [Strg+O]")
+        self.letter_button.clicked.connect(self.show_document)
+        self.letter_button.setVisible(False)
+        buttons_layout.addWidget(self.letter_button)
 
         # Setup ICD10 Table
 
-        dt_layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
+        main_layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
 
         self.diagnoses_table = QtWidgets.QTableView()
         self.diagnoses_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.diagnoses_table.setModel(DiagnosesTableModel([]))
-        dt_layout.addWidget(self.diagnoses_table)
+        main_layout.addWidget(self.diagnoses_table)
 
         # Setup Medication Table
 
-        dt_layout.addWidget(QtWidgets.QLabel("\nAktuelle Dauermedikation\n"))
+        main_layout.addWidget(QtWidgets.QLabel("\nAktuelle Dauermedikation\n"))
 
         self.medication_table = QtWidgets.QTableView()
         self.medication_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.medication_table.setModel(MedicationTableModel([], []))
         self.medication_table.setSpan(0, 0, 1, 7)
         self.medication_table.setSpan(1, 0, 1, 7)
-        dt_layout.addWidget(self.medication_table)
+        main_layout.addWidget(self.medication_table)
 
 
     @QtCore.Slot()
@@ -233,6 +251,17 @@ class DataTabWidget(QtWidgets.QWidget):
             return
 
         subprocess.run(f"powershell -Command \"& {{Start-Process '{patient_path.absolute()}'\"}}")
+
+
+    @QtCore.Slot()
+    def show_document(self):
+        """Display Schnuppi for currently loaded patient"""
+        output_file = self.configs["output_path"] / self.configs["current_template"].stem / f"{self.patient_file_name()}.docx"
+        if not output_file.exists():
+            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {output_file} nicht öffnen")
+            return
+
+        subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}")
 
 
     @QtCore.Slot()
@@ -256,8 +285,11 @@ class DataTabWidget(QtWidgets.QWidget):
         data_file = Path(self.configs["save_path"] / f"{self.patient_file_name()}.xml")
 
         if not data_file.exists():
+            self.letter_button.setVisible(False)
             self.dataLoaded.emit(None)
             return
+
+        self.letter_button.setVisible(True)
 
         xml = self.proc.parse_xml(xml_file_name=str(data_file.absolute().as_posix()))
         xpath = self.proc.new_xpath_processor()
@@ -272,6 +304,7 @@ class DataTabWidget(QtWidgets.QWidget):
         # self.patient_label.setTextFormat(Qt.TextFormat.RichText)
         # TODO: As Table
         self.patient_label.setText(
+            "\nPatientendaten:\n\n"
             f"Datensatz: {self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n\n"
             f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n\n"
             f"Wohnhaft: {self.patient_data.address}\n\n"
@@ -294,8 +327,14 @@ class DataTabWidget(QtWidgets.QWidget):
 
     def patient_file_name(self) -> str:
         """Generate unique filename from loaded patient data"""
+
+        # Remove directory string parts
+
+        first_name = self.patient_data.first_name.replace("..", "")
+        last_name = self.patient_data.last_name.replace("..", "")
+
         # TODO: let user define file name via config.toml
-        return f"A-{self.patient_data.last_name}, {self.patient_data.first_name} {self.patient_data.admission.strftime('%d%m%Y')}"
+        return f"A-{last_name}, {first_name} {self.patient_data.admission.strftime('%d%m%Y')}"
 
 
     def to_xml(self) -> str:

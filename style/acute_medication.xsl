@@ -769,7 +769,24 @@
                             <xsl:with-param name="highlight" select="true()"/>
                             <xsl:with-param name="size" select="16"/>
                             <xsl:with-param name="text">
-                                <xsl:text>Beachtung des Agranulozytoserisikos unter Metamizol. Bei Fieber/Schüttelfrost, Halsschmerzen, Abgeschlagenheit oder Affektionen von Haut und Schleimhäuten ist unverzüglich ein Arzt aufzusuchen und auf die Medikamenteneinnahme hinzuweisen. </xsl:text>
+                                <xsl:text>Beachtung des </xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
+
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="highlight" select="true()"/>
+                            <xsl:with-param name="bold" select="true()"/>
+                            <xsl:with-param name="size" select="16"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>Agranulozytoserisikos unter Metamizol</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
+
+                        <xsl:call-template name="text-run">
+                            <xsl:with-param name="highlight" select="true()"/>
+                            <xsl:with-param name="size" select="16"/>
+                            <xsl:with-param name="text">
+                                <xsl:text>. Bei Fieber/Schüttelfrost, Halsschmerzen, Abgeschlagenheit oder Affektionen von Haut und Schleimhäuten ist unverzüglich ein Arzt aufzusuchen und auf die Medikamenteneinnahme hinzuweisen. </xsl:text>
                             </xsl:with-param>
                         </xsl:call-template>
                     </w:p>

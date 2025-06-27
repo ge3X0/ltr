@@ -54,7 +54,7 @@
                     <w:tcPr>
                         <w:tcW w:w="3686" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
+                    <w:p>
                         <w:pPr>
                             <w:jc w:val="both"/>
                             <w:rPr>
@@ -94,7 +94,7 @@
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
+                    <w:p>
                         <w:pPr>
                             <w:jc w:val="center"/>
                         </w:pPr>
@@ -112,7 +112,7 @@
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
+                    <w:p>
                         <w:pPr>
                             <w:jc w:val="center"/>
                         </w:pPr>
@@ -130,7 +130,7 @@
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
+                    <w:p>
                         <w:pPr>
                             <w:jc w:val="center"/>
                         </w:pPr>
@@ -148,7 +148,7 @@
                     <w:tcPr>
                         <w:tcW w:w="1134" w:type="dxa"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00787D01">
+                    <w:p>
                         <w:pPr>
                             <w:jc w:val="center"/>
                         </w:pPr>
@@ -191,7 +191,9 @@
                             </w:pPr>
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
-                                    <xsl:value-of select="dosis" /> <xsl:value-of select="unit"/>
+                                    <xsl:value-of select="dosis" />
+                                    <xsl:text> </xsl:text>
+                                    <xsl:value-of select="unit"/>
                                 </xsl:with-param>
                             </xsl:call-template>
                         </w:p>
@@ -365,6 +367,7 @@
                         </w:pPr>
                     </w:p>
                 </w:tc>
+
             </w:tr>
         </w:tbl>
     </xsl:template>

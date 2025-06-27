@@ -45,13 +45,13 @@
 
     <xsl:template match="//anamnese_aura">
         <xsl:if test="$diag_migraine_with_aura">
-            <xsl:text>Dabei treten visuelle Auren in Form von Fortifikationsphänomenen in etwa der Hälfte der Attacken auf. </xsl:text>
+            <xsl:text> Dabei treten visuelle Auren in Form von Fortifikationsphänomenen in etwa der Hälfte der Attacken auf.</xsl:text>
         </xsl:if>
     </xsl:template>
 
     <xsl:template match="//anamnese_status">
         <xsl:if test="$diag_status_migrainosus">
-            <xsl:text>Einzelne Attacken verlaufen häufig prolongiert als Status migraenosus. </xsl:text>
+            <xsl:text> Einzelne Attacken verlaufen häufig prolongiert als Status migraenosus.</xsl:text>
         </xsl:if>
     </xsl:template>
 
@@ -61,35 +61,30 @@
                 <w:pPr>
                     <w:jc w:val="both"/>
                 </w:pPr>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                    <w:t xml:space="preserve">Zur Prophylaxe der Migräne erhielt <xsl:call-template name="patient"/> die hochdosierten Nahrungsergänzungsmittel </w:t>
-                </w:r>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:b/>
-                        <w:bCs/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                    <w:t>Vitamin B2 und Magnesium</w:t>
-                </w:r>
-                <w:r>
-                    <w:rPr>
-                        <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:highlight w:val="yellow"/>
-                    </w:rPr>
-                    <w:t>.</w:t>
-                </w:r>
+
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="highlight" select="true()"/>
+                    <xsl:with-param name="text">
+                        <xsl:text>Zur Prophylaxe der Migräne erhielt </xsl:text>
+                        <xsl:call-template name="patient"/>
+                        <xsl:text> die hochdosierten Nahrungsergänzungsmittel </xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="bold" select="true()"/>
+                    <xsl:with-param name="highlight" select="true()"/>
+                    <xsl:with-param name="text">
+                        <xsl:text>Vitamin B2 und Magnesium</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+
+                <xsl:call-template name="text-run">
+                    <xsl:with-param name="highlight" select="true()"/>
+                    <xsl:with-param name="text">
+                        <xsl:text>.</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
             </w:p>
         </xsl:if>
     </xsl:template>
