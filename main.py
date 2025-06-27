@@ -16,6 +16,7 @@ from widgets import DataTabWidget, SplitLineEdit, NumLineEdit, XBox, EvalLine, E
 #       - Arzt Adresse
 #   - (Word Datei bearbeiten)
 
+
 class MainWidget(QtWidgets.QWidget):
     """
     :ivar configs: Dictionary loaded from configs.toml
