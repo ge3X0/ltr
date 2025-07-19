@@ -213,8 +213,19 @@ class MainWidget(QtWidgets.QWidget):
 
         # Load xsl style sheet and add "data" global variable referring to created data file
 
+        translate_tab = {
+            'Ä': "%C3%84", 'Ö': "%C3%96", 'Ü': "%C3%9C",
+            'ä': "%C3%A4", 'ö': "%C3%B6", 'ü': "%C3%BC",
+            'ß': "%C3%9F"
+        }
+
+        path_str = "".join(
+            translate_tab[s] if s in translate_tab else s
+            for s in str(data_file.absolute().as_posix())
+        )
+
         xslt_proc = self.proc.new_xslt30_processor()
-        xslt_proc.set_parameter("data_file", self.proc.make_string_value(str(data_file.absolute().as_posix())))
+        xslt_proc.set_parameter("data_file", self.proc.make_string_value(path_str)))
         transform = xslt_proc.compile_stylesheet(stylesheet_file=str(self.configs["xsl_file"].absolute()))
 
         # Internal function to concat docs templates {varname} if word inserted <t></t> tags
