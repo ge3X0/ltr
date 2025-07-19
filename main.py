@@ -1,14 +1,14 @@
 from PySide6 import QtWidgets, QtGui
 from pathlib import Path
 import tomllib as toml
-from widgets import MainWidget
+from widgets.main_widget import MainWidget
 
 
 # TODO:
 #  Read template variables from docs files
 #  Edit docx files and re-insert variables
 
-LTR_VERSION = "v0.2.1"
+LTR_VERSION = "v0.2.2"
 
 
 if __name__ == "__main__":
