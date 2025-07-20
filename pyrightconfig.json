@@ -1,0 +1,7 @@
+{
+    "reportAny": false,
+    "reportArgumentType": false,
+    "reportImplicitStringConcatenation": false,
+    "reportOptionalMemberAccess": false,
+    "reportUnusedCallResult": false
+}

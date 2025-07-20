@@ -6,9 +6,11 @@ import tomllib as toml
 from zipfile import ZipFile
 import re
 
+from typing import Any
+
 from saxonche import PySaxonProcessor
 
-from models import PatientData
+from models.patient_data import PatientData
 from .data_tab import DataTabWidget
 from .eval_line import EvalLine
 from .exam_tab import ExamTab
@@ -25,19 +27,23 @@ class MainWidget(QtWidgets.QWidget):
 
     @Slot()
     def template_changed(self, index: int):
+        """
+        Sets the currently used export-template to template with index `index`
+        """
+
         if 0 <= index < len(self.configs["template_files"]):
             self.configs["current_template"] = self.configs["template_files"][index]
 
 
-    def __init__(self, configs: dict):
+    def __init__(self, configs: dict[str, Any]):
         super().__init__()
 
-        self.proc = PySaxonProcessor(license=False)
-        self.patient_data = PatientData()
+        self.proc: PySaxonProcessor = PySaxonProcessor(license=False)
+        self.patient_data: PatientData = PatientData()
 
         # Load Configuration
 
-        self.configs = {
+        self.configs: dict[str, Any] = {
             "forms": [],
             "ignore_meds": [],
             "substitute_meds": {},
@@ -53,13 +59,13 @@ class MainWidget(QtWidgets.QWidget):
         self.configs["output_path"] = self.configs["base_path"] / self.configs.get("output_path", "output")
 
         # Easy transfer of template change to other widgets
-        self.configs["current_template"]: Path = self.configs["template_files"][0]
+        self.configs["current_template"] = self.configs["template_files"][0]
 
         # Tab Widget is central widget
 
         self.setLayout(QtWidgets.QVBoxLayout())
 
-        self.tab_widget = QtWidgets.QTabWidget()
+        self.tab_widget: QtWidgets.QTabWidget = QtWidgets.QTabWidget()
         self.layout().addWidget(self.tab_widget)
 
         # Export Button
@@ -82,7 +88,7 @@ class MainWidget(QtWidgets.QWidget):
 
         # Data Tab
 
-        self.forms = [DataTabWidget(self.proc, self.configs)]
+        self.forms: list[DataTabWidget] = [DataTabWidget(self.proc, self.configs)]
         self.tab_widget.addTab(self.forms[0], "&Patient")
         self.forms[0].search_bar.setFocus()
 

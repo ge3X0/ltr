@@ -13,7 +13,7 @@ from models import Medication, Diagnosis, Field, PatientData, DiagnosesTableMode
 
 
 class DataTabWidget(QtWidgets.QWidget):
-    dataLoaded = QtCore.Signal(PyXPathProcessor)
+    dataLoaded: QtCore.Signal = QtCore.Signal(PyXPathProcessor)
 
     # Internal method to extract medication from cell
     def __read_meds(self, text_line: str, when_key: str, how_key: str):
