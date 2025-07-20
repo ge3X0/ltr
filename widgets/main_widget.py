@@ -219,7 +219,7 @@ class MainWidget(QtWidgets.QWidget):
         )
 
         xslt_proc = self.proc.new_xslt30_processor()
-        xslt_proc.set_parameter("data_file", self.proc.make_string_value(path_str)))
+        xslt_proc.set_parameter("data_file", self.proc.make_string_value(path_str))
         transform = xslt_proc.compile_stylesheet(stylesheet_file=str(self.configs["xsl_file"].absolute()))
 
         # Internal function to concat docs templates {varname} if word inserted <t></t> tags
