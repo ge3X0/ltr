@@ -21,7 +21,7 @@ class EvalLine(QtWidgets.QLineEdit):
 
 
     def to_xml(self) -> str:
-        results = []
+        results: list[str] = []
 
         # Test if we look for separations or not
         it = self.text() if ',' not in self.text() and ' ' not in self.text() else [m[0] for m in re.finditer(r"\d+", self.text())]
@@ -53,11 +53,11 @@ class EvalLine(QtWidgets.QLineEdit):
     @QtCore.Slot()
     def from_xml(self, xpath: PyXPathProcessor | None):
         if (xpath is None
-        or (elements := xpath.evaluate(f'.//field[@name="{self.__field_id}"]/value')) is None):
+            or (elements := xpath.evaluate(f'.//field[@name="{self.__field_id}"]/value')) is None):
             self.setText("")
             return
 
-        vals = []
+        vals: list[str] = []
 
         for idx, e in enumerate(elements):
             if idx >= len(self.__values):

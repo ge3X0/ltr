@@ -1,6 +1,6 @@
 from enum import IntEnum
 from dataclasses import dataclass, field
-from typing import Self
+from typing import Self, override
 from datetime import datetime, timedelta
 
 

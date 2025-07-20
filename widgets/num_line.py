@@ -11,7 +11,7 @@ class NumLineEdit(QtWidgets.QLineEdit):
     def __init__(self, field_id: str, result_list: list[str], start: int = 0, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.__field_id = field_id
+        self.__field_id: str = field_id
         self.__result_list: list[str] = result_list
         self.__start: int = start
 
@@ -19,7 +19,7 @@ class NumLineEdit(QtWidgets.QLineEdit):
 
 
     def to_xml(self) -> str:
-        result = []
+        result: list[int] = []
         span = False
 
         for token in re.finditer(r"\d+|-", self.text()):

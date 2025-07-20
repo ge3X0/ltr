@@ -7,6 +7,8 @@ from pathlib import Path
 import re
 import subprocess
 
+from typing import Any
+
 from saxonche import PySaxonProcessor, PyXdmNode, PyXPathProcessor
 
 from models import Medication, Diagnosis, Field, PatientData, DiagnosesTableModel, MedicationTableModel
@@ -23,12 +25,12 @@ class DataTabWidget(QtWidgets.QWidget):
         :param how_key: str, Used to sort into medication
         """
 
-        meds = []
+        meds: list[Medication] = []
 
         # Match medication per line
         for entry in map(lambda l: re.sub(r"\(.+?\)", "", l).strip(),text_line.splitlines()):
             if med := self.med_pattern.match(entry):
-                med_name = med[1].strip()
+                med_name: str = med[1].strip()
 
                 if med_name in self.configs["ignore_meds"]:
                     continue
@@ -40,7 +42,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
             else:
                 for med in self.simple_med_pattern.finditer(entry):
-                    med_name = med[1].strip()
+                    med_name: str = med[1].strip()
 
                     if med_name in self.configs["ignore_meds"]:
                         continue
@@ -78,7 +80,7 @@ class DataTabWidget(QtWidgets.QWidget):
             # Group by paragraph, ignore lists
             if (p_nodes := xpath.evaluate(".//w:p[not(.//w:numPr)]")) is None:
                 continue
-            text = '\n'.join(p.string_value for p in p_nodes)
+            text: str = '\n'.join(p.string_value for p in p_nodes)
 
             # Process per field
             match cell_idx:
@@ -151,15 +153,15 @@ class DataTabWidget(QtWidgets.QWidget):
         super().__init__(*args, **kwargs)
 
         self.proc = proc
-        self.icd_pattern = re.compile(r"^\s*(\b[,./:\-\w\s?äöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$")
+        self.icd_pattern: re.Pattern[str] = re.compile(r"^\s*(\b[,./:\-\w\s?äöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$")
 
         md_name = r"([/.\-()\w\säöüÄÖÜß?]+?)"
         md_dosage = r"([\-\d?.,/]+)\s*"
         md_unit = r"((?:g|mg|µg|ug|ng|IE|ml|l|Hub|Kapsel|Kps\.?|Tablette|Tbl\.?|°|Tropfen|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ng|ml|l|d|Tag|h|Stunde))?)"
         n = r"\s*([\d.,/]+°?)\s*"
-        self.med_pattern = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
+        self.med_pattern: re.Pattern[str] = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
 
-        self.simple_med_pattern = re.compile(
+        self.simple_med_pattern: re.Pattern[str] = re.compile(
             f"(?:^|,\\s*)"      # Start of line or after comma
             # f"((?:,(?=\\d)|[^,(])+?)"
             f"{md_name}"
@@ -167,8 +169,8 @@ class DataTabWidget(QtWidgets.QWidget):
             # f"(?:\\s\\([^)]+)?"
             f"(?=$|,\\s)")
 
-        self.patient_data = PatientData()
-        self.configs = configs
+        self.patient_data: PatientData = PatientData()
+        self.configs: dict[str, Any] = configs
 
         main_layout = QtWidgets.QVBoxLayout(self)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -177,7 +179,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
         search_box = QtWidgets.QHBoxLayout()
 
-        self.search_bar = QtWidgets.QLineEdit()
+        self.search_bar: QtWidgets.QLineEdit = QtWidgets.QLineEdit()
         search_box.addWidget(self.search_bar)
 
         self.search_bar.returnPressed.connect(self.select_patient)
@@ -201,20 +203,20 @@ class DataTabWidget(QtWidgets.QWidget):
         sheet_layout = QtWidgets.QHBoxLayout()
         main_layout.addLayout(sheet_layout)
 
-        self.patient_label = QtWidgets.QLabel("\nPatientendaten:")
+        self.patient_label: QtWidgets.QLabel = QtWidgets.QLabel("\nPatientendaten:")
         sheet_layout.addWidget(self.patient_label)
 
         buttons_layout = QtWidgets.QVBoxLayout()
         buttons_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         sheet_layout.addLayout(buttons_layout)
 
-        self.data_sheet_button = QtWidgets.QPushButton("Schnuppi öffnen")
+        self.data_sheet_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Schnuppi öffnen")
         self.data_sheet_button.setToolTip("Datenblatt öffnen [Strg+I]")
         self.data_sheet_button.clicked.connect(self.show_data_sheet)
         self.data_sheet_button.setVisible(False)
         buttons_layout.addWidget(self.data_sheet_button)
 
-        self.letter_button = QtWidgets.QPushButton("Dokument öffnen")
+        self.letter_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Dokument öffnen")
         self.letter_button.setToolTip("Dokument öffnen [Strg+O]")
         self.letter_button.clicked.connect(self.show_document)
         self.letter_button.setVisible(False)
@@ -224,7 +226,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
         main_layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
 
-        self.diagnoses_table = QtWidgets.QTableView()
+        self.diagnoses_table: QtWidgets.QTableView = QtWidgets.QTableView()
         self.diagnoses_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.diagnoses_table.setModel(DiagnosesTableModel([]))
         main_layout.addWidget(self.diagnoses_table)
@@ -233,7 +235,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
         main_layout.addWidget(QtWidgets.QLabel("\nAktuelle Dauermedikation\n"))
 
-        self.medication_table = QtWidgets.QTableView()
+        self.medication_table: QtWidgets.QTableView = QtWidgets.QTableView()
         self.medication_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.medication_table.setModel(MedicationTableModel([], []))
         self.medication_table.setSpan(0, 0, 1, 7)

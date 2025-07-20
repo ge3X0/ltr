@@ -2,6 +2,7 @@ from PySide6 import QtWidgets, QtCore
 from PySide6.QtCore import Qt
 from saxonche import PyXPathProcessor
 from itertools import batched
+from typing import override
 
 
 class XCheckBox(QtWidgets.QCheckBox):
@@ -12,6 +13,7 @@ class XCheckBox(QtWidgets.QCheckBox):
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
 
+    @override
     def keyReleaseEvent(self, e, /):
         k = e.key()
         if k == Qt.Key.Key_X or k == Qt.Key.Key_Y:
