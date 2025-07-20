@@ -54,7 +54,7 @@
                 <xsl:call-template name="text-run">
                     <xsl:with-param name="highlight" select="true()"/>
                     <xsl:with-param name="text">
-                        <xsl:text>Wit führten eine konsequente </xsl:text>
+                        <xsl:text>Wir führten eine konsequente </xsl:text>
                     </xsl:with-param>
                 </xsl:call-template>
 

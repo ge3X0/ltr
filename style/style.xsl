@@ -229,7 +229,7 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
                 <xsl:when test="$val_sum &lt; 11">einer leichten</xsl:when>
                 <xsl:when test="$val_sum &lt; 21">einer mäßigen</xsl:when>
                 <xsl:when test="$val_sum &lt; 31">einer schweren</xsl:when>
-                <xsl:otherwise>sehr schweren</xsl:otherwise>
+                <xsl:otherwise>einer sehr schweren</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
 

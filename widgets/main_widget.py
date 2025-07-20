@@ -63,15 +63,16 @@ class MainWidget(QtWidgets.QWidget):
 
         # Tab Widget is central widget
 
-        self.setLayout(QtWidgets.QVBoxLayout())
+        widget_layout = QtWidgets.QVBoxLayout()
+        self.setLayout(widget_layout)
 
         self.tab_widget: QtWidgets.QTabWidget = QtWidgets.QTabWidget()
-        self.layout().addWidget(self.tab_widget)
+        widget_layout.addWidget(self.tab_widget)
 
         # Export Button
 
         export_layout = QtWidgets.QHBoxLayout()
-        self.layout().addLayout(export_layout)
+        widget_layout.addLayout(export_layout)
 
         export_button = QtWidgets.QPushButton("Dokument exportieren: ")
         export_layout.addWidget(export_button)
@@ -103,9 +104,10 @@ class MainWidget(QtWidgets.QWidget):
 
         # Examination Tab
 
-        self.forms.append(ExamTab())
-        self.forms[0].dataLoaded.connect(self.forms[1].from_xml)
-        self.tab_widget.addTab(self.forms[1], "&Untersuchung")
+        exam_tab = ExamTab()
+        self.forms.append(exam_tab)
+        self.forms[0].dataLoaded.connect(exam_tab.from_xml)
+        self.tab_widget.addTab(exam_tab, "&Untersuchung")
 
         # Tabs loaded from ./forms
 
@@ -201,18 +203,22 @@ class MainWidget(QtWidgets.QWidget):
         patient_file_name = self.forms[0].patient_file_name()
         output_file = self.configs["output_path"] / self.configs["current_template"].stem / f"{patient_file_name}.docx"
 
+        # Do not overwrite file, unless user permits it
         if (output_file.exists()
             and QtWidgets.QMessageBox.StandardButton.Yes != QtWidgets.QMessageBox.question(
                 self, "Datei existiert", "Dokument existiert bereits, überschreiben?")):
             return None
 
         if not (data_file := self.save_data(patient_file_name, silent_overwrite=True)):
+            QtWidgets.QMessageBox.warning(self, "Fehler beim Exportieren",
+                "Daten konnten nicht gespeichert werden")
             return
 
         output_file.parent.mkdir(exist_ok=True, parents=True)
 
         # Load xsl style sheet and add "data" global variable referring to created data file
-
+        
+        # Transform characters
         translate_tab = {
             'Ä': "%C3%84", 'Ö': "%C3%96", 'Ü': "%C3%9C",
             'ä': "%C3%A4", 'ö': "%C3%B6", 'ü': "%C3%BC",
@@ -229,7 +235,7 @@ class MainWidget(QtWidgets.QWidget):
         transform = xslt_proc.compile_stylesheet(stylesheet_file=str(self.configs["xsl_file"].absolute()))
 
         # Internal function to concat docs templates {varname} if word inserted <t></t> tags
-        def repl(m_str) -> str:
+        def repl(m_str: re.Match[str]) -> str:
             full_m = m_str[2]
             tag_name = full_m[1:full_m.find('<')]
             tag_name += ''.join(m[1] for m in re.finditer(r"<w:t>(.+?)(?:</w:t>|})", full_m))
