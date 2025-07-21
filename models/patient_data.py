@@ -5,7 +5,11 @@ from datetime import datetime, timedelta
 
 
 class Field(IntEnum):
-    """Fields in data *.docx table files"""
+    """
+    Fields in the data *.docx file. This needs to be adjusted if the input
+    table ever changes.
+    """
+
     Name = 0
     Birthday = 1
     Address = 4
@@ -31,12 +35,17 @@ class Diagnosis:
     name: str = "Unbekannt"
     icd10: str = "Unbekannt"
 
-    def __eq__(self, other: Self | str):
+    @override
+    def __eq__(self, other: Self | str | object) -> bool:
         if isinstance(other, str):
             return self.icd10 == str
-        return self.icd10 == other.icd10
 
-    def to_xml(self):
+        if isinstance(other, Self):
+            return self.icd10 == other.icd10 # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+        
+        return super().__eq__(other)
+
+    def to_xml(self) -> str:
         return f"""
 <diagnosis>
     <icd10>{self.icd10}</icd10>

@@ -7,38 +7,30 @@ from .patient_data import Diagnosis, Medication
 
 
 class DiagnosesTableModel(QtCore.QAbstractTableModel):
-    """Table model to display PatientData Diagnosis
-    :ivar diagnoses: List of dataclass Diagnosis
-    """
-
     def __init__(self, diagnoses: list[Diagnosis]):
         super().__init__()
         self.diagnoses: list[Diagnosis] = diagnoses
 
 
     @override
-    def rowCount(self, /, parent = ...):
-        """Standard Qt rowCount for table models"""
+    def rowCount(self, /, parent = ...): # pyright: ignore[reportMissingParameterType]
         return len(self.diagnoses) if not parent.isValid() else 0
 
 
     @override
-    def columnCount(self, /, parent = ...):
-        """Standard Qt colCount for table models"""
+    def columnCount(self, /, parent = ...): # pyright: ignore[reportMissingParameterType]
         return 2 if not parent.isValid() else 0
 
 
     @override
-    def data(self, index, /, role = ...):
-        """Only use display role"""
+    def data(self, index, /, role = ...): # pyright: ignore[reportMissingParameterType]
         if role == Qt.ItemDataRole.DisplayRole:
             return getattr(self.diagnoses[index.row()], "icd10" if index.column() == 0 else "name")
         return None
 
 
     @override
-    def headerData(self, section, orientation, /, role = ...):
-        """Display horizontal header"""
+    def headerData(self, section, orientation, /, role = ...): # pyright: ignore[reportMissingParameterType]
         if role != Qt.ItemDataRole.DisplayRole or orientation == Qt.Orientation.Vertical:
             return None
 
@@ -46,8 +38,6 @@ class DiagnosesTableModel(QtCore.QAbstractTableModel):
 
 
 class MedicationTableModel(QtCore.QAbstractTableModel):
-    """Table model to display PatientData Medication"""
-
     def __init__(self, base_medication: list[Medication], other_medication: list[Medication]):
         super().__init__()
         self.base_medication: list[Medication] = base_medication
@@ -55,20 +45,18 @@ class MedicationTableModel(QtCore.QAbstractTableModel):
 
 
     @override
-    def rowCount(self, /, parent = ...):
-        """Length of both medication lists plus 2 additional headers"""
+    def rowCount(self, /, parent = ...): # pyright: ignore[reportMissingParameterType]
+        # Length of both medication lists plus 2 additional headers
         return len(self.base_medication) + len(self.other_medication) + 2 if not parent.isValid() else 0
 
 
     @override
-    def columnCount(self, /, parent = ...):
-        """Standard Qt table model"""
+    def columnCount(self, /, parent = ...): # pyright: ignore[reportMissingParameterType]
         return 7 if not parent.isValid() else 0
 
 
     @override
-    def data(self, index, /, role = ...):
-
+    def data(self, index, /, role = ...): # pyright: ignore[reportMissingParameterType]
         # First and "middle" row are "Section Headers"
         if index.row() == 0 or index.row() - 1 == len(self.base_medication):
             match role:
@@ -104,7 +92,7 @@ class MedicationTableModel(QtCore.QAbstractTableModel):
 
 
     @override
-    def headerData(self, section, orientation, /, role = ...):
+    def headerData(self, section, orientation, /, role = ...): # pyright: ignore[reportMissingParameterType]
         if role != Qt.ItemDataRole.DisplayRole or orientation == Qt.Orientation.Vertical:
             return None
         return ["Name", "Dosis", "Einheit", "Morgens", "Mittags", "Abends", "Nachts"][section]

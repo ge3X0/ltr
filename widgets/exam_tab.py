@@ -1,3 +1,6 @@
+#pyright: reportUnknownVariableType=false, reportMissingParameterType=false
+#pyright: reportUnknownParameterType=false, reportUnknownArgumentType=false, reportUnknownMemberType=false
+
 from PySide6 import QtWidgets, QtCore
 from saxonche import PyXPathProcessor
 
@@ -31,6 +34,7 @@ class ExamTab(QtWidgets.QWidget):
 
         self.informal_btn: QtWidgets.QCheckBox = QtWidgets.QCheckBox("Patient/in Duzen")
         layout.addWidget(self.informal_btn)
+        self.informal_btn.setVisible(False)
 
         body_group = QtWidgets.QGroupBox("Größe und Gewicht")
         layout.addWidget(body_group)

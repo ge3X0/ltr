@@ -5,6 +5,7 @@ file_db = "./file_db"
 template_files = [
     "./templates/Arztbrief.docx",
     "./templates/Arbeitgebervorlage.docx",
+    "./templates/Arztbrief Kinder.docx",
     "./templates/Einverständnisserklärung Minderjährige.docx",
     "./templates/Krankenhaustagegeldversicherung.docx"
 ]
@@ -38,6 +39,7 @@ Allegro = "Frovatriptan"
 Amineurin = "Amitriptylin"
 Anafranil = "Clomipramin"
 ASS = "Aspirin"
+Aquipta = "Atogepant"
 Dolormin = "Ibuprofen"
 Emgality = "Galcanezumab"
 Maxalt = "Rizatriptan"
