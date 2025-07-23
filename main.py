@@ -3,6 +3,8 @@ from pathlib import Path
 import tomllib as toml
 from widgets.main_widget import MainWidget
 
+from sys import exit
+
 
 # TODO:
 #  Read template variables from docs files

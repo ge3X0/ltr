@@ -6,7 +6,7 @@ from typing import override
 
 
 class XCheckBox(QtWidgets.QCheckBox):
-    """Used for custom focus forwarding on pressing 'x'"""
+    """Used for custom focus forwarding on pressing 'x' or 'y'"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -32,7 +32,7 @@ class EvalLine(QtWidgets.QLineEdit):
 
             if not s.isdigit():
                 QtWidgets.QMessageBox.warning(self, "Eval Line", f"Unerwartetes Zeichen '{s}' in {self.__field_id}")
-                continue
+                break
 
             if -1 < (idx := int(s) - self.__start) < len(self.__values[val_idx]):
                 results.append(self.__values[val_idx][str(idx)])

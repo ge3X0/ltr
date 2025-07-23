@@ -20,6 +20,8 @@ class SplitLineEdit(QtWidgets.QLineEdit):
 
     def results(self):
         values = [int(i[0]) for i in re.finditer(r"\d+", self.text())]
+        if not values:
+            QtWidgets.QMessageBox(self, "SplitLine", "No valid values found in {self.__field_id}")
         return values[:self.__max_entries]
 
 
