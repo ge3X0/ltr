@@ -1,4 +1,7 @@
 __pycache__/
+dist/
+build/
+_internal/
 output/
 file_db/
 data/

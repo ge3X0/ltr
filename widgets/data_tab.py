@@ -26,11 +26,12 @@ class DataTabWidget(QtWidgets.QWidget):
         """
 
         meds: list[Medication] = []
+        med_name: str = ""
 
         # Match medication per line
         for entry in map(lambda l: re.sub(r"\(.+?\)", "", l).strip(),text_line.splitlines()):
             if med := self.med_pattern.match(entry):
-                med_name: str = med[1].strip()
+                med_name = med[1].strip()
 
                 if med_name in self.configs["ignore_meds"]:
                     continue
@@ -42,7 +43,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
             else:
                 for med in self.simple_med_pattern.finditer(entry):
-                    med_name: str = med[1].strip()
+                    med_name = med[1].strip()
 
                     if med_name in self.configs["ignore_meds"]:
                         continue
@@ -61,14 +62,14 @@ class DataTabWidget(QtWidgets.QWidget):
         self.patient_data.medication[when_key][how_key] = meds
 
 
-    def __extract_patient_data(self, patient_data: PyXdmNode):
+    def __extract_patient_data(self, patient_data_xml: PyXdmNode):
         """Get data from *.docx file
-        :param patient_data: etree object containing docx-tabledata
+        :param patient_data_xml: etree object containing docx-tabledata
         """
 
         xpath = self.proc.new_xpath_processor()
         xpath.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
-        xpath.set_context(xdm_item=patient_data)
+        xpath.set_context(xdm_item=patient_data_xml)
 
         # xpath_t = self.proc.new_xpath_processor()
         # xpath_t.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
@@ -108,11 +109,13 @@ class DataTabWidget(QtWidgets.QWidget):
 
                 case Field.Doctor:
                     # Remove "Arzt: "-prefix
-                    self.patient_data.doc_name = text[text.find(' ') + 1:].strip()
+                    if (m := re.match(r"Arzt:\s*(.+)", text)):
+                        self.patient_data.doc_name = m[1].strip()
 
                 case Field.Psychotherapist:
                     # Remove "Psych.: "-prefix
-                    self.patient_data.pt_name = text[text.find(' ') + 1:].strip()
+                    if (m := re.match(r"Psych\.:\s*(.+)", text)):
+                        self.patient_data.pt_name = m[1].strip()
 
                 case Field.Admission:
                     self.patient_data.admission = datetime.strptime(text, "%d.%m.%Y")
@@ -147,6 +150,9 @@ class DataTabWidget(QtWidgets.QWidget):
 
                 case Field.MedFormBase:
                     self.__read_meds(text, "former", "base")
+
+                case _:
+                    pass
 
 
     def __init__(self, proc: PySaxonProcessor, configs: dict, *args, **kwargs):
@@ -277,10 +283,10 @@ class DataTabWidget(QtWidgets.QWidget):
 
         with ZipFile(patient_path) as archive:
             with archive.open("word/document.xml") as fl:
-                patient_data = self.proc.parse_xml(xml_text=fl.read().decode())
+                patient_data_xml = self.proc.parse_xml(xml_text=fl.read().decode())
 
         self.patient_data = PatientData()
-        self.__extract_patient_data(patient_data)
+        self.__extract_patient_data(patient_data_xml)
         self.display_data()
 
         # Check for loadable data

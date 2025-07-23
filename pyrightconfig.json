@@ -6,6 +6,7 @@
     "reportOptionalMemberAccess": false,
     "reportUnusedCallResult": false,
     "reportUnknownArgumentType": false,
+    "reportUnknownMemberType": false,
     "reportUnknownParameterType": false,
     "reportUnknownVariableType": false
 }
