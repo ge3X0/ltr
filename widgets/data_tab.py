@@ -27,10 +27,9 @@ class DataTabWidget(QtWidgets.QWidget):
         """
 
         meds: list[Medication] = []
-        med_name: str = ""
 
         # Match medication per line
-        for entry in map(lambda l: re.sub(r"\(.+?\)", "", l).strip(),text_line.splitlines()):
+        for entry in map(lambda l: re.sub(r"\(.+?\)", "", l).strip(), text_line.splitlines()):
             if med := self.med_pattern.match(entry):
                 med_name = med[1].strip()
 
@@ -92,9 +91,11 @@ class DataTabWidget(QtWidgets.QWidget):
                     self.patient_data.last_name, self.patient_data.first_name = names
 
                 case Field.Birthday:
+                    # TODO: error on invalid birthday
                     self.patient_data.birthday = datetime.strptime(text.splitlines()[0], "%d.%m.%Y")
 
                 case Field.Address:
+                    # TODO: correctly format adress field
                     line = text.replace('\n', '')
                     if (m := re.match(r"([\w\s.,]+?)([\d\s]+)$", line)) is not None:
                         self.patient_data.address = m[1].strip()
@@ -109,13 +110,18 @@ class DataTabWidget(QtWidgets.QWidget):
                     # Remove "Arzt: "-prefix
                     if (m := re.match(r"Arzt:\s*(.+)", text)):
                         self.patient_data.doc_name = m[1].strip()
+                    else:
+                        self.patient_data.doc_name = text
 
                 case Field.Psychotherapist:
                     # Remove "Psych.: "-prefix
                     if (m := re.match(r"Psych\.:\s*(.+)", text)):
                         self.patient_data.pt_name = m[1].strip()
+                    else:
+                        self.patient_data.pt_name = text
 
                 case Field.Admission:
+                    # TODO error on invalid dates
                     self.patient_data.admission = datetime.strptime(text, "%d.%m.%Y")
 
                 case Field.Discharge:
@@ -259,7 +265,6 @@ class DataTabWidget(QtWidgets.QWidget):
     @QtCore.Slot()
     def show_data_sheet(self):
         """Display Schnuppi for currently loaded patient"""
-
         patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
         if not patient_path.exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {patient_path} nicht öffnen")
@@ -270,7 +275,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
     @QtCore.Slot()
     def show_document(self):
-        """Display Schnuppi for currently loaded patient"""
+        """Display currently selected document for currently loaded patient"""
         output_file = self.configs["output_path"] / self.configs["current_template"].stem / f"{self.patient_file_name()}.docx"
         if not output_file.exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {output_file} nicht öffnen")
@@ -281,9 +286,9 @@ class DataTabWidget(QtWidgets.QWidget):
 
     @QtCore.Slot()
     def select_patient(self):
-        """Load all data for the currently selected patient"""
-
-        patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
+        """Load all data for the currently selected patient. Emits dataLoaded signal"""
+        file_path = self.search_bar.text().replace("..", "")
+        patient_path = self.configs["file_db"] / f"{file_path}.docx"
         if not patient_path.exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {patient_path} nicht öffnen")
             return
@@ -344,7 +349,6 @@ class DataTabWidget(QtWidgets.QWidget):
         """Generate unique filename from loaded patient data"""
 
         # Remove directory string parts
-
         first_name = self.patient_data.first_name.replace("..", "")
         last_name = self.patient_data.last_name.replace("..", "")
 
@@ -353,4 +357,5 @@ class DataTabWidget(QtWidgets.QWidget):
 
 
     def to_xml(self) -> str:
+        """Return xml representation of this class"""
         return self.patient_data.to_xml()

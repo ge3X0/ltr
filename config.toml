@@ -2,6 +2,7 @@
 file_db = "./file_db"
 
 # Path to template *.docx to copy contents from (required)
+# Adding a new value will automatically append it to the "export"-options in ltr.
 template_files = [
     "./templates/Arztbrief.docx",
     "./templates/Arbeitgebervorlage.docx",
@@ -20,9 +21,11 @@ save_path = "./data"
 output_path = "./output"
 
 # Files in *.docx structure of template_file to transform using xsl_file (optional)
+# This has to do with inner workings of the docx-format. If in doubt, leave as is.
 process_files = ["word/document.xml", "word/header1.xml"]
 
 # Forms to load from ./forms/ in order they will appear in the application (optional)
+# The forms will be loaded in the same order as they are defined here
 forms = [
     "midas", "treatments", "symptoms_box", "bdi2", "whodas"
 ]
@@ -51,6 +54,8 @@ Stangyl = "Trimipramin"
 Tempil = "Sumatriptan s.c."
 Vyepti = "Eptinezumab"
 
+# Substitute diagnosis names or icd10-specifiers.
+# If an empty list is given as value, this diagnosis will be ignored
 [substitute_diagnoses]
 "G43.8" = ["G43.8/3", "Chronische Migräne"]
 "G43.3" = []

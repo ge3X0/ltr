@@ -5,6 +5,7 @@ import re
 
 
 class SplitLineEdit(QtWidgets.QLineEdit):
+    # TODO: This could be EvalLine?
     """
     Simple line edit which finds all numbers (not digits) in its input and saves them
     """
@@ -19,9 +20,25 @@ class SplitLineEdit(QtWidgets.QLineEdit):
 
 
     def results(self):
-        values = [int(i[0]) for i in re.finditer(r"\d+", self.text())]
+        used_separators: bool = any(not c.isdigit() for c in self.text())
+
+        if used_separators:
+            values = [int(i[0]) for i in re.finditer(r"\d+", self.text())]
+        else:
+            values = [int(i) for i in self.text()]
+
         if not values:
-            QtWidgets.QMessageBox(self, "SplitLine", "No valid values found in {self.__field_id}")
+            QtWidgets.QMessageBox.warning(self, "SplitLine", "{self.__field_id} enthält keine gültigen Werte")
+
+        if len(values) > self.__max_entries:
+            QtWidgets.QMessageBox.warning(self, "SplitLine", "Nur {self.__max_entries} Einträge werden prozessiert")
+
+        elif len(values) < self.__max_entries:
+            QtWidgets.QMessageBox.warning(self, "SplitLine", "Erwartete {self.__max_entries} in {self.__field_id}. Fülle mit 0 auf.")
+
+            while len(values) < self.__max_entries:
+                values.append(0)
+
         return values[:self.__max_entries]
 
 
