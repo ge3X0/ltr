@@ -10,7 +10,6 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <!-- Variable Definition !-->
 
     <xsl:variable name="gender" select="$data//exam/gender"/>
-    <xsl:variable name="informal" select="$data//exam/informal[text() = '1']"/>
     <xsl:variable name="diag_overuse" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.4']"/>
     <xsl:variable name="diag_cluster" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.0']"/>
     <xsl:variable name="diag_chronic_migraine" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.8/3']"/>

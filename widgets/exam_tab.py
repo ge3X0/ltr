@@ -22,6 +22,8 @@ class ExamTab(QtWidgets.QWidget):
 
         layout = QtWidgets.QVBoxLayout(self)
 
+        # Create gender buttons
+
         gender_group = QtWidgets.QGroupBox("Geschlecht")
         layout.addWidget(gender_group)
         layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
@@ -43,9 +45,7 @@ class ExamTab(QtWidgets.QWidget):
 
         f_btn.setChecked(True)
 
-        self.informal_btn: QtWidgets.QCheckBox = QtWidgets.QCheckBox("Patient/in Duzen")
-        layout.addWidget(self.informal_btn)
-        self.informal_btn.setVisible(False)
+        # Create value inputs
 
         self.inp: list[QtWidgets.QLineEdit] = []
 
@@ -72,16 +72,16 @@ class ExamTab(QtWidgets.QWidget):
         rr_layout.addWidget(self.inp[ExamTab.Field.Diastolic], 1, 1)
         rr_layout.addWidget(self.inp[ExamTab.Field.Pulse], 1, 2)
 
+
     def to_xml(self) -> str:
         try:
             values = [int(inp.text()) for inp in self.inp]
         except ValueError:
-            QtWidgets.QMessageBox(self, "Exam Tab", "Felder enthalten nicht-numerische Werte")
-            return ""
+            QtWidgets.QMessageBox.warning(self, "Exam Tab", "Felder enthalten nicht-numerische Werte")
+            values = [0] * len(self.inp)
 
         return f"""<exam>
         <gender>{self.gender_btn_group.checkedButton().text()}</gender>
-        <informal>{1 if self.informal_btn.isChecked() else 0}</informal>
         <height>{values[ExamTab.Field.Height]}</height>
         <weight>{values[ExamTab.Field.Weight]}</weight>
         <sys>{values[ExamTab.Field.Systolic]}</sys>
@@ -89,11 +89,11 @@ class ExamTab(QtWidgets.QWidget):
         <pulse>{values[ExamTab.Field.Pulse]}</pulse>
         </exam>"""
 
+
     @QtCore.Slot()
     def from_xml(self, xpath: PyXPathProcessor | None):
         if xpath is None or xpath.evaluate_single(".//exam") is None:
             self.gender_btn_group.buttons()[1].setChecked(True)
-            self.informal_btn.setChecked(False)
             for inp in self.inp:
                 inp.setText("")
             return
@@ -101,7 +101,6 @@ class ExamTab(QtWidgets.QWidget):
         gender = dict(zip(["m", "f", "d"], self.gender_btn_group.buttons()))
 
         gender[xpath.evaluate_single(".//exam/gender").string_value].setChecked(True)
-        self.informal_btn.setChecked(xpath.evaluate_single(".//exam/informal").string_value == "1")
 
         values = ["height", "weight", "sys", "dia", "pulse"]
         for i, v in enumerate(values):
