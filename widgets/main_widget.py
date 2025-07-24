@@ -47,6 +47,7 @@ class MainWidget(QtWidgets.QWidget):
             "forms": [],
             "ignore_meds": [],
             "substitute_meds": {},
+            "substitute_diagnoses": {},
             "process_files": ["word/document.xml", "word/header1.xml"],
         }
 

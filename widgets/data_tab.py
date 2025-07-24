@@ -11,7 +11,8 @@ from typing import Any
 
 from saxonche import PySaxonProcessor, PyXdmNode, PyXPathProcessor
 
-from models import Medication, Diagnosis, Field, PatientData, DiagnosesTableModel, MedicationTableModel
+from models.patient_data import Medication, Diagnosis, Field, PatientData
+from models.models import DiagnosesTableModel, MedicationTableModel
 
 
 class DataTabWidget(QtWidgets.QWidget):
@@ -71,9 +72,6 @@ class DataTabWidget(QtWidgets.QWidget):
         xpath.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
         xpath.set_context(xdm_item=patient_data_xml)
 
-        # xpath_t = self.proc.new_xpath_processor()
-        # xpath_t.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
-
         # Walk over each cell in table
         for cell_idx, cell in enumerate(xpath.evaluate(".//w:tc")):
             xpath.set_context(xdm_item=cell)
@@ -130,11 +128,20 @@ class DataTabWidget(QtWidgets.QWidget):
                     for line in text.splitlines():
                         for m in self.icd_pattern.finditer(line):
                             diag = Diagnosis(m[1].strip(), m[2])
+                            subst: list[str] | None = self.configs["substitute_diagnoses"].get(diag.icd10, None)
+
+                            if subst is not None:   # No Substitution
+                                if not subst:       # Empty list -> ignore diagnosis
+                                    continue
+                                diag.icd10, diag.name = subst
 
                             # Special case: chronic migraine
-                            if diag.icd10 == "G43.8" or diag.icd10 == "G43.3":
-                                diag.icd10 = "G43.8/3"
-                            self.patient_data.diagnoses.append(diag)
+                            # if diag.icd10 == "G43.8" or diag.icd10 == "G43.3":
+                            #     diag.icd10 = "G43.8/3"
+                            if diag.icd10 == "G44.4":
+                                self.patient_data.diagnoses.insert(0, diag)
+                            else:
+                                self.patient_data.diagnoses.append(diag)
 
                 case Field.MedCurrAcute:
                     self.__read_meds(text, "current", "acute")
@@ -155,10 +162,10 @@ class DataTabWidget(QtWidgets.QWidget):
                     pass
 
 
-    def __init__(self, proc: PySaxonProcessor, configs: dict, *args, **kwargs):
+    def __init__(self, proc: PySaxonProcessor, configs: dict[str, Any], *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.proc = proc
+        self.proc: PySaxonProcessor = proc
         self.icd_pattern: re.Pattern[str] = re.compile(r"^\s*(\b[,./:\-\w\s?äöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$")
 
         md_name = r"([/.\-()\w\säöüÄÖÜß?]+?)"

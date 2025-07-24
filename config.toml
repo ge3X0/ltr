@@ -51,3 +51,8 @@ Stangyl = "Trimipramin"
 Tempil = "Sumatriptan s.c."
 Vyepti = "Eptinezumab"
 
+[substitute_diagnoses]
+"G43.8" = ["G43.8/3", "Chronische Migräne"]
+"G43.3" = []
+"F55.2" = ["F55.2", "Analgetikagebrauch"]
+"F45.41" = ["F45.41", "Chronische Schmerzstörung"]

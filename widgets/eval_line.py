@@ -46,7 +46,7 @@ class EvalLine(QtWidgets.QLineEdit):
             while len(results) < len(self.__values):
                 results.append(self.__values[len(results)]["0"])
 
-        values = ''.join(f"<value>{v}</value>" for v in results)
+        values = ''.join(f"<value>{v}</value>" for v in results[:len(self.__values)])
         return f"""<field name="{self.__field_id}">{values}</field>"""
 
 
