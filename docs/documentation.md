@@ -1,6 +1,8 @@
 # LTR klinisches Schreibprogramm
 
+
 ## Nutzung
+
 
 ### Suchen von Patientendaten
 
@@ -10,6 +12,7 @@
 Patienten werden über die Suchmaske im Reiter "Patient" [Alt] + [P] gesucht. Hierfür kann die
 Autovervollständigung genutzt werden. Sobald der korrekte Eintrag ausgewählt ist, werden die Daten mittels [Enter], [F5]
 oder Klick auf "Neu laden" geladen.
+
 
 ### Überprüfen der geladenen Daten
 
@@ -32,7 +35,20 @@ Diagnosen-Name ZZ00.99 Kommentare
 Hinter dem ICD10-Schlüssel aufgeführter Text wird nicht übernommen.
 
 > [!WARNING]
-> **CAVE**: Zeilen ohne ICD10-Schlüssel werden nicht als Diagnosen übernommen und müssen ggf. manuell hinzugefügt werden.
+> Zeilen ohne ICD10-Schlüssel werden nicht als Diagnosen übernommen und müssen ggf. manuell hinzugefügt werden.
+
+Diagnosenamen oder -schlüssel können in config.toml für automatisierte Änderungen
+vorgemerkt werden. Hierzu dient der Schlüssel:
+
+```
+[substitute_diagnosis]
+"ZZ08.01" = ["Neuer ICD-Schlüssel", "Neue Bezeichnung für Diagnose"]
+"G43.8" = ["G43.8/3", "Chronische Migräne"]
+"G43.3" = []
+```
+
+Leere Listen als Werte (letzte Zeile im Beispiel) zeigen an, dass diese Diagnose
+nicht in den Brief übernommen werden soll.
 
 
 #### Best-practice Medikamente in Datendatei
@@ -72,19 +88,36 @@ Nach Laden der Patientendaten kann jederzeit ein Dokument exportiert werden. Dur
 > Standardmäßig werden die /word/document.xml und /word/header1.xml Dateien der definierten DOCX-Schablone auf Variablen
 > überprüft. Sollten andere Dateien gewünscht sein (z.B. Footer), können diese mittels *process_files* in config.toml definiert werden
 
-Nachdem ein Dokument erstellt wurde, kann es mittels [STRG] + [O] geöffnet werden.
+Nachdem ein Dokument erstellt wurde, kann es mittels [STRG] + [O] geöffnet werden. Es wird immer der aktuell ausgewählte
+Dokumententyp geöffnet: Ist "Arztbrief" ausgewählt, wird versucht, den zum Patienten gehörigen Arztbrief zu öffnen,
+ist "Krantenhaustagegeld" ausgewählt, wird versucht, das entsprechende Dokument zu öffnen, wenn es existiert.
+
 
 ## Formulare
+
 
 ### Formulare definieren
 
 Formulare können in dem Ordner *./forms/* als toml-Dateien definiert werden. Für mögliche Optionen siehe [forms.md](forms.md).
-Formulare werden als Tabs geladen. Diese können per Klick oder per [Alt] + [Buchstaben] direkt umgeschaltet werden. Je nach Formularfeld kann die Eingabe variieren:
+Formulare werden als Tabs geladen. Diese können per Klick oder per [Alt] + [Buchstaben] direkt umgeschaltet werden. In der entsprechenden toml-Datei unter ./forms/ kann der Shortcut für das Formular mittels "&" vor dem entsprechenden Buchstaben im
+Titel des Formulars definiert werden. Je nach Formularfeld kann die Eingabe variieren:
+
 
 #### Zeileneingabe
 
-Erwartet meistens Zahlen, entweder durch beliebige nicht-numerische Zeichen getrennt (z.B. Leerzeichen oder Komma) oder
-als einzelnen Zahlenstring (hier nur im BDI2 implementiert).
+Erwartet Zahlen, entweder durch beliebige nicht-numerische Zeichen getrennt (z.B. Leerzeichen oder Komma) oder als Folge von Einzelziffern ohne Trennzeichen.
+
+
+|Eingabe              |Wird gelesen als               |
+|---------------------|-------------------------------|
+|1 23 4.5 6-7 8, 9, 10|1, 23, 4, 5, 6, 7, 8, 9, 10    |
+|12345678910          |1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 0|
+
+
+> [!WARNING]
+> Im 2. Beispiel die letzten Zahlen beachten: "10" wird als "1, 0" interpretiert
+
+
 
 #### Boxeingabe
 
@@ -96,12 +129,13 @@ den Boxen gesprungen werden.
 
 ## Shortcuts
 
+
 | Aktion                    | Tastenkombination     | Kommentar                                      |
 |---------------------------|-----------------------|------------------------------------------------|
 | Aktuelle Daten neu laden  | [F5]                  | Überschreibt ggf. ungespeicherte Formulardaten |
 | Datendatei öffnen         | [STRG] + [I]          |                                                |
 | Dokument generieren       | [STRG] + [E]          | Speichert Formulardaten                        |
-| Dokument öffnen           | [STRG] + [O]          |                                                |
+| Dokument öffnen           | [STRG] + [O]          | Öffnet den aktuellen Dokumententyp             |
 | Checkbox: Auswählen       | [X]                   |                                                |
 | Checkbox: Abwählen        | [Y]                   |                                                |
 | Nächstes Element wählen   | [TAB]                 |                                                |
