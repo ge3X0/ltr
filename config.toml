@@ -1,5 +1,5 @@
 # Path to location of data *.docx files (required)
-file_db = "./file_db"
+file_db = "Y:/Arztbriefe/01 Teaminformationen"
 
 # Path to template *.docx to copy contents from (required)
 template_files = [
