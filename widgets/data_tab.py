@@ -11,7 +11,8 @@ from typing import Any
 
 from saxonche import PySaxonProcessor, PyXdmNode, PyXPathProcessor
 
-from models import Medication, Diagnosis, Field, PatientData, DiagnosesTableModel, MedicationTableModel
+from models.patient_data import Medication, Diagnosis, Field, PatientData
+from models.models import DiagnosesTableModel, MedicationTableModel
 
 
 class DataTabWidget(QtWidgets.QWidget):
@@ -28,9 +29,9 @@ class DataTabWidget(QtWidgets.QWidget):
         meds: list[Medication] = []
 
         # Match medication per line
-        for entry in map(lambda l: re.sub(r"\(.+?\)", "", l).strip(),text_line.splitlines()):
+        for entry in map(lambda l: re.sub(r"\(.+?\)", "", l).strip(), text_line.splitlines()):
             if med := self.med_pattern.match(entry):
-                med_name: str = med[1].strip()
+                med_name = med[1].strip()
 
                 if med_name in self.configs["ignore_meds"]:
                     continue
@@ -42,7 +43,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
             else:
                 for med in self.simple_med_pattern.finditer(entry):
-                    med_name: str = med[1].strip()
+                    med_name = med[1].strip()
 
                     if med_name in self.configs["ignore_meds"]:
                         continue
@@ -61,17 +62,14 @@ class DataTabWidget(QtWidgets.QWidget):
         self.patient_data.medication[when_key][how_key] = meds
 
 
-    def __extract_patient_data(self, patient_data: PyXdmNode):
+    def __extract_patient_data(self, patient_data_xml: PyXdmNode):
         """Get data from *.docx file
-        :param patient_data: etree object containing docx-tabledata
+        :param patient_data_xml: etree object containing docx-tabledata
         """
 
         xpath = self.proc.new_xpath_processor()
         xpath.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
-        xpath.set_context(xdm_item=patient_data)
-
-        # xpath_t = self.proc.new_xpath_processor()
-        # xpath_t.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
+        xpath.set_context(xdm_item=patient_data_xml)
 
         # Walk over each cell in table
         for cell_idx, cell in enumerate(xpath.evaluate(".//w:tc")):
@@ -93,9 +91,11 @@ class DataTabWidget(QtWidgets.QWidget):
                     self.patient_data.last_name, self.patient_data.first_name = names
 
                 case Field.Birthday:
+                    # TODO: error on invalid birthday
                     self.patient_data.birthday = datetime.strptime(text.splitlines()[0], "%d.%m.%Y")
 
                 case Field.Address:
+                    # TODO: correctly format adress field
                     line = text.replace('\n', '')
                     if (m := re.match(r"([\w\s.,]+?)([\d\s]+)$", line)) is not None:
                         self.patient_data.address = m[1].strip()
@@ -108,13 +108,20 @@ class DataTabWidget(QtWidgets.QWidget):
 
                 case Field.Doctor:
                     # Remove "Arzt: "-prefix
-                    self.patient_data.doc_name = text[text.find(' ') + 1:].strip()
+                    if (m := re.match(r"Arzt:\s*(.+)", text)):
+                        self.patient_data.doc_name = m[1].strip()
+                    else:
+                        self.patient_data.doc_name = text
 
                 case Field.Psychotherapist:
                     # Remove "Psych.: "-prefix
-                    self.patient_data.pt_name = text[text.find(' ') + 1:].strip()
+                    if (m := re.match(r"Psych\.:\s*(.+)", text)):
+                        self.patient_data.pt_name = m[1].strip()
+                    else:
+                        self.patient_data.pt_name = text
 
                 case Field.Admission:
+                    # TODO error on invalid dates
                     self.patient_data.admission = datetime.strptime(text, "%d.%m.%Y")
 
                 case Field.Discharge:
@@ -127,11 +134,20 @@ class DataTabWidget(QtWidgets.QWidget):
                     for line in text.splitlines():
                         for m in self.icd_pattern.finditer(line):
                             diag = Diagnosis(m[1].strip(), m[2])
+                            subst: list[str] | None = self.configs["substitute_diagnoses"].get(diag.icd10, None)
+
+                            if subst is not None:   # No Substitution
+                                if not subst:       # Empty list -> ignore diagnosis
+                                    continue
+                                diag.icd10, diag.name = subst
 
                             # Special case: chronic migraine
-                            if diag.icd10 == "G43.8" or diag.icd10 == "G43.3":
-                                diag.icd10 = "G43.8/3"
-                            self.patient_data.diagnoses.append(diag)
+                            # if diag.icd10 == "G43.8" or diag.icd10 == "G43.3":
+                            #     diag.icd10 = "G43.8/3"
+                            if diag.icd10 == "G44.4":
+                                self.patient_data.diagnoses.insert(0, diag)
+                            else:
+                                self.patient_data.diagnoses.append(diag)
 
                 case Field.MedCurrAcute:
                     self.__read_meds(text, "current", "acute")
@@ -148,11 +164,14 @@ class DataTabWidget(QtWidgets.QWidget):
                 case Field.MedFormBase:
                     self.__read_meds(text, "former", "base")
 
+                case _:
+                    pass
 
-    def __init__(self, proc: PySaxonProcessor, configs: dict, *args, **kwargs):
+
+    def __init__(self, proc: PySaxonProcessor, configs: dict[str, Any], *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.proc = proc
+        self.proc: PySaxonProcessor = proc
         self.icd_pattern: re.Pattern[str] = re.compile(r"^\s*(\b[,./:\-\w\s?äöüÄÖÜß]+?)([A-Z]\d{2}(?:\.\d+)?).*$")
 
         md_name = r"([/.\-()\w\säöüÄÖÜß?]+?)"
@@ -246,7 +265,6 @@ class DataTabWidget(QtWidgets.QWidget):
     @QtCore.Slot()
     def show_data_sheet(self):
         """Display Schnuppi for currently loaded patient"""
-
         patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
         if not patient_path.exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {patient_path} nicht öffnen")
@@ -257,7 +275,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
     @QtCore.Slot()
     def show_document(self):
-        """Display Schnuppi for currently loaded patient"""
+        """Display currently selected document for currently loaded patient"""
         output_file = self.configs["output_path"] / self.configs["current_template"].stem / f"{self.patient_file_name()}.docx"
         if not output_file.exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {output_file} nicht öffnen")
@@ -268,19 +286,19 @@ class DataTabWidget(QtWidgets.QWidget):
 
     @QtCore.Slot()
     def select_patient(self):
-        """Load all data for the currently selected patient"""
-
-        patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
+        """Load all data for the currently selected patient. Emits dataLoaded signal"""
+        file_path = self.search_bar.text().replace("..", "")
+        patient_path = self.configs["file_db"] / f"{file_path}.docx"
         if not patient_path.exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {patient_path} nicht öffnen")
             return
 
         with ZipFile(patient_path) as archive:
             with archive.open("word/document.xml") as fl:
-                patient_data = self.proc.parse_xml(xml_text=fl.read().decode())
+                patient_data_xml = self.proc.parse_xml(xml_text=fl.read().decode())
 
         self.patient_data = PatientData()
-        self.__extract_patient_data(patient_data)
+        self.__extract_patient_data(patient_data_xml)
         self.display_data()
 
         # Check for loadable data
@@ -331,7 +349,6 @@ class DataTabWidget(QtWidgets.QWidget):
         """Generate unique filename from loaded patient data"""
 
         # Remove directory string parts
-
         first_name = self.patient_data.first_name.replace("..", "")
         last_name = self.patient_data.last_name.replace("..", "")
 
@@ -340,4 +357,5 @@ class DataTabWidget(QtWidgets.QWidget):
 
 
     def to_xml(self) -> str:
+        """Return xml representation of this class"""
         return self.patient_data.to_xml()

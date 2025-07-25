@@ -10,7 +10,6 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <!-- Variable Definition !-->
 
     <xsl:variable name="gender" select="$data//exam/gender"/>
-    <xsl:variable name="informal" select="$data//exam/informal[text() = '1']"/>
     <xsl:variable name="diag_overuse" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.4']"/>
     <xsl:variable name="diag_cluster" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.0']"/>
     <xsl:variable name="diag_chronic_migraine" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.8/3']"/>
@@ -22,30 +21,7 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
     <!-- Special Functions !-->
 
-<!--    <xsl:template match="//run">-->
-<!--        <xsl:variable name="size">-->
-<!--            <xsl:choose>-->
-<!--                <xsl:when test="@size">-->
-<!--                    <xsl:value-of select="@size"/>-->
-<!--                </xsl:when>-->
-<!--                <xsl:otherwise>-->
-<!--                    <xsl:value-of select="18"/>-->
-<!--                </xsl:otherwise>-->
-<!--            </xsl:choose>-->
-<!--        </xsl:variable>-->
-
-<!--        <w:r>-->
-<!--            <w:rPr>-->
-<!--                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>-->
-<!--                <xsl:if test="@bold"><w:b/><w:bCs/></xsl:if>-->
-<!--                <w:sz w:val="{$size}"/>-->
-<!--                <w:szCs w:val="{$size}"/>-->
-<!--                <xsl:if test="@highlight"><w:highlight w:val="yellow"/></xsl:if>-->
-<!--            </w:rPr>-->
-<!--            <w:t xml:space="preserve"><xsl:value-of select="text()"/></w:t>-->
-<!--        </w:r>-->
-<!--    </xsl:template>-->
-
+    <!-- Helper to generate a docx "run" element !-->
     <xsl:template name="text-run">
         <xsl:param name="text"/>
         <xsl:param name="size" select="18" required="no" />

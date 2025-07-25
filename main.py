@@ -4,12 +4,14 @@ import tomllib as toml
 from widgets.main_widget import MainWidget
 from sys import exit
 
+from sys import exit
+
 
 # TODO:
 #  Read template variables from docs files
 #  Edit docx files and re-insert variables
 
-LTR_VERSION = "v0.2.3"
+LTR_VERSION = "v0.2.4"
 
 
 if __name__ == "__main__":
