@@ -15,6 +15,8 @@ from models.patient_data import Medication, Diagnosis, Field, PatientData
 from models.models import DiagnosesTableModel, MedicationTableModel
 
 
+# TODO: Read current base and acute medications into former meds
+
 class DataTabWidget(QtWidgets.QWidget):
     dataLoaded: QtCore.Signal = QtCore.Signal(PyXPathProcessor)
 
