@@ -77,17 +77,19 @@ class ExamTab(QtWidgets.QWidget):
         try:
             values = [int(inp.text()) for inp in self.inp]
         except ValueError:
-            QtWidgets.QMessageBox.warning(self, "Exam Tab", "Felder enthalten nicht-numerische Werte")
+            QtWidgets.QMessageBox.warning(self, "Exam Tab",
+              "Felder enthalten nicht-numerische Werte, werden mit 0 ersetzt")
             values = [0] * len(self.inp)
 
-        return f"""<exam>
-        <gender>{self.gender_btn_group.checkedButton().text()}</gender>
-        <height>{values[ExamTab.Field.Height]}</height>
-        <weight>{values[ExamTab.Field.Weight]}</weight>
-        <sys>{values[ExamTab.Field.Systolic]}</sys>
-        <dia>{values[ExamTab.Field.Diastolic]}</dia>
-        <pulse>{values[ExamTab.Field.Pulse]}</pulse>
-        </exam>"""
+        return f"""
+<exam>
+    <gender>{self.gender_btn_group.checkedButton().text()}</gender>
+    <height>{values[ExamTab.Field.Height]}</height>
+    <weight>{values[ExamTab.Field.Weight]}</weight>
+    <sys>{values[ExamTab.Field.Systolic]}</sys>
+    <dia>{values[ExamTab.Field.Diastolic]}</dia>
+    <pulse>{values[ExamTab.Field.Pulse]}</pulse>
+</exam>"""
 
 
     @QtCore.Slot()

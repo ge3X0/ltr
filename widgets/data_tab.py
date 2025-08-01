@@ -141,9 +141,7 @@ class DataTabWidget(QtWidgets.QWidget):
                                     continue
                                 diag.icd10, diag.name = subst
 
-                            # Special case: chronic migraine
-                            # if diag.icd10 == "G43.8" or diag.icd10 == "G43.3":
-                            #     diag.icd10 = "G43.8/3"
+                            # TODO: Add sorting option to config.toml
                             if diag.icd10 == "G44.4":
                                 self.patient_data.diagnoses.insert(0, diag)
                             else:

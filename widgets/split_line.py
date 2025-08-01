@@ -16,10 +16,12 @@ class SplitLineEdit(QtWidgets.QLineEdit):
         self.__field_id = field_id
         self.__max_entries = max_entries
 
-        self.setToolTip(f"Separierte Zahleneinträge, maximal {max_entries} Einträge")
+        self.setToolTip(
+            f"Erwartet {max_entries} numerische Einträge, Ziffern können ohne Trennzeichen geschrieben werden,"
+            "wenn jeder Posten nur aus einer Ziffer besteht")
 
 
-    def results(self):
+    def results(self) -> list[int]:
         used_separators: bool = any(not c.isdigit() for c in self.text())
 
         if used_separators:
@@ -28,13 +30,16 @@ class SplitLineEdit(QtWidgets.QLineEdit):
             values = [int(i) for i in self.text()]
 
         if not values:
-            QtWidgets.QMessageBox.warning(self, "SplitLine", "{self.__field_id} enthält keine gültigen Werte")
+            QtWidgets.QMessageBox.warning(self, f"{self.__field_id}",
+                f"{self.__field_id} enthält keine gültigen Werte")
 
         if len(values) > self.__max_entries:
-            QtWidgets.QMessageBox.warning(self, "SplitLine", "Nur {self.__max_entries} Einträge werden prozessiert")
+            QtWidgets.QMessageBox.warning(self, f"{self.__field_id}",
+                f"Nur {self.__max_entries} Einträge werden prozessiert")
 
         elif len(values) < self.__max_entries:
-            QtWidgets.QMessageBox.warning(self, "SplitLine", "Erwartete {self.__max_entries} in {self.__field_id}. Fülle mit 0 auf.")
+            QtWidgets.QMessageBox.warning(self, f"{self.__field_id}",
+                f"Erwartete {self.__max_entries} in {self.__field_id}. Fülle mit 0 auf.")
 
             while len(values) < self.__max_entries:
                 values.append(0)
@@ -45,6 +50,7 @@ class SplitLineEdit(QtWidgets.QLineEdit):
     def to_xml(self) -> str:
         values = ''.join(f"<value>{v}</value>" for v in self.results())
         return f"""<field name="{self.__field_id}">{values}</field>"""
+
 
     @QtCore.Slot()
     def from_xml(self, xpath: PyXPathProcessor | None):

@@ -24,7 +24,9 @@ class XCheckBox(QtWidgets.QCheckBox):
 
 
 class XBox(QtWidgets.QWidget):
+
     def __init__(self, field_id: str, values: list[str], rows: int = -1, *args, **kwargs):
+
         def __make_checkboxes(vals):
             col = QtWidgets.QVBoxLayout()
             for v in vals:

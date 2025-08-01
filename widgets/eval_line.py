@@ -13,9 +13,9 @@ class EvalLine(QtWidgets.QLineEdit):
     def __init__(self, field_id: str, values: list[dict[str, str]], start: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.__field_id = field_id
-        self.__values = values
-        self.__start = start
+        self.__field_id: str = field_id
+        self.__values: list[dict[str, str]] = values
+        self.__start: int = start
 
         self.setToolTip(f"Liste von {len(values)} Zahlen, handelt es sich um einzelne Ziffern pro Posten, kann auf eine Separierung verzichtet werden")
 
@@ -32,24 +32,27 @@ class EvalLine(QtWidgets.QLineEdit):
             if val_idx >= len(self.__values):
                 break
 
-            # if not s.isdigit():
-            #     QtWidgets.QMessageBox.warning(self, "Eval Line", f"Unerwartetes Zeichen '{s}' in {self.__field_id}")
-            #     break
-
             if -1 < (idx := int(s) - self.__start) < len(self.__values[val_idx]):
                 results.append(self.__values[val_idx][str(idx)])
             else:
-                QtWidgets.QMessageBox.warning(self, "Eval Line", f"Wert {idx} ist kein gültiger Wert an Position {val_idx + 1}")
+                QtWidgets.QMessageBox.warning(self, f"{self.__field_id}",
+                    f"Wert {idx} ist kein gültiger Wert an Position {val_idx + 1} in {self.__field_id}")
                 results.append("Unbekannt")
 
-        if len(results) != len(self.__values):
-            QtWidgets.QMessageBox.information(self, "Eval Line", f"Es wurden {len(results)} von erwarteten {len(self.__values)} in {self.__field_id} gefunden.\nÜbrige Stellen werden mit Standardwerten gefüllt, überhängige werden ignoriert")
+        sz = len(results)
+
+        if sz != len(self.__values):
+            QtWidgets.QMessageBox.information(self, f"{self.__field_id}",
+                f"Es wurden {sz} von erwarteten {len(self.__values)} in {self.__field_id} gefunden.\n"
+                "Übrige Stellen werden mit Standardwerten gefüllt, überhängige werden ignoriert")
 
             while len(results) < len(self.__values):
                 results.append(self.__values[len(results)]["0"])
 
-        values = ''.join(f"<value>{v}</value>" for v in results[:len(self.__values)])
-        return f"""<field name="{self.__field_id}">{values}</field>"""
+        values = ''.join(f"\n\t\t<value>{v}</value>" for v in results[:len(self.__values)])
+        return f"""
+<field name="{self.__field_id}">{values}
+</field>"""
 
 
     @QtCore.Slot()
