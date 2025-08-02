@@ -1,12 +1,4 @@
 {
     "reportAny": false,
-    "reportArgumentType": false,
-    "reportImplicitStringConcatenation": false,
-    "reportMissingParameterType": false,
-    "reportOptionalMemberAccess": false,
-    "reportUnusedCallResult": false,
-    "reportUnknownArgumentType": false,
-    "reportUnknownMemberType": false,
-    "reportUnknownParameterType": false,
-    "reportUnknownVariableType": false
+    "reportImplicitStringConcatenation": false
 }

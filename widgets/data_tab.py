@@ -73,19 +73,28 @@ class DataTabWidget(QtWidgets.QWidget):
 
         # Walk over each cell in table
         for cell_idx, cell in enumerate(xpath.evaluate(".//w:tc")):
+            if cell is None:
+                QtWidgets.QMessageBox.warning(self,
+                    "Fehler beim Lesen der Daten",
+                    "Unerwarteter Fehler: Keine Tabellen") # pyright: ignore[reportUnusedCallResult]
+                return
+
             xpath.set_context(xdm_item=cell)
 
             # Group by paragraph, ignore lists
             if (p_nodes := xpath.evaluate(".//w:p[not(.//w:numPr)]")) is None:
                 continue
-            text: str = '\n'.join(p.string_value for p in p_nodes)
+
+            text: str = '\n'.join(p.string_value for p in p_nodes) # pyright: ignore[reportOptionalMemberAccess]
 
             # Process per field
             match cell_idx:
                 case Field.Name:
                     names = list(map(lambda x: x.strip(), text.splitlines()[0].split(',')))
                     if len(names) != 2:
-                        QtWidgets.QMessageBox.warning(self, "Eingabefehler", "Patientenname in Datendatei scheint falsch formatiert")
+                        QtWidgets.QMessageBox.warning(self,
+                          "Eingabefehler",
+                          "Patientenname in Datendatei scheint falsch formatiert") # pyright: ignore[reportUnusedCallResult]
                         continue
 
                     self.patient_data.last_name, self.patient_data.first_name = names
@@ -201,7 +210,7 @@ class DataTabWidget(QtWidgets.QWidget):
         self.search_bar: QtWidgets.QLineEdit = QtWidgets.QLineEdit()
         search_box.addWidget(self.search_bar)
 
-        self.search_bar.returnPressed.connect(self.select_patient)
+        self.search_bar.returnPressed.connect(self.select_patient) # pyright: ignore[reportUnusedCallResult]
 
         file_completer = QtWidgets.QCompleter(
             [file_name.stem for file_name in self.configs["file_db"].glob("*.docx", case_sensitive=False)])
@@ -213,7 +222,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
         search_button.setShortcut("F5")
         search_button.setToolTip("Lade Daten erneut [F5]")
-        search_button.pressed.connect(self.select_patient)
+        search_button.pressed.connect(self.select_patient) # pyright: ignore[reportUnusedCallResult]
 
         main_layout.addLayout(search_box)
 
@@ -231,13 +240,13 @@ class DataTabWidget(QtWidgets.QWidget):
 
         self.data_sheet_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Schnuppi öffnen")
         self.data_sheet_button.setToolTip("Datenblatt öffnen [Strg+I]")
-        self.data_sheet_button.clicked.connect(self.show_data_sheet)
+        self.data_sheet_button.clicked.connect(self.show_data_sheet) # pyright: ignore[reportUnusedCallResult]
         self.data_sheet_button.setVisible(False)
         buttons_layout.addWidget(self.data_sheet_button)
 
         self.letter_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Dokument öffnen")
         self.letter_button.setToolTip("Dokument öffnen [Strg+O]")
-        self.letter_button.clicked.connect(self.show_document)
+        self.letter_button.clicked.connect(self.show_document) # pyright: ignore[reportUnusedCallResult]
         self.letter_button.setVisible(False)
         buttons_layout.addWidget(self.letter_button)
 
@@ -267,10 +276,12 @@ class DataTabWidget(QtWidgets.QWidget):
         """Display Schnuppi for currently loaded patient"""
         patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
         if not patient_path.exists():
-            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {patient_path} nicht öffnen")
+            QtWidgets.QMessageBox.warning(self,
+                "Datei nicht gefunden",
+                f"Konnte die Datei {patient_path} nicht öffnen") # pyright: ignore[reportUnusedCallResult]
             return
 
-        subprocess.run(f"powershell -Command \"& {{Start-Process '{patient_path.absolute()}'\"}}")
+        subprocess.run(f"powershell -Command \"& {{Start-Process '{patient_path.absolute()}'\"}}") # pyright: ignore[reportUnusedCallResult]
 
 
     @QtCore.Slot()
@@ -278,10 +289,12 @@ class DataTabWidget(QtWidgets.QWidget):
         """Display currently selected document for currently loaded patient"""
         output_file = self.configs["output_path"] / self.configs["current_template"].stem / f"{self.patient_file_name()}.docx"
         if not output_file.exists():
-            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {output_file} nicht öffnen")
+            QtWidgets.QMessageBox.warning(self,
+                "Datei nicht gefunden", 
+                f"Konnte die Datei {output_file} nicht öffnen") # pyright: ignore[reportUnusedCallResult]
             return
 
-        subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}")
+        subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}") # pyright: ignore[reportUnusedCallResult]
 
 
     @QtCore.Slot()
@@ -289,8 +302,9 @@ class DataTabWidget(QtWidgets.QWidget):
         """Load all data for the currently selected patient. Emits dataLoaded signal"""
         file_path = self.search_bar.text().replace("..", "")
         patient_path = self.configs["file_db"] / f"{file_path}.docx"
+
         if not patient_path.exists():
-            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {patient_path} nicht öffnen")
+            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {patient_path} nicht öffnen") # pyright: ignore[reportUnusedCallResult]
             return
 
         with ZipFile(patient_path) as archive:
@@ -336,7 +350,7 @@ class DataTabWidget(QtWidgets.QWidget):
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
         self.diagnoses_table.resizeColumnsToContents()
 
-        self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1)
+        self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1) # pyright: ignore[reportAttributeAccessIssue, reportUnknownArgumentType, reportUnknownMemberType]
         self.medication_table.setModel(MedicationTableModel(
             self.patient_data.medication["current"]["base"],
             self.patient_data.medication["current"]["other"]))
