@@ -12,8 +12,10 @@ from typing import Any
 from saxonche import PySaxonProcessor, PyXdmNode, PyXPathProcessor
 
 from models.patient_data import Medication, Diagnosis, Field, PatientData
-from models.models import DiagnosesTableModel, MedicationTableModel
+from models.models import DiagnosesTableModel, MedicationTableModel, PatientTableModel
 
+
+# TODO: Read current base and acute medications into former meds
 
 class DataTabWidget(QtWidgets.QWidget):
     dataLoaded: QtCore.Signal = QtCore.Signal(PyXPathProcessor)
@@ -150,9 +152,7 @@ class DataTabWidget(QtWidgets.QWidget):
                                     continue
                                 diag.icd10, diag.name = subst
 
-                            # Special case: chronic migraine
-                            # if diag.icd10 == "G43.8" or diag.icd10 == "G43.3":
-                            #     diag.icd10 = "G43.8/3"
+                            # TODO: Add sorting option to config.toml
                             if diag.icd10 == "G44.4":
                                 self.patient_data.diagnoses.insert(0, diag)
                             else:
@@ -231,8 +231,13 @@ class DataTabWidget(QtWidgets.QWidget):
         sheet_layout = QtWidgets.QHBoxLayout()
         main_layout.addLayout(sheet_layout)
 
-        self.patient_label: QtWidgets.QLabel = QtWidgets.QLabel("\nPatientendaten:")
-        sheet_layout.addWidget(self.patient_label)
+        self.patient_table: QtWidgets.QTableView = QtWidgets.QTableView()
+        self.patient_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
+        # self.patient_table.setModel(PatientTableModel())
+        sheet_layout.addWidget(self.patient_table);
+
+        # self.patient_label: QtWidgets.QLabel = QtWidgets.QLabel("\nPatientendaten:")
+        # sheet_layout.addWidget(self.patient_label)
 
         buttons_layout = QtWidgets.QVBoxLayout()
         buttons_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -336,21 +341,23 @@ class DataTabWidget(QtWidgets.QWidget):
         """Shows patient data on label and tables"""
 
         # self.patient_label.setTextFormat(Qt.TextFormat.RichText)
-        # TODO: As Table
-        self.patient_label.setText(
-            "\nPatientendaten:\n\n"
-            f"Datensatz: {self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n\n"
-            f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n\n"
-            f"Wohnhaft: {self.patient_data.address}\n\n"
-            f"Telefon: {self.patient_data.phone}\n\n"
-            f"Arzt: {self.patient_data.doc_name}\n\nPT: {self.patient_data.pt_name}"
-        )
+        # self.patient_label.setText(
+        #     "\nPatientendaten:\n\n"
+        #     f"Datensatz: {self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n\n"
+        #     f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n\n"
+        #     f"Wohnhaft: {self.patient_data.address}\n\n"
+        #     f"Telefon: {self.patient_data.phone}\n\n"
+        #     f"Arzt: {self.patient_data.doc_name}\n\nPT: {self.patient_data.pt_name}"
+        # )
+        self.patient_table.setModel(PatientTableModel(self.patient_data))
+        self.patient_table.resizeColumnsToContents()
         self.data_sheet_button.setVisible(True)
 
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
         self.diagnoses_table.resizeColumnsToContents()
 
-        self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1) # pyright: ignore[reportAttributeAccessIssue, reportUnknownArgumentType, reportUnknownMemberType]
+        # TODO Remove?
+        self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1)
         self.medication_table.setModel(MedicationTableModel(
             self.patient_data.medication["current"]["base"],
             self.patient_data.medication["current"]["other"]))

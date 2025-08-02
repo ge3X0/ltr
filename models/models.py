@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt
 
 from typing import override
 
-from .patient_data import Diagnosis, Medication
+from .patient_data import Diagnosis, Medication, PatientData
 
 
 class DiagnosesTableModel(QtCore.QAbstractTableModel):
@@ -96,3 +96,40 @@ class MedicationTableModel(QtCore.QAbstractTableModel):
         if role != Qt.ItemDataRole.DisplayRole or orientation == Qt.Orientation.Vertical:
             return None
         return ["Name", "Dosis", "Einheit", "Morgens", "Mittags", "Abends", "Nachts"][section]
+
+
+class PatientTableModel(QtCore.QAbstractTableModel):
+    def __init__(self, data: PatientData):
+        super().__init__()
+        self.patient_data: list[tuple[str, str]] = [
+            ("Name", f"{data.first_name} {data.last_name}"),
+            ("Geburtsdatum", f"{data.birthday.strftime('%d.%m.%Y')}"),
+            ("Aufenthalt", f"{data.admission.strftime('%d.%m.%Y')} - {data.discharge.strftime('%d.%m.%Y')}"),
+            ("Wohnhaft", data.address),
+            ("Telefon", data.phone),
+            ("Arzt", data.doc_name),
+            ("PT", data.pt_name)
+        ]
+
+    @override
+    def rowCount(self, /, parent = ...): 
+        return 7 if not parent.isValid() else 0
+
+
+    @override
+    def columnCount(self, /, parent = ...):
+        return 2 if not parent.isValid() else 0
+
+    @override
+    def data(self, index, /, role = ...):
+        if role == Qt.ItemDataRole.DisplayRole:
+            return self.patient_data[index.row()][index.column()]
+        return None
+
+
+    @override
+    def headerData(self, section, orientation, /, role = ...):
+        if role != Qt.ItemDataRole.DisplayRole or orientation == Qt.Orientation.Vertical:
+            return None
+
+        return "Patientendaten"

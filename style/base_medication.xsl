@@ -4,11 +4,21 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
+    <!-- Definiere allgemeine Variablen !-->
+
     <xsl:template match="basismedikation_zuvor">
         <xsl:call-template name="string-list">
             <xsl:with-param name="selection" select="$data//medication[@when = 'former' and @which = 'base']/entry/name"/>
         </xsl:call-template>
     </xsl:template>
+
+    <xsl:template match="basismedikation_aufnahme">
+	<xsl:call-template name="string-list">
+	    <xsl:with-param name="selection" select="$data//medication[@when = 'current' and @which = 'base']/entry/name"/>
+	</xsl:call-template>
+    </xsl:template>
+
+    <!-- Basismedikation - Tabelle !-->
 
     <xsl:template match="//w:p[.//basismedikation]">
         <xsl:variable name="base" select="$data//medication[@when = 'current' and @which = 'base']/entry"/>
@@ -43,7 +53,9 @@
                 <w:gridCol w:w="1134"/>
             </w:tblGrid>
 
-            <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
+	    <!-- Header !-->
+
+            <w:tr>
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="9072" w:type="dxa"/>
@@ -62,7 +74,9 @@
                 </w:tc>
             </w:tr>
 
-            <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
+	    <!-- Spaltennamen !-->
+
+            <w:tr>
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="3686" w:type="dxa"/>
@@ -170,6 +184,8 @@
                     </w:p>
                 </w:tc>
             </w:tr>
+
+	    <!-- Schreibe alle gefundenen Medikamente !-->
 
             <xsl:for-each select="$base">
                 <w:tr>
@@ -284,6 +300,8 @@
                 </w:tr>
             </xsl:for-each>
 
+	    <!-- Freie Zeile für Veränderungen !-->
+
             <w:tr>
                 <w:tc>
                     <w:tcPr>
@@ -393,6 +411,8 @@
                     </w:p>
                 </w:tc>
             </w:tr>
+
+	    <!-- Zusatzinformationen für spezifische Medikamente !-->
 
             <xsl:if test="$diag_chronic_migraine">
                 <w:tr>
@@ -1251,6 +1271,8 @@
                         </w:r>
                     </w:p>
 
+		    <!-- Sonderregeln für Opioide !-->
+
                     <xsl:if test="$base/name[
                     contains(text(), 'Tramal') or contains(text(), 'Tramadol') or contains(text(), 'Tramadol ret.')
                     or contains(text(), 'Tilidin') or contains(text(), 'Tilidin ret.')
@@ -1416,6 +1438,8 @@
                             </w:r>
                         </w:p>
                     </xsl:if>
+
+		    <!-- Sonderregeln für Cluster-Kopfschmerzen !-->
 
                     <xsl:if test="$diag_cluster">
                         <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="008A1328">

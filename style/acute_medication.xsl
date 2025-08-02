@@ -4,9 +4,17 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
+    <!-- Allgemeine Variablen !-->
+
     <xsl:template match="akutmedikation_zuvor">
         <xsl:call-template name="string-list">
             <xsl:with-param name="selection" select="$data//medication[@when = 'former' and @which = 'acute']/entry/name"/>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="akutmedikation_aufnahme">
+        <xsl:call-template name="string-list">
+            <xsl:with-param name="selection" select="$data//medication[@when = 'current' and @which = 'acute']/entry/name"/>
         </xsl:call-template>
     </xsl:template>
 
@@ -92,13 +100,13 @@
             </w:tr>
 
             <xsl:if test="$diag_overuse">
-                <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
+                <w:tr>
                     <w:tc>
                         <w:tcPr>
                             <w:tcW w:w="3706" w:type="dxa"/>
                             <w:gridSpan w:val="2"/>
                         </w:tcPr>
-                        <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="00932F5E">
+                        <w:p>
                             <w:pPr>
                                 <w:jc w:val="both"/>
                             </w:pPr>
@@ -111,7 +119,7 @@
                             </xsl:call-template>
                         </w:p>
 
-                        <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="00932F5E">
+                        <w:p>
                             <w:pPr>
                                 <w:jc w:val="both"/>
                             </w:pPr>
@@ -123,7 +131,7 @@
                             </xsl:call-template>
                         </w:p>
 
-                        <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="00932F5E">
+                        <w:p>
                             <w:pPr>
                                 <w:jc w:val="both"/>
                             </w:pPr>
@@ -176,7 +184,6 @@
 
                         <w:p>
                             <xsl:call-template name="text-run">
-                                <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
                                     <xsl:text>Im Notfall, bei Eskalation der Rebound-Kopfschmerzen: </xsl:text>
                                 </xsl:with-param>
@@ -213,7 +220,7 @@
             </xsl:if>
 
             <xsl:if test="$diag_migraine_without_aura">
-                <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
+                <w:tr>
                     <w:tc>
                         <w:tcPr>
                             <w:tcW w:w="3706" w:type="dxa"/>
@@ -428,10 +435,10 @@
 
             <xsl:if test="$diag_status_migrainosus">
                 <w:tr>
-                    <w:trPr>
-                        <w:gridAfter w:val="1"/>
-                        <w:wAfter w:w="20" w:type="dxa"/>
-                    </w:trPr>
+                    <!-- <w:trPr> -->
+                    <!--     <w:gridAfter w:val="1"/> -->
+                    <!--     <w:wAfter w:w="20" w:type="dxa"/> -->
+                    <!-- </w:trPr> -->
 
                     <w:tc>
                         <w:tcPr>
@@ -490,11 +497,11 @@
             </xsl:if>
 
             <xsl:if test="$diag_cluster">
-                <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
-                    <w:trPr>
-                        <w:gridAfter w:val="1"/>
-                        <w:wAfter w:w="20" w:type="dxa"/>
-                    </w:trPr>
+                <w:tr>
+                    <!-- <w:trPr> -->
+                    <!--     <w:gridAfter w:val="1"/> -->
+                    <!--     <w:wAfter w:w="20" w:type="dxa"/> -->
+                    <!-- </w:trPr> -->
 
                     <w:tc>
                         <w:tcPr>
@@ -606,7 +613,7 @@
             </xsl:if>
 
             <xsl:if test="$diag_spaks">
-                <w:tr w:rsidR="00877D06" w:rsidRPr="00166F0D">
+                <w:tr>
                     <w:tc>
                         <w:tcPr>
                             <w:tcW w:w="3706" w:type="dxa"/>
