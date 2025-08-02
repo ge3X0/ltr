@@ -129,7 +129,4 @@ class PatientTableModel(QtCore.QAbstractTableModel):
 
     @override
     def headerData(self, section, orientation, /, role = ...):
-        if role != Qt.ItemDataRole.DisplayRole or orientation == Qt.Orientation.Vertical:
-            return None
-
-        return "Patientendaten"
+        return None

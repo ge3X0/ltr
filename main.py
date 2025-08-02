@@ -17,7 +17,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication([])
 
     app.setStyleSheet("""
-    QPushButton { padding: 12px; }
+    QPushButton { padding: 12px; min-width: 180px; }
     QLineEdit { padding: 12px; }
     QComboBox { padding: 12px; }
     """)

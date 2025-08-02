@@ -15,8 +15,6 @@ from models.patient_data import Medication, Diagnosis, Field, PatientData
 from models.models import DiagnosesTableModel, MedicationTableModel, PatientTableModel
 
 
-# TODO: Read current base and acute medications into former meds
-
 class DataTabWidget(QtWidgets.QWidget):
     dataLoaded: QtCore.Signal = QtCore.Signal(PyXPathProcessor)
 
@@ -206,6 +204,7 @@ class DataTabWidget(QtWidgets.QWidget):
         # Setup Search bar and completer
 
         search_box = QtWidgets.QHBoxLayout()
+        main_layout.addLayout(search_box)
 
         self.search_bar: QtWidgets.QLineEdit = QtWidgets.QLineEdit()
         search_box.addWidget(self.search_bar)
@@ -224,20 +223,27 @@ class DataTabWidget(QtWidgets.QWidget):
         search_button.setToolTip("Lade Daten erneut [F5]")
         search_button.pressed.connect(self.select_patient) # pyright: ignore[reportUnusedCallResult]
 
-        main_layout.addLayout(search_box)
+
+        # Setup Data Area
+
+        scroll_area= QtWidgets.QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_widget = QtWidgets.QWidget()
+        scroll_widget.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        data_layout = QtWidgets.QVBoxLayout(scroll_widget)
 
         # Setup Data display
 
+        data_layout.addWidget(QtWidgets.QLabel("Patientendaten\n"))
+
         sheet_layout = QtWidgets.QHBoxLayout()
-        main_layout.addLayout(sheet_layout)
+        data_layout.addLayout(sheet_layout)
 
         self.patient_table: QtWidgets.QTableView = QtWidgets.QTableView()
         self.patient_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
-        # self.patient_table.setModel(PatientTableModel())
         sheet_layout.addWidget(self.patient_table);
 
-        # self.patient_label: QtWidgets.QLabel = QtWidgets.QLabel("\nPatientendaten:")
-        # sheet_layout.addWidget(self.patient_label)
+        # Setup Buttons
 
         buttons_layout = QtWidgets.QVBoxLayout()
         buttons_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -257,23 +263,26 @@ class DataTabWidget(QtWidgets.QWidget):
 
         # Setup ICD10 Table
 
-        main_layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
+        data_layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
 
         self.diagnoses_table: QtWidgets.QTableView = QtWidgets.QTableView()
         self.diagnoses_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.diagnoses_table.setModel(DiagnosesTableModel([]))
-        main_layout.addWidget(self.diagnoses_table)
+        data_layout.addWidget(self.diagnoses_table)
 
         # Setup Medication Table
 
-        main_layout.addWidget(QtWidgets.QLabel("\nAktuelle Dauermedikation\n"))
+        data_layout.addWidget(QtWidgets.QLabel("\nAktuelle Dauermedikation\n"))
 
         self.medication_table: QtWidgets.QTableView = QtWidgets.QTableView()
         self.medication_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.medication_table.setModel(MedicationTableModel([], []))
         self.medication_table.setSpan(0, 0, 1, 7)
         self.medication_table.setSpan(1, 0, 1, 7)
-        main_layout.addWidget(self.medication_table)
+        data_layout.addWidget(self.medication_table)
+
+        scroll_area.setWidget(scroll_widget)
+        main_layout.addWidget(scroll_area)
 
 
     @QtCore.Slot()
@@ -340,15 +349,6 @@ class DataTabWidget(QtWidgets.QWidget):
     def display_data(self):
         """Shows patient data on label and tables"""
 
-        # self.patient_label.setTextFormat(Qt.TextFormat.RichText)
-        # self.patient_label.setText(
-        #     "\nPatientendaten:\n\n"
-        #     f"Datensatz: {self.patient_data.first_name} {self.patient_data.last_name} (*{self.patient_data.birthday.strftime('%d.%m.%Y')})\n\n"
-        #     f"Aufenthalt: {self.patient_data.admission.strftime('%d.%m.%Y')} - {self.patient_data.discharge.strftime('%d.%m.%Y')}\n\n"
-        #     f"Wohnhaft: {self.patient_data.address}\n\n"
-        #     f"Telefon: {self.patient_data.phone}\n\n"
-        #     f"Arzt: {self.patient_data.doc_name}\n\nPT: {self.patient_data.pt_name}"
-        # )
         self.patient_table.setModel(PatientTableModel(self.patient_data))
         self.patient_table.resizeColumnsToContents()
         self.data_sheet_button.setVisible(True)
@@ -356,8 +356,7 @@ class DataTabWidget(QtWidgets.QWidget):
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
         self.diagnoses_table.resizeColumnsToContents()
 
-        # TODO Remove?
-        self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1)
+        # self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1)
         self.medication_table.setModel(MedicationTableModel(
             self.patient_data.medication["current"]["base"],
             self.patient_data.medication["current"]["other"]))
