@@ -1,7 +1,3 @@
-#pyright: reportUnknownVariableType=false, reportMissingParameterType=false
-#pyright: reportUnknownParameterType=false, reportUnknownArgumentType=false, reportUnknownMemberType=false
-
-from turtle import window_height
 from PySide6 import QtWidgets, QtCore
 from saxonche import PyXPathProcessor
 

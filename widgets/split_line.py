@@ -60,3 +60,4 @@ class SplitLineEdit(QtWidgets.QLineEdit):
             return
 
         self.setText(", ".join([e.string_value for e in elements]))
+

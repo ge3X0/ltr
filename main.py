@@ -37,8 +37,8 @@ if __name__ == "__main__":
 
     if not config_path.exists():
         QtWidgets.QMessageBox.warning(
-            None, "Config nicht gefunden",
-            "Eine config.toml Datei muss erstellt werden")
+            None, "Config nicht gefunden",                  # pyright: ignore[reportArgumentType]
+            "Eine config.toml Datei muss erstellt werden")  
         exit(app.exit(0))
 
     # Load Configurations
@@ -52,7 +52,7 @@ if __name__ == "__main__":
 
     if "template_files" not in configs:
         QtWidgets.QMessageBox.warning(
-            None, "Fehler in config.toml",
+            None, "Fehler in config.toml",                  # pyright: ignore[reportArgumentType]
             "config.toml muss Schlüssel template_files beinhalten")
         exit(app.exit(0))
 
@@ -73,13 +73,13 @@ if __name__ == "__main__":
         # Abort, if no template file exists
         if len(warning_missing_templates) == len(configs["template_files"]):
             QtWidgets.QMessageBox.warning(
-                None, "Fehler in config.toml",
+                None, "Fehler in config.toml",              # pyright: ignore[reportArgumentType]
                 "Keine der Template-Dateien in config.toml wurde gefunden"
             )
             exit(app.exit(0))
 
         QtWidgets.QMessageBox.warning(
-            None, "Fehler in config.toml",
+            None, "Fehler in config.toml",                  # pyright: ignore[reportArgumentType]
             f"Die Template-Dateien {', '.join(warning_missing_templates)} konnten nicht gefunden werden")
 
     configs["template_files"] = template_files
@@ -88,14 +88,14 @@ if __name__ == "__main__":
 
     if "xsl_file" not in configs:
         QtWidgets.QMessageBox.warning(
-            None, "Fehler in config.toml",
+            None, "Fehler in config.toml",                  # pyright: ignore[reportArgumentType]
             "config.toml muss Schlüssel xsl_file beinhalten")
         exit(app.exit(0))
 
     configs["xsl_file"] = base_path / configs["xsl_file"]
     if not configs["xsl_file"].exists():
         QtWidgets.QMessageBox.warning(
-            None, "Datei nicht gefunden",
+            None, "Datei nicht gefunden",                   # pyright: ignore[reportArgumentType]
             "xsl_file existiert nicht")
         exit(app.exit(0))
 

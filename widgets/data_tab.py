@@ -76,7 +76,7 @@ class DataTabWidget(QtWidgets.QWidget):
             if cell is None:
                 QtWidgets.QMessageBox.warning(self,
                     "Fehler beim Lesen der Daten",
-                    "Unerwarteter Fehler: Keine Tabellen") # pyright: ignore[reportUnusedCallResult]
+                    "Unerwarteter Fehler: Keine Tabellen")
                 return
 
             xpath.set_context(xdm_item=cell)
@@ -94,7 +94,7 @@ class DataTabWidget(QtWidgets.QWidget):
                     if len(names) != 2:
                         QtWidgets.QMessageBox.warning(self,
                           "Eingabefehler",
-                          "Patientenname in Datendatei scheint falsch formatiert") # pyright: ignore[reportUnusedCallResult]
+                          "Patientenname in Datendatei scheint falsch formatiert")
                         continue
 
                     self.patient_data.last_name, self.patient_data.first_name = names
@@ -209,7 +209,7 @@ class DataTabWidget(QtWidgets.QWidget):
         self.search_bar: QtWidgets.QLineEdit = QtWidgets.QLineEdit()
         search_box.addWidget(self.search_bar)
 
-        self.search_bar.returnPressed.connect(self.select_patient) # pyright: ignore[reportUnusedCallResult]
+        self.search_bar.returnPressed.connect(self.select_patient)
 
         file_completer = QtWidgets.QCompleter(
             [file_name.stem for file_name in self.configs["file_db"].glob("*.docx", case_sensitive=False)])
@@ -221,7 +221,7 @@ class DataTabWidget(QtWidgets.QWidget):
 
         search_button.setShortcut("F5")
         search_button.setToolTip("Lade Daten erneut [F5]")
-        search_button.pressed.connect(self.select_patient) # pyright: ignore[reportUnusedCallResult]
+        search_button.pressed.connect(self.select_patient)
 
 
         # Setup Data Area
@@ -251,13 +251,13 @@ class DataTabWidget(QtWidgets.QWidget):
 
         self.data_sheet_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Schnuppi öffnen")
         self.data_sheet_button.setToolTip("Datenblatt öffnen [Strg+I]")
-        self.data_sheet_button.clicked.connect(self.show_data_sheet) # pyright: ignore[reportUnusedCallResult]
+        self.data_sheet_button.clicked.connect(self.show_data_sheet)
         self.data_sheet_button.setVisible(False)
         buttons_layout.addWidget(self.data_sheet_button)
 
         self.letter_button: QtWidgets.QPushButton = QtWidgets.QPushButton("Dokument öffnen")
         self.letter_button.setToolTip("Dokument öffnen [Strg+O]")
-        self.letter_button.clicked.connect(self.show_document) # pyright: ignore[reportUnusedCallResult]
+        self.letter_button.clicked.connect(self.show_document)
         self.letter_button.setVisible(False)
         buttons_layout.addWidget(self.letter_button)
 
@@ -292,10 +292,10 @@ class DataTabWidget(QtWidgets.QWidget):
         if not patient_path.exists():
             QtWidgets.QMessageBox.warning(self,
                 "Datei nicht gefunden",
-                f"Konnte die Datei {patient_path} nicht öffnen") # pyright: ignore[reportUnusedCallResult]
+                f"Konnte die Datei {patient_path} nicht öffnen")
             return
 
-        subprocess.run(f"powershell -Command \"& {{Start-Process '{patient_path.absolute()}'\"}}") # pyright: ignore[reportUnusedCallResult]
+        subprocess.run(f"powershell -Command \"& {{Start-Process '{patient_path.absolute()}'\"}}")
 
 
     @QtCore.Slot()
@@ -305,10 +305,10 @@ class DataTabWidget(QtWidgets.QWidget):
         if not output_file.exists():
             QtWidgets.QMessageBox.warning(self,
                 "Datei nicht gefunden", 
-                f"Konnte die Datei {output_file} nicht öffnen") # pyright: ignore[reportUnusedCallResult]
+                f"Konnte die Datei {output_file} nicht öffnen")
             return
 
-        subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}") # pyright: ignore[reportUnusedCallResult]
+        subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}")
 
 
     @QtCore.Slot()
@@ -318,7 +318,8 @@ class DataTabWidget(QtWidgets.QWidget):
         patient_path = self.configs["file_db"] / f"{file_path}.docx"
 
         if not patient_path.exists():
-            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden", f"Konnte die Datei {patient_path} nicht öffnen") # pyright: ignore[reportUnusedCallResult]
+            QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden",
+              f"Konnte die Datei {patient_path} nicht öffnen")
             return
 
         with ZipFile(patient_path) as archive:

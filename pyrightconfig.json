@@ -1,4 +1,9 @@
 {
     "reportAny": false,
-    "reportImplicitStringConcatenation": false
+    "reportExplicitAny": false,
+    "reportImplicitStringConcatenation": false,
+    "reportMissingParameterType": false,
+    "reportUnknownMemberType": false,
+    "reportUnknownParameterType": false,
+    "reportUnusedCallResult": false
 }

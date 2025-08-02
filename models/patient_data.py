@@ -41,7 +41,7 @@ class Diagnosis:
             return self.icd10 == str
 
         if isinstance(other, Self):
-            return self.icd10 == other.icd10 # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+            return self.icd10 == other.icd10
         
         return super().__eq__(other)
 

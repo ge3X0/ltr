@@ -8,7 +8,7 @@ import re
 
 from typing import Any
 
-from saxonche import PySaxonProcessor, PyXslt30Processor, PyXsltExecutable, PyXdmNode
+from saxonche import PySaxonProcessor
 
 from models.patient_data import PatientData
 from .data_tab import DataTabWidget
@@ -77,13 +77,13 @@ class MainWidget(QtWidgets.QWidget):
 
         export_button = QtWidgets.QPushButton("Dokument exportieren: ")
         export_layout.addWidget(export_button)
-        export_button.clicked.connect(self.to_xml) # pyright: ignore[reportUnusedCallResult]
+        export_button.clicked.connect(self.to_xml)
         export_button.setShortcut("Ctrl+E")
 
         template_picker = QtWidgets.QComboBox(self)
         export_layout.addWidget(template_picker)
-        template_picker.addItems([str(f.stem) for f in self.configs["template_files"]]) # pyright: ignore[reportUnknownMemberType]
-        template_picker.currentIndexChanged.connect(self.template_changed) # pyright: ignore[reportUnusedCallResult]
+        template_picker.addItems([str(f.stem) for f in self.configs["template_files"]])
+        template_picker.currentIndexChanged.connect(self.template_changed)
 
 
         # Setup tabs
@@ -91,28 +91,28 @@ class MainWidget(QtWidgets.QWidget):
         # Data Tab
 
         self.forms: list[DataTabWidget] = [DataTabWidget(self.proc, self.configs)]
-        self.tab_widget.addTab(self.forms[0], "&Patient") # pyright: ignore[reportUnusedCallResult]
+        self.tab_widget.addTab(self.forms[0], "&Patient")
         self.forms[0].search_bar.setFocus()
 
         # Shortcut definition
 
         open_output_shortcut = QtGui.QShortcut("Ctrl+O", self) # pyright: ignore[reportArgumentType]
-        open_output_shortcut.activated.connect(self.forms[0].show_document) # pyright: ignore[reportUnusedCallResult]
+        open_output_shortcut.activated.connect(self.forms[0].show_document)
 
         open_data_shortcut = QtGui.QShortcut("Ctrl+I", self) # pyright: ignore[reportArgumentType]
-        open_data_shortcut.activated.connect(self.forms[0].show_data_sheet) # pyright: ignore[reportUnusedCallResult]
+        open_data_shortcut.activated.connect(self.forms[0].show_data_sheet)
 
         save_data_shortcut = QtGui.QShortcut("Ctrl+S", self) # pyright: ignore[reportArgumentType]
-        save_data_shortcut.activated.connect(self.save_data) # pyright: ignore[reportUnusedCallResult]
+        save_data_shortcut.activated.connect(self.save_data)
 
 
         # Examination Tab
 
         exam_tab = ExamTab()
         self.forms.append(exam_tab) # pyright: ignore[reportArgumentType]
-        self.forms[0].dataLoaded.connect(exam_tab.from_xml) # pyright: ignore[reportUnusedCallResult]
+        self.forms[0].dataLoaded.connect(exam_tab.from_xml)
 
-        self.tab_widget.addTab(exam_tab, "&Untersuchung") # pyright: ignore[reportUnusedCallResult]
+        self.tab_widget.addTab(exam_tab, "&Untersuchung")
 
 
         # Tabs loaded from ./forms
@@ -123,7 +123,7 @@ class MainWidget(QtWidgets.QWidget):
             if not form_file.exists():
                 QtWidgets.QMessageBox.warning(self,
                 "Formular nicht gefunden",
-                f"Formulardatei '{form_file_name}.toml' nicht gefunden") # pyright: ignore[reportUnusedCallResult]
+                f"Formulardatei '{form_file_name}.toml' nicht gefunden")
 
                 continue
 
@@ -135,7 +135,7 @@ class MainWidget(QtWidgets.QWidget):
             form_group = QtWidgets.QWidget()
             form_group_layout = QtWidgets.QVBoxLayout()
             form_group.setLayout(form_group_layout)
-            self.tab_widget.addTab(form_group, form_data.get("name", "Unbenannt")) # pyright: ignore[reportUnusedCallResult]
+            self.tab_widget.addTab(form_group, form_data.get("name", "Unbenannt"))
 
 
             for field in form_data.get("field", []):
@@ -176,7 +176,7 @@ class MainWidget(QtWidgets.QWidget):
                         continue
 
                 self.forms.append(new_widget) # pyright: ignore[reportArgumentType]
-                self.forms[0].dataLoaded.connect(new_widget.from_xml) # pyright: ignore[reportUnusedCallResult]
+                self.forms[0].dataLoaded.connect(new_widget.from_xml)
                 field_layout.addWidget(new_widget)
 
 
@@ -221,7 +221,7 @@ class MainWidget(QtWidgets.QWidget):
         if not (data_file := self.save_data(patient_file_name, silent_overwrite=True)):
             QtWidgets.QMessageBox.warning(self,
                 "Fehler beim Exportieren",
-                "Daten konnten nicht gespeichert werden") # pyright: ignore[reportUnusedCallResult]
+                "Daten konnten nicht gespeichert werden")
             return
 
         output_file.parent.mkdir(exist_ok=True, parents=True)
@@ -274,5 +274,6 @@ class MainWidget(QtWidgets.QWidget):
                     out_str: str = transform.transform_to_string(xdm_node=docxml)
                     output.writestr(doc_name, out_str)
 
-        QtWidgets.QMessageBox.information(self, "Dokument geschrieben", "Dokument wurde fertig gestellt [STRG+O] zum öffnen") # pyright: ignore[reportUnusedCallResult]
+        QtWidgets.QMessageBox.information(self, "Dokument geschrieben",
+          "Dokument wurde fertig gestellt [STRG+O] zum öffnen")
         self.forms[0].letter_button.setVisible(True)
