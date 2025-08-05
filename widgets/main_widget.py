@@ -96,19 +96,24 @@ class MainWidget(QtWidgets.QWidget):
 
         # Shortcut definition
 
-        open_output_shortcut = QtGui.QShortcut("Ctrl+O", self)
+        open_output_shortcut = QtGui.QShortcut("Ctrl+O", self) # pyright: ignore[reportArgumentType]
         open_output_shortcut.activated.connect(self.forms[0].show_document)
-        open_data_shortcut = QtGui.QShortcut("Ctrl+I", self)
+
+        open_data_shortcut = QtGui.QShortcut("Ctrl+I", self) # pyright: ignore[reportArgumentType]
         open_data_shortcut.activated.connect(self.forms[0].show_data_sheet)
-        save_data_shortcut = QtGui.QShortcut("Ctrl+S", self)
+
+        save_data_shortcut = QtGui.QShortcut("Ctrl+S", self) # pyright: ignore[reportArgumentType]
         save_data_shortcut.activated.connect(self.save_data)
+
 
         # Examination Tab
 
         exam_tab = ExamTab()
-        self.forms.append(exam_tab)
+        self.forms.append(exam_tab) # pyright: ignore[reportArgumentType]
         self.forms[0].dataLoaded.connect(exam_tab.from_xml)
+
         self.tab_widget.addTab(exam_tab, "&Untersuchung")
+
 
         # Tabs loaded from ./forms
 
@@ -119,6 +124,7 @@ class MainWidget(QtWidgets.QWidget):
                 QtWidgets.QMessageBox.warning(self,
                 "Formular nicht gefunden",
                 f"Formulardatei '{form_file_name}.toml' nicht gefunden")
+
                 continue
 
             with form_file.open("rb") as fl:
@@ -127,14 +133,16 @@ class MainWidget(QtWidgets.QWidget):
             # Create new Tab
 
             form_group = QtWidgets.QWidget()
-            form_group.setLayout(QtWidgets.QVBoxLayout())
+            form_group_layout = QtWidgets.QVBoxLayout()
+            form_group.setLayout(form_group_layout)
             self.tab_widget.addTab(form_group, form_data.get("name", "Unbenannt"))
+
 
             for field in form_data.get("field", []):
                 field_group = QtWidgets.QGroupBox(title=field.get("caption", ""))
                 field_layout = QtWidgets.QVBoxLayout(field_group)
                 field_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-                form_group.layout().addWidget(field_group)
+                form_group_layout.addWidget(field_group)
 
                 match field["field_type"]:
                     case "split_line":
@@ -167,7 +175,7 @@ class MainWidget(QtWidgets.QWidget):
                     case _:
                         continue
 
-                self.forms.append(new_widget)
+                self.forms.append(new_widget) # pyright: ignore[reportArgumentType]
                 self.forms[0].dataLoaded.connect(new_widget.from_xml)
                 field_layout.addWidget(new_widget)
 
@@ -211,7 +219,8 @@ class MainWidget(QtWidgets.QWidget):
             return None
 
         if not (data_file := self.save_data(patient_file_name, silent_overwrite=True)):
-            QtWidgets.QMessageBox.warning(self, "Fehler beim Exportieren",
+            QtWidgets.QMessageBox.warning(self,
+                "Fehler beim Exportieren",
                 "Daten konnten nicht gespeichert werden")
             return
 
@@ -262,8 +271,9 @@ class MainWidget(QtWidgets.QWidget):
                         xml_content = re.sub(r"(<w:t>)?(\{.+?})", repl, document.read().decode())
 
                     docxml = self.proc.parse_xml(xml_text=xml_content)
-                    out_str = transform.transform_to_string(xdm_node=docxml)
+                    out_str: str = transform.transform_to_string(xdm_node=docxml)
                     output.writestr(doc_name, out_str)
 
-        QtWidgets.QMessageBox.information(self, "Dokument geschrieben", "Dokument wurde fertig gestellt [STRG+O] zum öffnen")
+        QtWidgets.QMessageBox.information(self, "Dokument geschrieben",
+          "Dokument wurde fertig gestellt [STRG+O] zum öffnen")
         self.forms[0].letter_button.setVisible(True)

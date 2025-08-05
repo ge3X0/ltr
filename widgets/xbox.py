@@ -3,6 +3,7 @@ from PySide6.QtCore import Qt
 from saxonche import PyXPathProcessor
 from itertools import batched
 from typing import override
+from collections.abc import Iterable
 
 
 class XCheckBox(QtWidgets.QCheckBox):
@@ -18,14 +19,17 @@ class XCheckBox(QtWidgets.QCheckBox):
         k = e.key()
         if k == Qt.Key.Key_X or k == Qt.Key.Key_Y:
             self.setChecked(k == Qt.Key.Key_X)
-            self.nextInFocusChain().setFocus()
+            if (next_box := self.nextInFocusChain()) is not None:
+                next_box.setFocus()
         else:
             return super().keyReleaseEvent(e)
 
 
 class XBox(QtWidgets.QWidget):
+
     def __init__(self, field_id: str, values: list[str], rows: int = -1, *args, **kwargs):
-        def __make_checkboxes(vals):
+
+        def __make_checkboxes(vals: Iterable[str]):
             col = QtWidgets.QVBoxLayout()
             for v in vals:
                 cb = XCheckBox(v)
@@ -64,6 +68,6 @@ class XBox(QtWidgets.QWidget):
                 cb.setChecked(False)
             return
 
-        text_list = [e.string_value for e in elements]
+        text_list = [e.string_value for e in elements if e is not None]
         for cb in self.__checkboxes:
             cb.setChecked(cb.text() in text_list)

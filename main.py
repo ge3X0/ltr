@@ -11,14 +11,14 @@ from sys import exit
 #  Read template variables from docs files
 #  Edit docx files and re-insert variables
 
-LTR_VERSION = "v0.2.4"
+LTR_VERSION = "v0.2.6"
 
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
 
     app.setStyleSheet("""
-    QPushButton { padding: 12px; }
+    QPushButton { padding: 12px; min-width: 180px; }
     QLineEdit { padding: 12px; }
     QComboBox { padding: 12px; }
     """)
@@ -38,8 +38,8 @@ if __name__ == "__main__":
 
     if not config_path.exists():
         QtWidgets.QMessageBox.warning(
-            None, "Config nicht gefunden",
-            "Eine config.toml Datei muss erstellt werden")
+            None, "Config nicht gefunden",                  # pyright: ignore[reportArgumentType]
+            "Eine config.toml Datei muss erstellt werden")  
         exit(app.exit(0))
 
     # Load Configurations
@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     if "template_files" not in configs:
         QtWidgets.QMessageBox.warning(
-            None, "Fehler in config.toml",
+            None, "Fehler in config.toml",                  # pyright: ignore[reportArgumentType]
             "config.toml muss Schlüssel template_files beinhalten")
         exit(app.exit(0))
 
@@ -74,13 +74,13 @@ if __name__ == "__main__":
         # Abort, if no template file exists
         if len(warning_missing_templates) == len(configs["template_files"]):
             QtWidgets.QMessageBox.warning(
-                None, "Fehler in config.toml",
+                None, "Fehler in config.toml",              # pyright: ignore[reportArgumentType]
                 "Keine der Template-Dateien in config.toml wurde gefunden"
             )
             exit(app.exit(0))
 
         QtWidgets.QMessageBox.warning(
-            None, "Fehler in config.toml",
+            None, "Fehler in config.toml",                  # pyright: ignore[reportArgumentType]
             f"Die Template-Dateien {', '.join(warning_missing_templates)} konnten nicht gefunden werden")
 
     configs["template_files"] = template_files
@@ -89,14 +89,14 @@ if __name__ == "__main__":
 
     if "xsl_file" not in configs:
         QtWidgets.QMessageBox.warning(
-            None, "Fehler in config.toml",
+            None, "Fehler in config.toml",                  # pyright: ignore[reportArgumentType]
             "config.toml muss Schlüssel xsl_file beinhalten")
         exit(app.exit(0))
 
     configs["xsl_file"] = base_path / configs["xsl_file"]
     if not configs["xsl_file"].exists():
         QtWidgets.QMessageBox.warning(
-            None, "Datei nicht gefunden",
+            None, "Datei nicht gefunden",                   # pyright: ignore[reportArgumentType]
             "xsl_file existiert nicht")
         exit(app.exit(0))
 

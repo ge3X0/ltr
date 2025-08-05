@@ -10,7 +10,9 @@ Jedes Feld hat die Form "{" "Feldname" "}". Diese werden im Fließtext eingefüg
 
 Die vordefinierten Felder sind:
 
+
 ## Allgemeine Felder
+
 
 | Feldname     | Inhalt                                      | Kommentar                         |
 |--------------|---------------------------------------------|-----------------------------------|
@@ -29,9 +31,14 @@ Die vordefinierten Felder sind:
 | {ekg_zeit}   | Zeitpunkt des 2. EKGs des Patienten         | Entspricht Aufnahmedatum + 7 Tage |
 | {arzt}       | Nachname des behandelnden Arztes            |                                   |
 | {psych}      | Nachname des behandelnden Psychotherapeuten |                                   |
-| {allergien}  | Bekannte Allergien des Patienten            |
+| {allergien}  | Bekannte Allergien des Patienten            |                                   |
+
+
 
 ## Gender-spezifische Felder
+
+Der Inhalt dieser Felder hängt von dem ausgewählten Geschlecht des Patienten ab (männlich/weiblich/divers)
+
 
 | Feldname      | Inhalt                                                  | Kommentar |
 |---------------|---------------------------------------------------------|-----------|
@@ -44,7 +51,12 @@ Die vordefinierten Felder sind:
 | {patient_dat} | dem Patienten;der Patientin;dem Patienten/der Patientin |           |
 
 
+
 ## Textblöcke
+
+Ob diese Textblöcke angezeigt werden oder nicht, hängt ab, ob die entsprehenden
+Diagnosen gefunden wurden.
+
 
 | Feldname                | Inhalt                                                                    | Kommentar                |
 |-------------------------|---------------------------------------------------------------------------|--------------------------|
@@ -66,9 +78,11 @@ Die vordefinierten Felder sind:
 | {pause_cortison}        | Information für Pause mit und ohne Cortison                               | Nur bei G44.4            |
 
 
+
 ## Iterationsfelder
 
 Diese Felder iterieren über einen Datensatz und fügen entsprechend Listen oder Tabellen ein
+
 
 | Feldname                | Inhalt                                                                    | Kommentar                                                                       |
 |-------------------------|---------------------------------------------------------------------------|---------------------------------------------------------------------------------|
@@ -82,9 +96,12 @@ Diese Felder iterieren über einen Datensatz und fügen entsprechend Listen oder
 | {basismedikation}       | Tabelle mit gefundenen Prophylaxemedikamenten                             | Medikamentenhinweise werden abhängig von gefunden Medikamenten eingefügt (s.u.) |
 | {sonstigemedikation}    | Tabelle mit gefundener nicht-schmerztherapeutischer Medikation            |                                                                                 |
 
+
+
 ## Score-Felder
 
 Diese Felder lesen in Formularen eingegebene Daten aus und fügen entsprechend Textblöcke ein
+
 
 | Feldname | Inhalt       | Kommentar                                                                               |
 |----------|--------------|-----------------------------------------------------------------------------------------|
@@ -92,7 +109,10 @@ Diese Felder lesen in Formularen eingegebene Daten aus und fügen entsprechend T
 | {whodas} | Whodas-Score | Lässt Zeilen mit 0-Werten aus                                                           |
 | {bdi_ii} | BDI-II Score | Lässt normwertige Felder aus                                                            |
 
+
+
 # Tabellenformate
+
 
 ## Akutmedikation
 
