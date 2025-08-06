@@ -8,6 +8,8 @@ from operator import attrgetter
 import shutil
 
 
+LetterPath: Path = Path(".")
+
 @dataclass
 class Letter:
     path: Path
@@ -34,18 +36,19 @@ if __name__ == "__main__":
         description="Get names and dates of .docx files under a given path"
     )
 
-
-    arg_parser.add_argument("path", type=Path,
+    arg_parser.add_argument("-p", "--path", type=Path,
         help="Path to the directory to search for .docx files")
 
     args = arg_parser.parse_args()
 
-    filepath: Path = args.path
+    filepath: Path = args.path if args.path else LetterPath
 
     if not filepath.exists():
+        print(f"!! Filepath {filepath} does not seem to exist")
         exit(1)
     
     if not filepath.is_dir():
+        print(f"!! Expected {filepath} to be a directory")
         exit(1)
 
 
@@ -80,6 +83,7 @@ if __name__ == "__main__":
         print("\n--------------------------------\n")
 
     if input("Move marked (red) files into ./Archiv? (y/n) ").lower() != 'y':
+        print("Ended program without moving files")
         exit(0)
 
     dest_path = filepath / "Archiv/"
