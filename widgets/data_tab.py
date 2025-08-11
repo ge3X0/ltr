@@ -158,6 +158,10 @@ class DataTabWidget(QtWidgets.QWidget):
                             if subst is not None:   # No Substitution
                                 if not subst:       # Empty list -> ignore diagnosis
                                     continue
+                                if len(subst) != 2:
+                                    QtWidgets.QMessageBox.warning(self, "Diagnose - Substitution",
+                                        "substitute_diagnoses benötigt exakt 2 Parameter in config.toml")
+                                    continue
                                 diag.icd10, diag.name = subst
 
                             # TODO: Add sorting option to config.toml

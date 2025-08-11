@@ -10,7 +10,7 @@ from sys import exit
 #  Read template variables from docs files
 #  Edit docx files and re-insert variables
 
-LTR_VERSION = "v0.2.7"
+LTR_VERSION = "v0.2.8"
 
 
 if __name__ == "__main__":
