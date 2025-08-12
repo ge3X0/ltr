@@ -8,6 +8,9 @@ from operator import attrgetter
 import shutil
 
 
+LetterPath: Path = Path("Y:/Arztbriefe/000_Briefe zu korrigieren")
+
+
 @dataclass
 class Letter:
     path: Path
@@ -35,12 +38,12 @@ if __name__ == "__main__":
     )
 
 
-    arg_parser.add_argument("path", type=Path,
+    arg_parser.add_argument("-p", "--path", type=Path,
         help="Path to the directory to search for .docx files")
 
     args = arg_parser.parse_args()
 
-    filepath: Path = args.path
+    filepath: Path = args.path if args.path else LetterPath
 
     if not filepath.exists():
         exit(1)
@@ -51,7 +54,7 @@ if __name__ == "__main__":
 
     data_set: dict[str, list[Letter]] = {}
 
-    for docx_file in filepath.glob("*.docx"):
+    for docx_file in filepath.glob("A-*.docx"):
         with ZipFile(docx_file) as archive:
             with archive.open("word/document.xml") as file:
                 text = file.read().decode()
@@ -62,13 +65,23 @@ if __name__ == "__main__":
         if m := re.search(r"\d\d\.\d\d\.\d\d\d\d", cells[9]):
             doc_date = datetime.strptime(m[0], "%d.%m.%Y")
 
-        data_set.setdefault(cells[18], []).append(Letter(docx_file, doc_date))
+        doc_name = cells[18].replace(' ', '')
+        match doc_name:
+            case '':
+                doc_name = cells[24]
+            case 'Stationsärztin' :
+                doc_name = cells[14]
+            case _:
+                doc_name = doc_name
+
+        doc_name = doc_name.replace(' ', '')
+        data_set.setdefault(doc_name, []).append(Letter(docx_file, doc_date))
 
 
     move_list: list[Path] = []
 
     for doc_name, letters in data_set.items():
-        print(f"\x1b[1;38;5;14m{doc_name.strip()}\x1b[0m:")
+        print(f"\x1b[1;38;5;14m{doc_name}\x1b[0m:")
 
         for letter in sorted(letters, key=attrgetter('due_date')):
             red_mark = mark_due(letter.due_date)
@@ -79,7 +92,7 @@ if __name__ == "__main__":
 
         print("\n--------------------------------\n")
 
-    if input("Move marked (red) files into ./Archiv? (y/n) ").lower() != 'y':
+    if input("Move marked (red) files into ./Archiv? (yes/no) ").lower() != 'yes':
         exit(0)
 
     dest_path = filepath / "Archiv/"
