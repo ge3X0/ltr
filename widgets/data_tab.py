@@ -15,6 +15,8 @@ from models.patient_data import Medication, Diagnosis, Field, PatientData
 from models.models import DiagnosesTableModel, MedicationTableModel, PatientTableModel
 
 
+# TODO better diff between data and gui
+
 class DataTabWidget(QtWidgets.QWidget):
     dataLoaded: QtCore.Signal = QtCore.Signal(PyXPathProcessor)
 
@@ -72,14 +74,14 @@ class DataTabWidget(QtWidgets.QWidget):
         xpath.set_context(xdm_item=patient_data_xml)
 
         # Walk over each cell in table
-        for cell_idx, cell in enumerate(xpath.evaluate(".//w:tc")):
+        for cell_idx, cell in enumerate(xpath.evaluate(".//w:tc")): # pyright: ignore
             if cell is None:
                 QtWidgets.QMessageBox.warning(self,
                     "Fehler beim Lesen der Daten",
                     "Unerwarteter Fehler: Keine Tabellen")
                 return
 
-            xpath.set_context(xdm_item=cell)
+            xpath.set_context(xdm_item=cell) # pyright: ignore[reportArgumentType]
 
             # Group by paragraph, ignore lists
             if (p_nodes := xpath.evaluate(".//w:p[not(.//w:numPr)]")) is None:
@@ -99,21 +101,24 @@ class DataTabWidget(QtWidgets.QWidget):
 
                     self.patient_data.last_name, self.patient_data.first_name = names
 
+
                 case Field.Birthday:
                     # TODO: error on invalid birthday
                     self.patient_data.birthday = datetime.strptime(text.splitlines()[0], "%d.%m.%Y")
 
+
                 case Field.Address:
-                    # TODO: correctly format adress field
                     line = text.replace('\n', '')
-                    if (m := re.match(r"([\w\s.,]+?)([\d\s]+)$", line)) is not None:
+                    if (m := re.match(r"([\w\s.,-]+?)-?([\d\s]+)$", line)) is not None:
                         self.patient_data.address = m[1].strip()
                         self.patient_data.phone = m[2].strip()
                     else:
                         self.patient_data.address = line.strip()
 
+
                 case Field.Occupation:
                     self.patient_data.occupation = text
+
 
                 case Field.Doctor:
                     # Remove "Arzt: "-prefix
@@ -122,6 +127,7 @@ class DataTabWidget(QtWidgets.QWidget):
                     else:
                         self.patient_data.doc_name = text
 
+
                 case Field.Psychotherapist:
                     # Remove "Psych.: "-prefix
                     if (m := re.match(r"Psych\.:\s*(.+)", text)):
@@ -129,15 +135,19 @@ class DataTabWidget(QtWidgets.QWidget):
                     else:
                         self.patient_data.pt_name = text
 
+
                 case Field.Admission:
                     # TODO error on invalid dates
                     self.patient_data.admission = datetime.strptime(text, "%d.%m.%Y")
 
+
                 case Field.Discharge:
                     self.patient_data.discharge = datetime.strptime(text, "%d.%m.%Y")
 
+
                 case Field.Allergies if text:
                     self.patient_data.allergies = text
+
 
                 case Field.DiagPain | Field.DiagMisuse | Field.DiagPsych | Field.DiagSom:
                     for line in text.splitlines():
@@ -148,6 +158,10 @@ class DataTabWidget(QtWidgets.QWidget):
                             if subst is not None:   # No Substitution
                                 if not subst:       # Empty list -> ignore diagnosis
                                     continue
+                                if len(subst) != 2:
+                                    QtWidgets.QMessageBox.warning(self, "Diagnose - Substitution",
+                                        "substitute_diagnoses benötigt exakt 2 Parameter in config.toml")
+                                    continue
                                 diag.icd10, diag.name = subst
 
                             # TODO: Add sorting option to config.toml
@@ -156,17 +170,22 @@ class DataTabWidget(QtWidgets.QWidget):
                             else:
                                 self.patient_data.diagnoses.append(diag)
 
+
                 case Field.MedCurrAcute:
                     self.__read_meds(text, "current", "acute")
+
 
                 case Field.MedCurrBase:
                     self.__read_meds(text, "current", "base")
 
+
                 case Field.MedCurrOther:
                     self.__read_meds(text, "current", "other")
 
+
                 case Field.MedFormAcute:
                     self.__read_meds(text, "former", "acute")
+
 
                 case Field.MedFormBase:
                     self.__read_meds(text, "former", "base")
@@ -288,6 +307,7 @@ class DataTabWidget(QtWidgets.QWidget):
     @QtCore.Slot()
     def show_data_sheet(self):
         """Display Schnuppi for currently loaded patient"""
+
         patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
         if not patient_path.exists():
             QtWidgets.QMessageBox.warning(self,
@@ -301,6 +321,7 @@ class DataTabWidget(QtWidgets.QWidget):
     @QtCore.Slot()
     def show_document(self):
         """Display currently selected document for currently loaded patient"""
+
         output_file = self.configs["output_path"] / self.configs["current_template"].stem / f"{self.patient_file_name()}.docx"
         if not output_file.exists():
             QtWidgets.QMessageBox.warning(self,
@@ -314,6 +335,7 @@ class DataTabWidget(QtWidgets.QWidget):
     @QtCore.Slot()
     def select_patient(self):
         """Load all data for the currently selected patient. Emits dataLoaded signal"""
+
         file_path = self.search_bar.text().replace("..", "")
         patient_path = self.configs["file_db"] / f"{file_path}.docx"
 
@@ -357,7 +379,9 @@ class DataTabWidget(QtWidgets.QWidget):
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
         self.diagnoses_table.resizeColumnsToContents()
 
-        # self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1)
+        # Reset cells from last table
+        self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1) # pyright: ignore
+
         self.medication_table.setModel(MedicationTableModel(
             self.patient_data.medication["current"]["base"],
             self.patient_data.medication["current"]["other"]))
