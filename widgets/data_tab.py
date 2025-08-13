@@ -379,9 +379,7 @@ class DataTabWidget(QtWidgets.QWidget):
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
         self.diagnoses_table.resizeColumnsToContents()
 
-        # Reset cells from last table
-        self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1) # pyright: ignore
-
+        self.medication_table.clearSpans()
         self.medication_table.setModel(MedicationTableModel(
             self.patient_data.medication["current"]["base"],
             self.patient_data.medication["current"]["other"]))
