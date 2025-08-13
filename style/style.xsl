@@ -212,13 +212,9 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
         <xsl:variable name="val" select="$data//field[@name='midas']/value"/>
 
-        <xsl:text>Im MIDAS-Score erreicht </xsl:text>
-        <xsl:call-template name="patient"/>
-        <xsl:text> einen Wert von </xsl:text>
-        <xsl:value-of select="$val_sum"/>
-        <xsl:text>, </xsl:text>
-        <xsl:value-of select="$severity"/>
-        <xsl:text> Beeinträchtigung entsprechend.</xsl:text>
+        <xsl:text>Im MIDAS-Score erreicht </xsl:text><xsl:call-template name="patient"/><xsl:text> einen Wert von </xsl:text>
+        <xsl:value-of select="$val_sum"/><xsl:text>, </xsl:text><xsl:value-of select="$severity"/><xsl:text> Beeinträchtigung entsprechend.</xsl:text>
+
         <xsl:if test="$val[1] != 0">
             <xsl:text> An </xsl:text>
             <xsl:value-of select="$val[1]"/>
