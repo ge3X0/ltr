@@ -379,9 +379,7 @@ class DataTabWidget(QtWidgets.QWidget):
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
         self.diagnoses_table.resizeColumnsToContents()
 
-        # Reset cells from last table
-        self.medication_table.setSpan(len(self.medication_table.model().base_medication) + 1, 0, 1, 1) # pyright: ignore
-
+        self.medication_table.clearSpans()
         self.medication_table.setModel(MedicationTableModel(
             self.patient_data.medication["current"]["base"],
             self.patient_data.medication["current"]["other"]))
@@ -393,12 +391,12 @@ class DataTabWidget(QtWidgets.QWidget):
     def patient_file_name(self) -> str:
         """Generate unique filename from loaded patient data"""
 
-        # Remove directory string parts
-        first_name = self.patient_data.first_name.replace("..", "")
-        last_name = self.patient_data.last_name.replace("..", "")
-
-        # TODO: let user define file name via config.toml
-        return f"A-{last_name}, {first_name} {self.patient_data.admission.strftime('%d%m%Y')}"
+        return self.configs["output_filename"].format(
+            vorname = self.patient_data.first_name.replace("..", ""),
+            nachname = self.patient_data.last_name.replace("..", ""),
+            aufnahme = self.patient_data.admission.strftime("%d%m%Y"),
+            entlassung = self.patient_data.discharge.strftime("%d%m%Y"),
+            geburtstag = self.patient_data.birthday.strftime("%d%m%Y"))
 
 
     def to_xml(self) -> str:

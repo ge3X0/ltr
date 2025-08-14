@@ -20,6 +20,9 @@ save_path = "./data"
 # Path to save generated *.docx files to (optional, default: ./output)
 output_path = "./output"
 
+# Output filename, fields are: {vorname}, {nachname}, {aufnahme}, {entlassung}, {geburtstag}
+output_filename = "A-{nachname}, {vorname} {aufnahme}"
+
 # Files in *.docx structure of template_file to transform using xsl_file (optional)
 # This has to do with inner workings of the docx-format. If in doubt, leave as is.
 process_files = ["word/document.xml", "word/header1.xml"]
