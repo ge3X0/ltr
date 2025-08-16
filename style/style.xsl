@@ -26,7 +26,7 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:variable name="diag_migraine_with_aura" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.1']"/>
     <xsl:variable name="diag_status_migrainosus" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.2']"/>
     <xsl:variable name="diag_spaks" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.2']"/>
-    <xsl:variable name="diag_trigeminus" select="contains($data//patient/diagnoses/diagnosis/icd10, 'G50')"/>
+    <xsl:variable name="diag_trigeminus" select="$data//patient/diagnoses/diagnosis/icd10[contains(., 'G50')]"/>
 
 
     <!-- Special Functions !-->

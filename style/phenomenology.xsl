@@ -489,7 +489,7 @@
     </xsl:template>
 
     <xsl:template match="//w:p[.//pheno_migraine]">
-	<xsl:if test="$diag_migraine_without_aura or $diag_miagraine_with_aura">
+	<xsl:if test="$diag_migraine_without_aura or $diag_migraine_with_aura">
 	    <w:tbl>
 		<w:tblPr>
 		    <w:tblW w:w="0" w:type="auto"/>
