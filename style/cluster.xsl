@@ -4,6 +4,170 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
+    <!-- TODO: Should we really use this?? !-->
+    <xsl:template match="//w:p[.//cluster_anamnese]">
+	<w:p>
+	    <w:pPr>
+		<w:tabs>
+		    <w:tab w:val="left" w:pos="1701"/>
+		    <w:tab w:val="left" w:pos="2268"/>
+		    <w:tab w:val="left" w:pos="6804"/>
+		</w:tabs>
+		<w:jc w:val="both"/>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+	    </w:pPr>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:t xml:space="preserve">Bei {anrede_dat} {nachname} besteht seit </w:t>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:fldChar w:fldCharType="begin"/>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:instrText xml:space="preserve"> </w:instrText>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:fldChar w:fldCharType="separate"/>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:fldChar w:fldCharType="end"/>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:t xml:space="preserve"> ein chronischer Clusterkopfschmerz</w:t>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:fldChar w:fldCharType="begin"/>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:instrText xml:space="preserve"> </w:instrText>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:fldChar w:fldCharType="separate"/>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:fldChar w:fldCharType="end"/>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:t>, eine Unterbrechung der Clusterkopfschmerzen mit einer Dauer von länger als 3 Monaten trat zuletzt nicht mehr auf. Hierbei treten aktuell
+		</w:t>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:fldChar w:fldCharType="begin"/>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:instrText xml:space="preserve"> </w:instrText>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:fldChar w:fldCharType="separate"/>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:fldChar w:fldCharType="end"/>
+	    </w:r>
+
+	    <w:r>
+		<w:rPr>
+		    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
+		    <w:sz w:val="18"/>
+		    <w:szCs w:val="18"/>
+		</w:rPr>
+		<w:t xml:space="preserve"> Attacken täglich auf, mit je einer Dauer von ca. 30 Minuten. Die Attacken werden von ausgeprägter körperlicher Unruhe sowie ipsilateraler trigeminoautonomer Symptomatik mit konjunktivaler Injektion, Lakrimation, Rhinorhoe sowie Ptosis begleitet.</w:t>
+	    </w:r>
+	</w:p>
+    </xsl:template>
+
     <xsl:template match="//w:p[.//clusterbehandlung]">
         <xsl:if test="$diag_cluster">
             <w:p>
