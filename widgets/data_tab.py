@@ -154,27 +154,27 @@ class DataTabWidget(QtWidgets.QWidget):
                         # Find Diagnoses with ICD first
                         if not (m := self.icd_first_pattern.search(line)):
                             # If not found: Find with ICD in text
-                            m = self.icd_pattern.search(line)
+                            if not (m := self.icd_pattern.search(line)):
+                                continue
 
                         # for m in self.icd_pattern.finditer(line):
-                        if m is not None:
-                            diag = Diagnosis(m[1].strip(), m[2])
-                            subst: list[str] | None = self.configs["substitute_diagnoses"].get(diag.icd10, None)
+                        diag = Diagnosis(m["icd_name"], m["icd10"])
+                        subst: list[str] | None = self.configs["substitute_diagnoses"].get(diag.icd10, None)
 
-                            if subst is not None:   # No Substitution
-                                if not subst:       # Empty list -> ignore diagnosis
-                                    continue
-                                if len(subst) != 2:
-                                    QtWidgets.QMessageBox.warning(self, "Diagnose - Substitution",
-                                        "substitute_diagnoses benötigt exakt 2 Parameter in config.toml")
-                                    continue
-                                diag.icd10, diag.name = subst
+                        if subst is not None:   # No Substitution
+                            if not subst:       # Empty list -> ignore diagnosis
+                                continue
+                            if len(subst) != 2:
+                                QtWidgets.QMessageBox.warning(self, "Diagnose - Substitution",
+                                    "substitute_diagnoses benötigt exakt 2 Parameter in config.toml")
+                                continue
+                            diag.icd10, diag.name = subst
 
-                            # TODO: Add sorting option to config.toml
-                            if diag.icd10 == "G44.4":
-                                self.patient_data.diagnoses.insert(0, diag)
-                            else:
-                                self.patient_data.diagnoses.append(diag)
+                        # TODO: Add sorting option to config.toml
+                        if diag.icd10 == "G44.4":
+                            self.patient_data.diagnoses.insert(0, diag)
+                        else:
+                            self.patient_data.diagnoses.append(diag)
 
 
                 case Field.MedCurrAcute:
@@ -205,9 +205,9 @@ class DataTabWidget(QtWidgets.QWidget):
 
         self.proc: PySaxonProcessor = proc
 
-        icd_pattern = r"([A-Z]\d{2}(?:\.\d+)?)"
-        icd_name = r"(\b[,./:\-\w\s?äöüÄÖÜß]+?)"
-        self.icd_first_pattern: re.Pattern[str] = re.compile(f"^\\s*{icd_pattern}\\s+?{icd_name}")
+        icd_pattern = r"(?P<icd10>[A-Z]\d{2}(?:\.\d+)?)"
+        icd_name = r"(?P<icd_name>\b[,./:\-\w\s?äöüÄÖÜß]+)"
+        self.icd_first_pattern: re.Pattern[str] = re.compile(f"^\\s*{icd_pattern}\\s+?{icd_name}.*$")
         self.icd_pattern: re.Pattern[str] = re.compile(f"^\\s*{icd_name}{icd_pattern}.*$")
 
         md_name = r"([/.\-()\w\säöüÄÖÜß?]+?)"
