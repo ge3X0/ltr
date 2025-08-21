@@ -11,7 +11,22 @@ from sys import exit
 #  Read template variables from docs files
 #  Edit docx files and re-insert variables
 
-LTR_VERSION = "v0.2.8"
+LTR_VERSION = "v0.3.0"
+
+
+# def extend_config(config: dict, add_config: dict) -> dict:
+#     for k, v in add_config.items():
+#         if k in config:
+#             if isinstance(config[k], dict) and isinstance(v, dict):
+#                 config[k] |= v
+#             elif isinstance(config[k], list) and isinstance(v, list):
+#                 config[k].extend(v)
+#                 config[k] = list(set(config[k]))
+#             else:
+#                 config[k] = v
+#         else:
+#             config[k] = v
+#     return config
 
 
 if __name__ == "__main__":
@@ -24,7 +39,31 @@ if __name__ == "__main__":
     """)
     app.setFont(QtGui.QFont("Arial", 14))
 
+    # Look for global configs
+
+    # TODO: "Merge" local and central configs?
+    # config_path = Path("config.toml")
+
+    # if not config_path.exists():
+    #     QtWidgets.QMessageBox.warning(
+    #         None, "Config nicht gefunden",                  # pyright: ignore[reportArgumentType]
+    #         "Erwarte eine globale config.toml im Verzeichnis des Programmes")
+    #
+    # with config_path.open("rb") as config_file:
+    #     configs = toml.load(config_file)
+    #
+    # base_path = config_path.parent
+
     # Look for user configs
+
+    # config_path = Path.home() / ".ltr/config.toml"
+
+    # Overwrite global values with user values
+
+    # if config_path.exists():
+    #     with config_path.open("rb") as config_file:
+    #         configs = extend_config(configs, toml.load(config_file))
+    #     base_path = config_path.parent
 
     config_path = Path.home() / ".ltr/config.toml"
 
@@ -33,7 +72,6 @@ if __name__ == "__main__":
     if not config_path.exists():
         config_path = Path("config.toml")
 
-    # TODO: "Merge" local and central configs?
     base_path = config_path.parent
 
     if not config_path.exists():
