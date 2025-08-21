@@ -4,12 +4,21 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
+    <!-- Read Values from internal data file (fed by ltr.exe) !-->
     <xsl:param name="data_file" required="yes"/>
     <xsl:variable name="data" select="document($data_file)"/>
 
+
     <!-- Variable Definition !-->
 
+
+    <!-- General Variables !-->
+
     <xsl:variable name="gender" select="$data//exam/gender"/>
+    <xsl:variable name="age" select="$data//patient/age"/>
+
+    <!-- Diagnosis Variables !-->
+
     <xsl:variable name="diag_overuse" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.4']"/>
     <xsl:variable name="diag_cluster" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.0']"/>
     <xsl:variable name="diag_chronic_migraine" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.8/3']"/>
@@ -17,29 +26,12 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:variable name="diag_migraine_with_aura" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.1']"/>
     <xsl:variable name="diag_status_migrainosus" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G43.2']"/>
     <xsl:variable name="diag_spaks" select="$data//patient/diagnoses/diagnosis/icd10[text() = 'G44.2']"/>
-    <xsl:variable name="age" select="$data//patient/age"/>
+    <xsl:variable name="diag_trigeminus" select="$data//patient/diagnoses/diagnosis/icd10[contains(., 'G50')]"/>
+
 
     <!-- Special Functions !-->
 
-    <!-- Helper to generate a docx "run" element !-->
-    <xsl:template name="text-run">
-        <xsl:param name="text"/>
-        <xsl:param name="size" select="18" required="no" />
-        <xsl:param name="highlight" select="false()" required="no"/>
-        <xsl:param name="bold" select="false()" required="no"/>
-
-        <w:r>
-            <w:rPr>
-                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode" w:cs="Lucida Sans Unicode"/>
-                <xsl:if test="$bold"><w:b/><w:bCs/></xsl:if>
-                <w:sz w:val="{$size}"/>
-                <w:szCs w:val="{$size}"/>
-                <xsl:if test="$highlight"><w:highlight w:val="yellow"/></xsl:if>
-            </w:rPr>
-            <w:t xml:space="preserve"><xsl:value-of select="$text"/></w:t>
-        </w:r>
-    </xsl:template>
-
+    <!-- Generate comma-separated string list !-->
     <xsl:template name="string-list">
         <xsl:param name="selection"/>
 
@@ -56,7 +48,11 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
         </xsl:for-each>
     </xsl:template>
 
+
     <!-- Include Files !-->
+
+
+    <xsl:include href="format.xsl"/>		<!-- Basic formatting templates !-->
 
     <xsl:include href="overuse.xsl"/>
     <xsl:include href="acute_medication.xsl"/>
@@ -64,8 +60,11 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:include href="base_medication.xsl"/>
     <xsl:include href="cluster.xsl"/>
     <xsl:include href="migraine.xsl"/>
+    <xsl:include href="phenomenology.xsl"/>
+
 
     <!-- Copy all Nodes without other template match !-->
+
 
     <xsl:template match="@*|node()">
         <xsl:copy>
@@ -73,7 +72,9 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
         </xsl:copy>
     </xsl:template>
 
+
     <!-- General data template !-->
+
 
     <xsl:template match="//vorname"><xsl:value-of select="$data//patient/first_name"/></xsl:template>
     <xsl:template match="//nachname"><xsl:value-of select="$data//patient/last_name"/></xsl:template>
@@ -92,7 +93,9 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:template match="//psych"><xsl:value-of select="$data//patient/therapist_name"/></xsl:template>
     <xsl:template match="//allergien"><xsl:value-of select="$data//patient/allergies"/></xsl:template>
 
+
     <!-- Gender templates !-->
+
 
     <xsl:template match="//anrede">
         <xsl:choose>
@@ -152,7 +155,9 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
         </xsl:choose>
     </xsl:template>
 
+
     <!-- List of diagnoses !-->
+
 
     <xsl:template match="//w:p[.//diagnosen]">
         <xsl:for-each select="$data//patient/diagnoses/diagnosis">

@@ -33,12 +33,14 @@
                 </w:tblBorders>
                 <w:tblLook w:val="00A0"/>
             </w:tblPr>
+
             <w:tblGrid>
                 <w:gridCol w:w="3691"/>
                 <w:gridCol w:w="15"/>
                 <w:gridCol w:w="5371"/>
                 <w:gridCol w:w="20"/>
             </w:tblGrid>
+
             <w:tr>
                 <w:tc>
                     <w:tcPr>
@@ -46,10 +48,9 @@
                         <w:gridSpan w:val="4"/>
                         <w:shd w:val="clear" w:color="auto" w:fill="D9D9D9"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="both"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr"/>
 
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="bold" select="true()"/>
@@ -69,9 +70,9 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="both"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			</xsl:call-template>
 
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="bold" select="true()"/>
@@ -82,12 +83,18 @@
                         </xsl:call-template>
                     </w:p>
                 </w:tc>
+
                 <w:tc>
                     <w:tcPr>
                         <w:tcW w:w="5391" w:type="dxa"/>
                         <w:gridSpan w:val="2"/>
                     </w:tcPr>
-                    <w:p w:rsidR="00877D06" w:rsidRPr="00166F0D" w:rsidRDefault="00877D06" w:rsidP="000B07A2">
+
+                    <w:p>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="bold" select="true()"/>
                             <xsl:with-param name="size" select="14"/>
@@ -106,13 +113,11 @@
                             <w:tcW w:w="3706" w:type="dxa"/>
                             <w:gridSpan w:val="2"/>
                         </w:tcPr>
+
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="both"/>
-                            </w:pPr>
+			    <xsl:call-template name="pPr"/>
 
                             <xsl:call-template name="text-run">
-                                <xsl:with-param name="size" select="18"/>
                                 <xsl:with-param name="text">
                                     <xsl:text>Migräneattacke</xsl:text>
                                 </xsl:with-param>
@@ -120,9 +125,8 @@
                         </w:p>
 
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="both"/>
-                            </w:pPr>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="18"/>
                                 <xsl:with-param name="text">
@@ -132,9 +136,8 @@
                         </w:p>
 
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="both"/>
-                            </w:pPr>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="18"/>
                                 <xsl:with-param name="text">
@@ -151,6 +154,8 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -166,6 +171,8 @@
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -183,6 +190,8 @@
                         <w:p/>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Im Notfall, bei Eskalation der Rebound-Kopfschmerzen: </xsl:text>
@@ -191,6 +200,8 @@
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>16 mg Dexamethason in 250 ml NaCl als Kurzinfusion i.v.</xsl:text>
@@ -201,6 +212,8 @@
                         <w:p/>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Oder orale Anwendung: </xsl:text>
@@ -209,6 +222,8 @@
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Prednisolon 100 mg oral (z.B. 2x50 mg Decortin H) oder als Suppositorium (Rectodelt 100 mg)</xsl:text>
@@ -228,12 +243,15 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Migräne ohne Aura</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
                         </w:p>
+
                         <xsl:call-template name="nach_pause"/>
                     </w:tc>
 
@@ -244,6 +262,8 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -258,7 +278,9 @@
                             </xsl:call-template>
                         </w:p>
 
-                        <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="00DD7025">
+                        <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -268,6 +290,8 @@
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -285,6 +309,8 @@
                         <w:p/>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Alternativ kann an Stelle von Eletriptan 40 mg auch Rizatriptan 10 mg zur Anwendung kommen.</xsl:text>
@@ -295,6 +321,8 @@
                         <w:p/>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -304,6 +332,8 @@
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Erneute Einnahme frühestens nach 4 Stunden bei primär guter Wirksamkeit und auftretenden Wiederkehrkopfschmerz, maximal 3 Tage in Folge anwenden. </xsl:text>
@@ -314,6 +344,8 @@
                         <w:p/>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -323,6 +355,8 @@
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -338,6 +372,8 @@
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -364,12 +400,15 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Migräne mit Aura</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
                         </w:p>
+
                         <xsl:call-template name="nach_pause"/>
                     </w:tc>
 
@@ -380,6 +419,8 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -395,6 +436,8 @@
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -412,6 +455,8 @@
                         <w:p/>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Bei sicherer vollständiger Rückbildung der Aurasymptomatik Anschlussbehandlung mittels Triptan (s.o.) möglich. </xsl:text>
@@ -422,6 +467,8 @@
                         <w:p/>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -435,11 +482,6 @@
 
             <xsl:if test="$diag_status_migrainosus">
                 <w:tr>
-                    <!-- <w:trPr> -->
-                    <!--     <w:gridAfter w:val="1"/> -->
-                    <!--     <w:wAfter w:w="20" w:type="dxa"/> -->
-                    <!-- </w:trPr> -->
-
                     <w:tc>
                         <w:tcPr>
                             <w:tcW w:w="3706" w:type="dxa"/>
@@ -447,6 +489,8 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Status migraenosus</xsl:text>
@@ -455,6 +499,8 @@
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>(Attackendauer mehr als 72 Stunden)</xsl:text>
@@ -470,14 +516,20 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Prednisolon 100 mg + ggf. Diazepam 10 mg zur Schmerzdistanzierung</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
                         </w:p>
+
                         <w:p/>
+
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Oder alternativ durch den Arzt durchzuführen:</xsl:text>
@@ -486,6 +538,8 @@
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Aspirin 1.000 mg als Kurzinfusion</xsl:text>
@@ -498,11 +552,6 @@
 
             <xsl:if test="$diag_cluster">
                 <w:tr>
-                    <!-- <w:trPr> -->
-                    <!--     <w:gridAfter w:val="1"/> -->
-                    <!--     <w:wAfter w:w="20" w:type="dxa"/> -->
-                    <!-- </w:trPr> -->
-
                     <w:tc>
                         <w:tcPr>
                             <w:tcW w:w="3706" w:type="dxa"/>
@@ -510,6 +559,8 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Clusterkopfschmerz</xsl:text>
@@ -525,21 +576,28 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>100% Sauerstoffinhalation 15 l/min über 15 Minuten mit Gesichtsmaske</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <w:br/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>oder</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <w:br/>
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -552,16 +610,21 @@
                                     <xsl:text>, maximal 2x täglich, Mindestabstand 4 Stunden, keine Obergrenze in Form von Tagen/Monat </xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <w:br/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>alternativ</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <w:br/>
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
@@ -574,32 +637,41 @@
                                     <xsl:text> maximal 2x täglich, Mindestabstand 4 Stunden, keine Obergrenze in Form von Tagen/Monat</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <w:br/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>und/oder</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <w:br/>
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
                                 <xsl:with-param name="text">
                                     <xsl:text>Xylocain-Nasenspray</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <w:br/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>und/oder</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <w:br/>
                         </w:p>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
 
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="bold" select="true()"/>
@@ -621,6 +693,8 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Kopfschmerz vom Spannungstyp</xsl:text>
@@ -636,6 +710,8 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:text>Euminz N kutan im Bereich der schmerzhaften Kopfpartien 3x im Abstand von jeweils 10 Minuten auftragen</xsl:text>
@@ -654,15 +730,7 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="both"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr"/>
                     </w:p>
                 </w:tc>
 
@@ -671,15 +739,9 @@
                         <w:tcW w:w="5391" w:type="dxa"/>
                         <w:gridSpan w:val="2"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr"/>
                     </w:p>
                 </w:tc>
             </w:tr>
@@ -692,6 +754,8 @@
                     </w:tcPr>
 
                     <w:p>
+			<xsl:call-template name="pPr"/>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="bold" select="true()"/>
                             <xsl:with-param name="text">
@@ -714,7 +778,6 @@
                             </w:numPr>
                             <w:ind w:left="601" w:hanging="241"/>
                         </w:pPr>
-
 
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="16"/>
@@ -799,7 +862,7 @@
                     </w:p>
 
                     <xsl:if test="$diag_overuse">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="0012639C" w:rsidRDefault="00877D06" w:rsidP="001B3A32">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
@@ -842,7 +905,7 @@
                         </w:pPr>
 
                         <w:hyperlink>
-                            <w:r w:rsidR="00877D06">
+                            <w:r>
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
                                               w:cs="Lucida Sans Unicode"/>

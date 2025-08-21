@@ -18,6 +18,7 @@
                 </w:tblBorders>
                 <w:tblLook w:val="00A0"/>
             </w:tblPr>
+
             <w:tblGrid>
                 <w:gridCol w:w="3686"/>
                 <w:gridCol w:w="1276"/>
@@ -36,9 +37,8 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="both"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr"/>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="bold" select="true()"/>
                             <xsl:with-param name="text">
@@ -54,14 +54,12 @@
                     <w:tcPr>
                         <w:tcW w:w="3686" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="both"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
                             <xsl:with-param name="bold" select="true()"/>
@@ -76,10 +74,12 @@
                     <w:tcPr>
                         <w:tcW w:w="1276" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="both"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
                             <xsl:with-param name="bold" select="true()"/>
@@ -94,10 +94,13 @@
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
                             <xsl:with-param name="bold" select="true()"/>
@@ -112,10 +115,13 @@
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
                             <xsl:with-param name="bold" select="true()"/>
@@ -130,10 +136,13 @@
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
                             <xsl:with-param name="bold" select="true()"/>
@@ -148,10 +157,13 @@
                     <w:tcPr>
                         <w:tcW w:w="1134" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
                             <xsl:with-param name="bold" select="true()"/>
@@ -169,10 +181,10 @@
                         <w:tcPr>
                             <w:tcW w:w="3686" w:type="dxa"/>
                         </w:tcPr>
+
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="both"/>
-                            </w:pPr>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:value-of select="name" />
@@ -185,10 +197,10 @@
                         <w:tcPr>
                             <w:tcW w:w="1276" w:type="dxa"/>
                         </w:tcPr>
+
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="both"/>
-                            </w:pPr>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:value-of select="dosis" />
@@ -203,10 +215,12 @@
                         <w:tcPr>
                             <w:tcW w:w="992" w:type="dxa"/>
                         </w:tcPr>
+
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="center"/>
-                            </w:pPr>
+			    <xsl:call-template name="pPr">
+				<xsl:with-param name="jc" select="'center'"/>
+			    </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:value-of select="morning" />
@@ -219,10 +233,12 @@
                         <w:tcPr>
                             <w:tcW w:w="992" w:type="dxa"/>
                         </w:tcPr>
+
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="center"/>
-                            </w:pPr>
+			    <xsl:call-template name="pPr">
+				<xsl:with-param name="jc" select="'center'"/>
+			    </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:value-of select="noon" />
@@ -235,10 +251,12 @@
                         <w:tcPr>
                             <w:tcW w:w="992" w:type="dxa"/>
                         </w:tcPr>
+
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="center"/>
-                            </w:pPr>
+			    <xsl:call-template name="pPr">
+				<xsl:with-param name="jc" select="'center'"/>
+			    </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:value-of select="evening" />
@@ -251,10 +269,12 @@
                         <w:tcPr>
                             <w:tcW w:w="1134" w:type="dxa"/>
                         </w:tcPr>
+
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="center"/>
-                            </w:pPr>
+			    <xsl:call-template name="pPr">
+				<xsl:with-param name="jc" select="'center'"/>
+			    </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:value-of select="night" />
@@ -270,16 +290,9 @@
                     <w:tcPr>
                         <w:tcW w:w="3686" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="both"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr"/>
                     </w:p>
                 </w:tc>
 
@@ -287,16 +300,9 @@
                     <w:tcPr>
                         <w:tcW w:w="1276" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="both"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr"/>
                     </w:p>
                 </w:tc>
 
@@ -304,16 +310,11 @@
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
                     </w:p>
                 </w:tc>
 
@@ -321,16 +322,11 @@
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
                     </w:p>
                 </w:tc>
 
@@ -338,16 +334,11 @@
                     <w:tcPr>
                         <w:tcW w:w="992" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
                     </w:p>
                 </w:tc>
 
@@ -355,16 +346,11 @@
                     <w:tcPr>
                         <w:tcW w:w="1134" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
                     </w:p>
                 </w:tc>
 

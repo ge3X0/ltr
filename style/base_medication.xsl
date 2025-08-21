@@ -64,6 +64,8 @@
                     </w:tcPr>
 
                     <w:p>
+			<xsl:call-template name="pPr"/>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="bold" select="true()"/>
                             <xsl:with-param name="text">
@@ -81,7 +83,12 @@
                     <w:tcPr>
                         <w:tcW w:w="3686" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
                             <xsl:with-param name="bold" select="true()"/>
@@ -96,7 +103,12 @@
                     <w:tcPr>
                         <w:tcW w:w="1276" w:type="dxa"/>
                     </w:tcPr>
+
                     <w:p>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
                             <xsl:with-param name="bold" select="true()"/>
@@ -113,9 +125,11 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
                             <xsl:with-param name="bold" select="true()"/>
@@ -132,9 +146,11 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
                             <xsl:with-param name="bold" select="true()"/>
@@ -151,9 +167,10 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
 
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
@@ -171,9 +188,11 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="size" select="14"/>
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="size" select="14"/>
                             <xsl:with-param name="bold" select="true()"/>
@@ -195,9 +214,8 @@
                         </w:tcPr>
 
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="both"/>
-                            </w:pPr>
+			    <xsl:call-template name="pPr"/>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
                                     <xsl:value-of select="name"/>
@@ -212,9 +230,7 @@
                         </w:tcPr>
 
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="both"/>
-                            </w:pPr>
+			    <xsl:call-template name="pPr"/>
 
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
@@ -232,9 +248,9 @@
                         </w:tcPr>
 
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="center"/>
-                            </w:pPr>
+			   <xsl:call-template name="pPr">
+				<xsl:with-param name="jc" select="'center'"/>
+			   </xsl:call-template>
 
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
@@ -250,9 +266,9 @@
                         </w:tcPr>
 
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="center"/>
-                            </w:pPr>
+			   <xsl:call-template name="pPr">
+				<xsl:with-param name="jc" select="'center'"/>
+			   </xsl:call-template>
 
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
@@ -268,9 +284,9 @@
                         </w:tcPr>
 
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="center"/>
-                            </w:pPr>
+			   <xsl:call-template name="pPr">
+				<xsl:with-param name="jc" select="'center'"/>
+			   </xsl:call-template>
 
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
@@ -286,9 +302,9 @@
                         </w:tcPr>
 
                         <w:p>
-                            <w:pPr>
-                                <w:jc w:val="center"/>
-                            </w:pPr>
+			   <xsl:call-template name="pPr">
+				<xsl:with-param name="jc" select="'center'"/>
+			   </xsl:call-template>
 
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="text">
@@ -309,15 +325,7 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="both"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr"/>
                     </w:p>
                 </w:tc>
 
@@ -327,15 +335,7 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="both"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr"></xsl:call-template>
                     </w:p>
                 </w:tc>
 
@@ -345,15 +345,9 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
                     </w:p>
                 </w:tc>
 
@@ -363,15 +357,9 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
                     </w:p>
                 </w:tc>
 
@@ -381,15 +369,9 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
                     </w:p>
                 </w:tc>
 
@@ -399,15 +381,9 @@
                     </w:tcPr>
 
                     <w:p>
-                        <w:pPr>
-                            <w:jc w:val="center"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                          w:cs="Lucida Sans Unicode"/>
-                                <w:sz w:val="18"/>
-                                <w:szCs w:val="18"/>
-                            </w:rPr>
-                        </w:pPr>
+			<xsl:call-template name="pPr">
+			    <xsl:with-param name="jc" select="'center'"/>
+			</xsl:call-template>
                     </w:p>
                 </w:tc>
             </w:tr>
@@ -423,6 +399,8 @@
                         </w:tcPr>
 
                         <w:p>
+			    <xsl:call-template name="pPr"></xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="highlight" select="true()"/>
                                 <xsl:with-param name="text">
@@ -442,6 +420,8 @@
                     </w:tcPr>
 
                     <w:p>
+			<xsl:call-template name="pPr"></xsl:call-template>
+
                         <xsl:call-template name="text-run">
                             <xsl:with-param name="text">
                                 <xsl:text>Regeln zur medikamentösen Basistherapie</xsl:text>
@@ -523,6 +503,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -548,7 +529,7 @@
                     </xsl:if>
 
                     <xsl:if test="$base/name[text() = 'Venlafaxin']">
-                        <w:p w:rsidR="00877D06" w:rsidRPr="001C344C" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
@@ -654,6 +635,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -661,6 +643,7 @@
                                     <xsl:text>Duloxetin</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -678,6 +661,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -685,6 +669,7 @@
                                     <xsl:text>Escitalopram</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -703,12 +688,14 @@
                                 </w:numPr>
                                 <w:jc w:val="both"/>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
                                     <xsl:text>Evaluation der Wirksamkeit 8 Wochen nach der hier erreichten Zieldosis des </xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -716,6 +703,7 @@
                                     <xsl:text>Mirtazapins</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -741,6 +729,7 @@
                                     <xsl:text>Evaluation der Wirksamkeit 8 Wochen nach der hier erreichten Zieldosis des </xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -748,6 +737,7 @@
                                     <xsl:text>Opipramols</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -766,12 +756,14 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
                                     <xsl:text>Die Gabe von </xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -779,6 +771,7 @@
                                     <xsl:text>Pregabalin</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -797,12 +790,14 @@
                                 </w:numPr>
                                 <w:ind w:left="714" w:hanging="357"/>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
                                     <xsl:text>Evaluation der Wirksamkeit 8 Wochen nach der hier erreichten Zieldosis des </xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -810,6 +805,7 @@
                                     <xsl:text>Topiramat</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -827,6 +823,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -834,6 +831,7 @@
                                     <xsl:text>Candesartan</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -851,6 +849,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -858,6 +857,7 @@
                                     <xsl:value-of select="$rr_med"/>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -875,12 +875,14 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
                                     <xsl:text>Die Einnahme von </xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -888,6 +890,7 @@
                                     <xsl:text>Magnesium und Vitamin B2</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -905,6 +908,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -912,6 +916,7 @@
                                     <xsl:text>Sertralin</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -929,12 +934,14 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
                                     <xsl:text>Evaluation der Wirksamkeit 8 Wochen nach Erreichen der Zieldosis des </xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -942,6 +949,7 @@
                                     <xsl:text>Anafranils</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -959,6 +967,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -966,6 +975,7 @@
                                     <xsl:text>Carbamazepin</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -983,12 +993,14 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
                                     <xsl:text>Die Dosis von </xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="bold" select="true()"/>
@@ -996,6 +1008,7 @@
                                     <xsl:text>Gabapentin</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
+
                             <xsl:call-template name="text-run">
                                 <xsl:with-param name="size" select="16"/>
                                 <xsl:with-param name="text">
@@ -1013,6 +1026,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <w:r>
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1022,6 +1036,7 @@
                                 </w:rPr>
                                 <w:t xml:space="preserve">Die Wirksamkeit von </w:t>
                             </w:r>
+
                             <w:r w:rsidRPr="005574FA">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1033,6 +1048,7 @@
                                 </w:rPr>
                                 <w:t>Tizanidin</w:t>
                             </w:r>
+
                             <w:r>
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1053,6 +1069,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <w:r w:rsidRPr="00DB3F3C">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1062,6 +1079,7 @@
                                 </w:rPr>
                                 <w:t xml:space="preserve">Auslassversuch von </w:t>
                             </w:r>
+
                             <w:r w:rsidRPr="00DB3F3C">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1073,6 +1091,7 @@
                                 </w:rPr>
                                 <w:t>Flunarizin</w:t>
                             </w:r>
+
                             <w:r w:rsidRPr="00DB3F3C">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1080,7 +1099,7 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
-                                <w:t xml:space="preserve"> nach maximal 6 bis 9 Monaten (Gefahr von extrapyramidal- motorischen Störungen)Flunarizin kann zu depressiven Verstimmungen, Angstzuständen, Schlaflosigkeit und Asthenie sowie zu extrapyramidal- motorischen Störungen führen. Wir empfehlen regelmäßige klinische Kontrollen. Eine Dosissteigerung des Flunarizins auf 5 mg täglich ist aus schmerztherapeutischer Sicht unter Beachtung der unerwünschten Arzneimittelwirkung sowie Labor- und EKG-Kontrollen möglich. Eine Dosissteigerung bis zu maximal 10 mg/Tag ist prinzipiell durchführbar. Bei Auftreten von Dyskinesien oder einer Stimmungsverschlechterung ggf. vorzeitiges Absetzen von Flunarizin. </w:t>
+                                <w:t xml:space="preserve"> nach maximal 6 bis 9 Monaten (Gefahr von extrapyramidal- motorischen Störungen). Flunarizin kann zu depressiven Verstimmungen, Angstzuständen, Schlaflosigkeit und Asthenie sowie zu extrapyramidal- motorischen Störungen führen. Wir empfehlen regelmäßige klinische Kontrollen. Eine Dosissteigerung des Flunarizins auf 5 mg täglich ist aus schmerztherapeutischer Sicht unter Beachtung der unerwünschten Arzneimittelwirkung sowie Labor- und EKG-Kontrollen möglich. Eine Dosissteigerung bis zu maximal 10 mg/Tag ist prinzipiell durchführbar. Bei Auftreten von Dyskinesien oder einer Stimmungsverschlechterung ggf. vorzeitiges Absetzen von Flunarizin. </w:t>
                             </w:r>
                         </w:p>
                     </xsl:if>
@@ -1093,6 +1112,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <w:r w:rsidRPr="00233748">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1104,6 +1124,7 @@
                                 </w:rPr>
                                 <w:t>Atosil</w:t>
                             </w:r>
+
                             <w:r w:rsidRPr="00233748">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1113,6 +1134,7 @@
                                 </w:rPr>
                                 <w:t xml:space="preserve"> (</w:t>
                             </w:r>
+
                             <w:r w:rsidRPr="009746CA">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1124,6 +1146,7 @@
                                 </w:rPr>
                                 <w:t>Promethazin</w:t>
                             </w:r>
+
                             <w:r w:rsidRPr="00233748">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1144,6 +1167,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <w:r w:rsidRPr="001F0DE9">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1153,8 +1177,10 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
+
                                 <w:t>Lamotrigin</w:t>
                             </w:r>
+
                             <w:r>
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1162,6 +1188,7 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
+
                                 <w:t xml:space="preserve"> im Verlauf bei guter Verträglichkeit und unter Leberwert- und Elektrolytwert-Kontrolle vorsichtig weiter im 14-tägigen Abstand um 25 mg/Tag erhöhen. Bis zu einer Dosis von 100 mg sollte die Gabe nur morgendlich erfolgen, danach auf eine morgendliche und abendliche Gabe verteilen. Zieldosis aus schmerztherapeutischer Sicht sind hierbei 150 mg/die. </w:t>
                             </w:r>
                         </w:p>
@@ -1173,6 +1200,7 @@
                                     <w:numId w:val="21"/>
                                 </w:numPr>
                             </w:pPr>
+
                             <w:r w:rsidRPr="001F0DE9">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1182,8 +1210,10 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
+
                                 <w:t>Lamotrigin</w:t>
                             </w:r>
+
                             <w:r>
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1193,6 +1223,7 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
+
                                 <w:t xml:space="preserve"> kann bei plötzlichem Absetzen zu Rebound-Anfällen führen. Stufenweises Absetzen über einen Zeitraum von 2 Wochen empfohlen. Bei An- oder Wiederabsetzen potenzielle pharmakokinetische Wechselwirkungen bedenken. Labor- (Leberwerte) und EKG-Kontrolle während der Einnahme der oben genannten Medikation</w:t>
                             </w:r>
                         </w:p>
@@ -1201,6 +1232,7 @@
                             <w:pPr>
                                 <w:ind w:left="815"/>
                             </w:pPr>
+
                             <w:r w:rsidRPr="00C64365">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1208,8 +1240,10 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
+
                                 <w:t xml:space="preserve">Östrogenhaltigen Kombinationspräparate wie Valette führen zu einer Senkung des </w:t>
                             </w:r>
+
                             <w:r w:rsidRPr="00C64365">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1219,8 +1253,10 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
+
                                 <w:t>Lamotrigenspiegels.</w:t>
                             </w:r>
+
                             <w:r w:rsidRPr="00C64365">
                                 <w:rPr>
                                     <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1228,6 +1264,7 @@
                                     <w:sz w:val="16"/>
                                     <w:szCs w:val="16"/>
                                 </w:rPr>
+
                                 <w:t xml:space="preserve"> Während der Pillenpause kommt es zur Spiegelerhöhung und es kann infolgedessen zu einer Intoxikation kommen. Rein Gestagenhaltige Präparate haben keine wesentlichen Wechselwirkungen mit Lamotrigen.</w:t>
                             </w:r>
                         </w:p>
@@ -1242,6 +1279,7 @@
                                 <w:numId w:val="21"/>
                             </w:numPr>
                         </w:pPr>
+
                         <w:r w:rsidRPr="004D192F">
                             <w:rPr>
                                 <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
@@ -1260,6 +1298,7 @@
                                 <w:numId w:val="21"/>
                             </w:numPr>
                         </w:pPr>
+
                         <w:r w:rsidRPr="004D192F">
                             <w:rPr>
                                 <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"

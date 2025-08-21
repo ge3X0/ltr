@@ -32,16 +32,16 @@
     <xsl:template name="with_and"><xsl:if test="$diag_migraine_with_aura"><xsl:text> mit und</xsl:text></xsl:if></xsl:template>
     <xsl:template match="//mitund"><xsl:if test="$diag_migraine_with_aura"><xsl:text> mit und</xsl:text></xsl:if></xsl:template>
 
-    <xsl:template match="//aura">
-        <xsl:choose>
-            <xsl:when test="$diag_migraine_with_aura">
-                <xsl:text>Vorübergehende einseitige Sehstörungen in Form von Fortifikationsphänomenen</xsl:text>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:text>Keine</xsl:text>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
+    <!-- <xsl:template match="//aura"> -->
+    <!--     <xsl:choose> -->
+    <!--         <xsl:when test="$diag_migraine_with_aura"> -->
+    <!--             <xsl:text>Vorübergehende einseitige Sehstörungen in Form von Fortifikationsphänomenen</xsl:text> -->
+    <!--         </xsl:when> -->
+    <!--         <xsl:otherwise> -->
+    <!--             <xsl:text>Keine</xsl:text> -->
+    <!--         </xsl:otherwise> -->
+    <!--     </xsl:choose> -->
+    <!-- </xsl:template> -->
 
     <xsl:template match="//anamnese_aura">
         <xsl:if test="$diag_migraine_with_aura">
