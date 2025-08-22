@@ -6,14 +6,26 @@ id = "treatments"
 field_type = "xbox"
 rows = 20
 values = [
-    "Akupunktur", "Allgemeinarzt", "Apotheker", "Bademeister",
-    "Chiropraktiker", "Endokrinologe", "Geistheiler", "Hautarzt",
-    "Hypnotiseur", "Kinderarzt", "Pflegekraft", "Masseur",
-    "Naturheilkundler", "Neurologe", "Onkologe", "Proktologe",
-    "Psychiater", "Psychotherapeut", "Rheumatologe", "Urologe",
-    "Allergologe", "Anästhesiologe", "Augenarzt", "Kardiologe",
-    "Chirurg", "Frauenarzt", "HNO-Arzt", "Heilpraktiker",
-    "Internist", "Physiotherapeut", "Lungenarzt", "MKG-Chirurg",
-    "Nervenarzt", "Neurochirurg", "Orthopäde", "Priester",
-    "Dipl.-Psychologe", "Radiologe", "Schmerztherapeut", "Zahnarzt"
+    "Akupunktur", "Allgemeinmedizin", "Apotheker", "Bademeister",
+    "Chiropraktiker", "Endokrinologie", "Geistheiler", "Dermatologie",
+    "Hypnotiseure", "Pädiatrie", "Pflegepersonal", "Masseure",
+    "Naturheilkundler", "Neurologie", "Onkologie", "Proktologie",
+    "Psychiatrie", "Psychotherapie", "Rheumatologie", "Urologie",
+    "Allergologie", "Anästhesiologie", "Ophthalmologie", "Kardiologie",
+    "Chirurgie", "Gynäkologie", "HNO", "Heilpraktiker",
+    "Innere Medizin", "Physiotherapeuten", "Pneumologie", "MKG-Chirurgie",
+    "Nervenheilkunde", "Neurochirurgie", "Orthopädie", "Priester",
+    "Dipl.-Psychologe", "Radiologie", "Schmerztherapie", "Zahnheilkunde"
 ]
+# values = [
+#     "Akupunktur", "Allgemeinarzt", "Apotheker", "Bademeister",
+#     "Chiropraktiker", "Endokrinologe", "Geistheiler", "Hautarzt",
+#     "Hypnotiseur", "Kinderarzt", "Pflegekraft", "Masseur",
+#     "Naturheilkundler", "Neurologe", "Onkologe", "Proktologe",
+#     "Psychiater", "Psychotherapeut", "Rheumatologe", "Urologe",
+#     "Allergologe", "Anästhesiologe", "Augenarzt", "Kardiologe",
+#     "Chirurg", "Frauenarzt", "HNO-Arzt", "Heilpraktiker",
+#     "Internist", "Physiotherapeut", "Lungenarzt", "MKG-Chirurg",
+#     "Nervenarzt", "Neurochirurg", "Orthopäde", "Priester",
+#     "Dipl.-Psychologe", "Radiologe", "Schmerztherapeut", "Zahnarzt"
+# ]

@@ -291,10 +291,33 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
         <xsl:text> Somit besteht eine ausgeprägte Beeinträchtigung sowohl der Lebensqualität als auch der Arbeitsfähigkeit.</xsl:text>
     </xsl:template>
 
+    <xsl:variable name="medical_treats" select="$data//field[@name='treatments']/value[. = (
+    'Allgemeinmedizin', 'Endokrinologie', 'Dermatologie', 'Pädiatrie', 'Neurologie', 'Onkologie',
+    'Proktologie', 'Psychiatrie', 'Psychotherapie', 'Rheumatologie', 'Urologie', 'Allergologie',
+    'Anästhesiologie', 'Ophthalmologie', 'Kardiologie', 'Chirurgie', 'Gynäkologie', 'HNO',
+    'Innere Medizin', 'Pneumologie', 'MKG-Chirurgie', 'Nervenheilkunde', 'Neurochirurgie', 'Orthopädie',
+    'Dipl.-Psychologe', 'Radiologie', 'Schmerztherapie', 'Zahnheilkunde')]" />
+	
+    <xsl:variable name="other_treats" select="$data//field[@name='treatments']/value[. = (
+    'Akupunktur', 'Apotheker', 'Bademeister', 'Chiropraktiker', 'Geistheiler', 'Hypnotiseure',
+    'Pflegepersonal', 'Masseure', 'Naturheilkundler', 'Heilpraktiker', 'Physiotherapeuten', 'Priester')]"/>
+
     <xsl:template match="//vorbehandlungen">
         <xsl:call-template name="string-list">
             <xsl:with-param name="selection" select="$data//field[@name='treatments']/value"/>
         </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="//medizinische_vorbehandlungen">
+	<xsl:call-template name="string-list">
+	    <xsl:with-param name="selection" select="$med_treats"/>
+	</xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="//andere_vorbehandlungen">
+	<xsl:call-template name="string-list">
+	    <xsl:with-param name="selection" select="$other_treats"/>
+	</xsl:call-template>
     </xsl:template>
 
     <xsl:template match="//symptome">
