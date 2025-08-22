@@ -4,14 +4,12 @@ import tomllib as toml
 from widgets.main_widget import MainWidget
 from sys import exit
 
-from sys import exit
-
 
 # TODO:
 #  Read template variables from docs files
 #  Edit docx files and re-insert variables
 
-LTR_VERSION = "v0.3.0"
+LTR_VERSION = "v0.3.1"
 
 
 # def extend_config(config: dict, add_config: dict) -> dict:

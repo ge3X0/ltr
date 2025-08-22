@@ -56,7 +56,7 @@ class MainWidget(QtWidgets.QWidget):
 
         # Set standard Path values, important paths are handled before init
 
-        self.configs["file_db"] = self.configs["base_path"] / self.configs.get("file_db", ".")
+        self.configs["file_db"] = Path(self.configs.get("file_db", "."))
         self.configs["save_path"] = self.configs["base_path"] / self.configs.get("save_path", "data")
         self.configs["output_path"] = self.configs["base_path"] / self.configs.get("output_path", "output")
 
@@ -119,6 +119,7 @@ class MainWidget(QtWidgets.QWidget):
         # Tabs loaded from ./forms
 
         for form_file_name in self.configs["forms"]:
+            # TODO: Should this also be local?
             form_file = Path("./forms") / f"{form_file_name}.toml"
 
             if not form_file.exists():
@@ -228,18 +229,6 @@ class MainWidget(QtWidgets.QWidget):
         output_file.parent.mkdir(exist_ok=True, parents=True)
 
         # Load xsl style sheet and add "data" global variable referring to created data file
-        
-        # Transform characters
-        # translate_tab = {
-        #     'Ä': "%C3%84", 'Ö': "%C3%96", 'Ü': "%C3%9C",
-        #     'ä': "%C3%A4", 'ö': "%C3%B6", 'ü': "%C3%BC",
-        #     'ß': "%C3%9F"
-        # }
-        #
-        # path_str = "".join(
-        #     translate_tab[s] if s in translate_tab else s
-        #     for s in str(data_file.absolute().as_posix())
-        # )
 
         tmp_path = data_file.with_name(parse.quote(data_file.name, encoding="utf-8"))
         path_str = str(tmp_path.absolute().as_posix())

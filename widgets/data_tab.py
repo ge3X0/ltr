@@ -250,7 +250,6 @@ class DataTabWidget(QtWidgets.QWidget):
         search_button.setToolTip("Lade Daten erneut [F5]")
         search_button.pressed.connect(self.select_patient)
 
-
         # Setup Data Area
 
         scroll_area= QtWidgets.QScrollArea()
@@ -316,7 +315,8 @@ class DataTabWidget(QtWidgets.QWidget):
     def show_data_sheet(self):
         """Display Schnuppi for currently loaded patient"""
 
-        patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
+        # patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
+        patient_path = self.configs["file_db"] / f"{self.patient_data.last_name}, {self.patient_data.first_name} {self.patient_data.admission.strftime('%d%m%Y')}.docx"
         if not patient_path.exists():
             QtWidgets.QMessageBox.warning(self,
                 "Datei nicht gefunden",
