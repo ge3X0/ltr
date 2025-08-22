@@ -5,7 +5,8 @@ from datetime import datetime
 from zipfile import ZipFile
 from pathlib import Path
 import re
-import subprocess
+# import subprocess
+import os
 
 from typing import Any
 
@@ -323,7 +324,8 @@ class DataTabWidget(QtWidgets.QWidget):
                 f"Konnte die Datei {patient_path} nicht öffnen")
             return
 
-        subprocess.run(f"powershell -Command \"& {{Start-Process '{patient_path.absolute()}'\"}}")
+        os.startfile(patient_path.absolute())
+        # subprocess.run(f"powershell -Command \"& {{Start-Process '{patient_path.absolute()}'\"}}")
 
 
     @QtCore.Slot()
@@ -337,7 +339,8 @@ class DataTabWidget(QtWidgets.QWidget):
                 f"Konnte die Datei {output_file} nicht öffnen")
             return
 
-        subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}")
+        os.startfile(output_file.absolute())
+        # subprocess.run(f"powershell -Command \"& {{Start-Process '{output_file.absolute()}'\"}}")
 
 
     @QtCore.Slot()
