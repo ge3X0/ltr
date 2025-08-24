@@ -1,5 +1,3 @@
-from PySide6 import QtWidgets
-
 from pathlib import Path
 import tomllib as toml
 from typing import Any
@@ -16,6 +14,8 @@ class ConfigErrorType(Enum):
     NoConfigFound = auto
     NoXslKey = auto
     XslFileNotFound = auto
+    NoFileDBKey = auto
+    FileDBNotFound = auto
 
 
 @dataclass
@@ -38,8 +38,6 @@ def expand_paths(configs: dict[str, Any], base_path: Path):
 
     if "template_files" in configs:
         configs["template_files"] = [process_path(p, base_path) for p in configs["template_files"]]
-
-
 
 
 class Configuration:
@@ -76,12 +74,7 @@ class Configuration:
                 ConfigErrorType.NoTemplateFilesKey,
                 "config.toml beinhaltet keine Template Dateien")
 
-        warning_missing_templates: list[str] = []
-
-        for filename in self.configs["template_files"]:
-            if not filename.exists():
-                warning_missing_templates.append(str(filename))
-
+        warning_missing_templates = [str(p) for p in self.configs["template_files"] if not p.exists()]
         result = ConfigError(ConfigErrorType.NoError, "")
 
         if warning_missing_templates:
@@ -99,13 +92,14 @@ class Configuration:
 
     def __init__(self):
         self.configs: dict[str, Any] = {
+            "save_path": "./data",
+            "output_path": "./output",
             "forms": [],
             "ignore_meds": [],
             "substitute_meds": {},
             "substitute_diagnoses": {},
             "process_files": ["word/document.xml", "word/header1.xml"],
         }
-
 
 
     def __getitem__(self, key: str) -> Any:
@@ -121,9 +115,8 @@ class Configuration:
         # Look for global configs
 
         config_path = Path("config.toml")
-        config_loaded = config_path.exists()
 
-        if config_loaded:
+        if config_loaded := config_path.exists():
             with config_path.open("rb") as config_file:
                 self.configs.update(toml.load(config_file))
             expand_paths(self.configs, config_path.parent)
@@ -131,8 +124,6 @@ class Configuration:
         # Look for user configs
 
         config_path = Path.home() / ".ltr/config.toml"
-
-        # Overwrite global values with user values
 
         if config_path.exists():
             with config_path.open("rb") as config_file:
@@ -147,6 +138,16 @@ class Configuration:
             return ConfigError(
                 ConfigErrorType.NoConfigFound,
                 "Eine config.toml muss mindestens im Ausführungsverzeichnis oder im Benutzerverzeichnis vorliegen")
+
+        if "file_db" not in self.configs:
+            return ConfigError(
+                ConfigErrorType.NoFileDBKey,
+                "config.toml muss einen file_db Schlüssel beinhalten")
+
+        if not self.configs["file_db"].exists():
+            return ConfigError(
+                ConfigErrorType.FileDBNotFound,
+                "Datenbank-Datei nicht gefunden")
 
         res = self.__check_templates()
         if res.error_type != ConfigErrorType.NoError:
@@ -163,12 +164,6 @@ class Configuration:
             return ConfigError(
                 ConfigErrorType.XslFileNotFound,
                 "xsl_file existiert nicht")
-
-        # Set standard Path values, important paths are handled before init
-
-        self.configs["file_db"] = Path(self.configs.get("file_db", "."))
-        self.configs["save_path"] = Path(self.configs.get("save_path", "data"))
-        self.configs["output_path"] = Path(self.configs.get("output_path", "output"))
 
         # Easy transfer of template change to other widgets
         self.configs["current_template"] = self.configs["template_files"][0]
