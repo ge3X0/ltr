@@ -5,15 +5,14 @@ from datetime import datetime
 from zipfile import ZipFile
 from pathlib import Path
 import re
-# import subprocess
 import os
-
-from typing import Any
 
 from saxonche import PySaxonProcessor, PyXdmNode, PyXPathProcessor
 
-from models.patient_data import Medication, Diagnosis, Field, PatientData
-from models.models import DiagnosesTableModel, MedicationTableModel, PatientTableModel
+from models import Medication, Diagnosis, Field, PatientData
+from models import DiagnosesTableModel, MedicationTableModel, PatientTableModel
+
+from models import Configuration
 
 
 # TODO better diff between data and gui
@@ -201,7 +200,7 @@ class DataTabWidget(QtWidgets.QWidget):
                     pass
 
 
-    def __init__(self, proc: PySaxonProcessor, configs: dict[str, Any], *args, **kwargs):
+    def __init__(self, proc: PySaxonProcessor, configs: Configuration, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.proc: PySaxonProcessor = proc
@@ -224,7 +223,7 @@ class DataTabWidget(QtWidgets.QWidget):
             f"(?=$|,\\s)")
 
         self.patient_data: PatientData = PatientData()
-        self.configs: dict[str, Any] = configs
+        self.configs: Configuration = configs
 
         main_layout = QtWidgets.QVBoxLayout(self)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -316,8 +315,8 @@ class DataTabWidget(QtWidgets.QWidget):
     def show_data_sheet(self):
         """Display Schnuppi for currently loaded patient"""
 
-        # patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
-        patient_path = self.configs["file_db"] / f"{self.patient_data.last_name}, {self.patient_data.first_name} {self.patient_data.admission.strftime('%d%m%Y')}.docx"
+        patient_path = self.configs["file_db"] / f"{self.search_bar.text()}.docx"
+        # patient_path = self.configs["file_db"] / f"{self.patient_data.last_name}, {self.patient_data.first_name} {self.patient_data.admission.strftime('%d%m%Y')}.docx"
         if not patient_path.exists():
             QtWidgets.QMessageBox.warning(self,
                 "Datei nicht gefunden",
