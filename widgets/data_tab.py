@@ -129,7 +129,7 @@ class DataTabWidget(QtWidgets.QWidget):
                 f"Konnte die Datei {patient_path} nicht öffnen")
             return
 
-        os.startfile(patient_path.absolute())
+        os.startfile(patient_path)
 
 
     @QtCore.Slot()
@@ -162,7 +162,6 @@ class DataTabWidget(QtWidgets.QWidget):
             with archive.open("word/document.xml") as fl:
                 patient_data_xml = self.proc.parse_xml(xml_text=fl.read().decode())
 
-        # self.__extract_patient_data(patient_data_xml)
         xpath = self.proc.new_xpath_processor()
         loader_error = self.data_loader.load_patient_data(xpath, patient_data_xml)
 
@@ -185,7 +184,6 @@ class DataTabWidget(QtWidgets.QWidget):
         self.letter_button.setVisible(True)
 
         xml = self.proc.parse_xml(xml_file_name=str(data_file.absolute().as_posix()))
-        # xpath = self.proc.new_xpath_processor()
         xpath.set_context(xdm_item=xml)
 
         self.dataLoaded.emit(xpath)

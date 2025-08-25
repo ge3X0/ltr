@@ -100,7 +100,6 @@ class MainWidget(QtWidgets.QWidget):
         # Tabs loaded from ./forms
 
         for form_file in self.configs["forms"]:
-            # form_file = Path("./forms") / f"{form_file_name}.toml"
 
             with form_file.open("rb") as fl:
                 form_data = toml.load(fl)
