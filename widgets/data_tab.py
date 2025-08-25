@@ -7,8 +7,8 @@ import os
 
 from saxonche import PySaxonProcessor, PyXPathProcessor
 
-from models import DiagnosesTableModel, MedicationTableModel, PatientTableModel, PatientData, PatientDataLoader, PatientDataErrorType
-
+from models import DiagnosesTableModel, MedicationTableModel
+from models import PatientData, PatientDataLoader, PatientDataErrorType, PatientTableModel
 from models import Configuration
 
 

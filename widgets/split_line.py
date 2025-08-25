@@ -1,4 +1,3 @@
-from PySide6 import QtWidgets, QtCore
 from saxonche import PyXPathProcessor
 
 import re

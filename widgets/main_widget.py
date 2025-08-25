@@ -7,8 +7,6 @@ from zipfile import ZipFile
 import re
 from urllib import parse
 
-from typing import Any
-
 from saxonche import PySaxonProcessor
 
 from models import PatientData, Configuration
