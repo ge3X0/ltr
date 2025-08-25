@@ -2,27 +2,28 @@ from pathlib import Path
 import tomllib as toml
 from typing import Any
 import os
-from enum import Enum, auto
+from enum import Enum
 from dataclasses import dataclass
 
 
 class ConfigErrorType(Enum):
-    NoError = auto
-    NoTemplateFilesKey = auto
-    TemplateFilesNotFound = auto
-    TemplateFilesMissing = auto
-    NoConfigFound = auto
-    NoXslKey = auto
-    XslFileNotFound = auto
-    NoFileDBKey = auto
-    FileDBNotFound = auto
-    DiagnosisSubstitutionFormat = auto
+    NoError = 0
+    NoTemplateFilesKey = 1
+    TemplateFilesNotFound = 2
+    TemplateFilesMissing = 3
+    NoConfigFound = 4
+    NoXslKey = 5
+    XslFileNotFound = 6
+    NoFileDBKey = 7
+    FileDBNotFound = 8
+    DiagnosisSubstitutionFormat = 9
+    FormNotFound = 10
 
 
 @dataclass
 class ConfigError:
-    error_type: ConfigErrorType
-    message: str
+    error_type: ConfigErrorType = ConfigErrorType.NoError
+    message: str = ""
 
 
 def process_path(path: str | Path, base_path: Path) -> Path:
@@ -58,7 +59,7 @@ class Configuration:
 
                 elif isinstance(self.configs[k], list) and isinstance(v, list):
                     self.configs[k].extend(v)
-                    self.configs[k] = list(set(self.configs[k]))
+                    # self.configs[k] = list(set(self.configs[k]))
 
                 else:
                     self.configs[k] = v
@@ -79,19 +80,19 @@ class Configuration:
                 "config.toml beinhaltet keine Template Dateien")
 
         warning_missing_templates = [str(p) for p in self.configs["template_files"] if not p.exists()]
-        result = ConfigError(ConfigErrorType.NoError, "")
 
         if warning_missing_templates:
+
             if len(warning_missing_templates) == len(self.configs["template_files"]):
                 return ConfigError(
                     ConfigErrorType.TemplateFilesNotFound,
                     "Keine der Template-Dateien in config.toml wurde gefunden")
 
-            result = ConfigError(
+            return ConfigError(
                 ConfigErrorType.TemplateFilesMissing,
                 f"Die Template-Dateien {', '.join(warning_missing_templates)} konnten nicht gefunden werden")
 
-        return result
+        return ConfigError()
 
 
     def __init__(self):
@@ -157,6 +158,13 @@ class Configuration:
         if res.error_type != ConfigErrorType.NoError:
             return res
 
+        if "forms" in self.configs:
+            for form_file in self.configs["forms"]:
+                if not form_file.exists():
+                    return ConfigError(
+                        ConfigErrorType.FormNotFound,
+                        f"Formulardatei '{form_file}' nicht gefunden")
+
         # Find stylesheet-File
 
         if "xsl_file" not in self.configs:
@@ -173,7 +181,7 @@ class Configuration:
         self.configs["current_template"] = self.configs["template_files"][0]
 
         if "substitute_diagnoses" in self.configs:
-            for subst in self.configs["substitute_diagnoses"]:
+            for _, subst in self.configs["substitute_diagnoses"].items():
                 # Substitution is not empty, but does not match required params
                 if subst and len(subst) != 2:
                     return ConfigError(

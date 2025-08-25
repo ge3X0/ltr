@@ -9,7 +9,7 @@ from urllib import parse
 
 from saxonche import PySaxonProcessor
 
-from models import PatientData, Configuration
+from models import Configuration
 
 from .data_tab import DataTabWidget
 from .eval_line import EvalLine
@@ -103,13 +103,6 @@ class MainWidget(QtWidgets.QWidget):
         for form_file in self.configs["forms"]:
             # form_file = Path("./forms") / f"{form_file_name}.toml"
 
-            if not form_file.exists():
-                QtWidgets.QMessageBox.warning(self,
-                "Formular nicht gefunden",
-                f"Formulardatei '{form_file}' nicht gefunden")
-
-                continue
-
             with form_file.open("rb") as fl:
                 form_data = toml.load(fl)
 
@@ -119,7 +112,6 @@ class MainWidget(QtWidgets.QWidget):
             form_group_layout = QtWidgets.QVBoxLayout()
             form_group.setLayout(form_group_layout)
             self.tab_widget.addTab(form_group, form_data.get("name", "Unbenannt"))
-
 
             for field in form_data.get("field", []):
                 field_group = QtWidgets.QGroupBox(title=field.get("caption", ""))
