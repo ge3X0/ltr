@@ -96,7 +96,6 @@ class PatientDataLoader:
     def load_patient_data(self,
         xpath: PyXPathProcessor,
         patient_data_xml: PyXdmNode) -> PatientDataError:
-
         """Get data from *.docx file
         :param patient_data_xml: etree object containing docx-tabledata
         """
@@ -111,14 +110,11 @@ class PatientDataLoader:
                 return PatientDataError(
                     PatientDataErrorType.MissingTables,
                     "Unerwarteter Fehler: Keine Tabellen in Datenblatt")
-                # QtWidgets.QMessageBox.warning(self,
-                #     "Fehler beim Lesen der Daten",
-                #     "Unerwarteter Fehler: Keine Tabellen")
-                # return
 
             xpath.set_context(xdm_item=cell) # pyright: ignore[reportArgumentType]
 
             # Group by paragraph, ignore lists
+
             if (p_nodes := xpath.evaluate(".//w:p[not(.//w:numPr)]")) is None:
                 continue
 
@@ -132,10 +128,6 @@ class PatientDataLoader:
                         return PatientDataError(
                             PatientDataErrorType.WrongNameFormat,
                             "Patientenname in Datendatei scheint falsch formatiert")
-                        # QtWidgets.QMessageBox.warning(self,
-                        #   "Eingabefehler",
-                        #   "Patientenname in Datendatei scheint falsch formatiert")
-                        # continue
 
                     self.patient_data.last_name, self.patient_data.first_name = names
 
@@ -193,7 +185,7 @@ class PatientDataLoader:
                     except ValueError:
                         return PatientDataError(
                             PatientDataErrorType.DischargeDate,
-                            "Entlassdatum ist falsch formatiert")
+                            "Entlassungsdatum ist falsch formatiert")
 
 
                 case Field.Allergies if text:
@@ -214,11 +206,6 @@ class PatientDataLoader:
                         if subst is not None:   # No Substitution
                             if not subst:       # Empty list -> ignore diagnosis
                                 continue
-                            # TODO: Move to configs
-                            # if len(subst) != 2:
-                            #     QtWidgets.QMessageBox.warning(self, "Diagnose - Substitution",
-                            #         "substitute_diagnoses benötigt exakt 2 Parameter in config.toml")
-                            #     continue
                             diag.icd10, diag.name = subst
 
                         # TODO: Add sorting option to config.toml
@@ -250,4 +237,5 @@ class PatientDataLoader:
                 case _:
                     pass
 
-            return PatientDataError()
+        return PatientDataError()
+

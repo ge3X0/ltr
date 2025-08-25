@@ -16,6 +16,7 @@ class ConfigErrorType(Enum):
     XslFileNotFound = auto
     NoFileDBKey = auto
     FileDBNotFound = auto
+    DiagnosisSubstitutionFormat = auto
 
 
 @dataclass
@@ -167,5 +168,13 @@ class Configuration:
 
         # Easy transfer of template change to other widgets
         self.configs["current_template"] = self.configs["template_files"][0]
+
+        if "substitute_diagnoses" in self.configs:
+            for subst in self.configs["substitute_diagnoses"]:
+                # Substitution is not empty, but does not match required params
+                if subst and len(subst) != 2:
+                    return ConfigError(
+                        ConfigErrorType.DiagnosisSubstitutionFormat,
+                        "Diagnosen-substitution muss genau 2 Elemente enthalten")
         
         return ConfigError(ConfigErrorType.NoError, "")
