@@ -1,4 +1,4 @@
-from enum import Enum, auto
+from enum import Enum
 from dataclasses import dataclass
 from datetime import datetime
 import re
@@ -10,12 +10,12 @@ from .configuration import Configuration
 
 
 class PatientDataErrorType(Enum):
-    NoError = auto
-    MissingTables = auto
-    WrongNameFormat = auto
-    BirthdayFormat = auto
-    AdmissionDate = auto
-    DischargeDate = auto
+    NoError = 0
+    MissingTables = 1
+    WrongNameFormat = 2
+    BirthdayFormat = 3
+    AdmissionDate = 4
+    DischargeDate = 5
 
 
 @dataclass
@@ -107,7 +107,7 @@ class PatientDataLoader:
         xpath.set_context(xdm_item=patient_data_xml)
 
         # Walk over each cell in table
-        for cell_idx, cell in enumerate(xpath.evaluate(".//w:tc")): # pyright: ignore
+        for cell_idx, cell in enumerate(xpath.evaluate(".//w:tc")):  # pyright: ignore
             if cell is None:
                 return PatientDataError(
                     PatientDataErrorType.MissingTables,
