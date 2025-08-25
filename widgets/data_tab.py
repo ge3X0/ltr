@@ -12,8 +12,6 @@ from models import PatientData, PatientDataLoader, PatientDataErrorType, Patient
 from models import Configuration
 
 
-# TODO better diff between data and gui
-
 class DataTabWidget(QtWidgets.QWidget):
     dataLoaded: QtCore.Signal = QtCore.Signal(PyXPathProcessor)
 

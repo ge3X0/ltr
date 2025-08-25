@@ -188,4 +188,4 @@ class Configuration:
                         ConfigErrorType.DiagnosisSubstitutionFormat,
                         "Diagnosen-substitution muss genau 2 Elemente enthalten")
         
-        return ConfigError(ConfigErrorType.NoError, "")
+        return ConfigError()

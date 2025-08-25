@@ -39,7 +39,6 @@ class MainWidget(QtWidgets.QWidget):
         super().__init__()
 
         self.proc: PySaxonProcessor = PySaxonProcessor(license=False)
-        # self.patient_data: PatientData = PatientData()
 
         # Load Configuration
 
