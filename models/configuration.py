@@ -40,6 +40,9 @@ def expand_paths(configs: dict[str, Any], base_path: Path):
     if "template_files" in configs:
         configs["template_files"] = [process_path(p, base_path) for p in configs["template_files"]]
 
+    if "forms" in configs:
+        configs["forms"] = [process_path(f"./forms/{p}.toml", base_path) for p in configs["forms"]]
+
 
 class Configuration:
 

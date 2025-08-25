@@ -39,7 +39,7 @@ class MainWidget(QtWidgets.QWidget):
         super().__init__()
 
         self.proc: PySaxonProcessor = PySaxonProcessor(license=False)
-        self.patient_data: PatientData = PatientData()
+        # self.patient_data: PatientData = PatientData()
 
         # Load Configuration
 
@@ -100,14 +100,13 @@ class MainWidget(QtWidgets.QWidget):
 
         # Tabs loaded from ./forms
 
-        for form_file_name in self.configs["forms"]:
-            # TODO: Should this also be local?
-            form_file = Path("./forms") / f"{form_file_name}.toml"
+        for form_file in self.configs["forms"]:
+            # form_file = Path("./forms") / f"{form_file_name}.toml"
 
             if not form_file.exists():
                 QtWidgets.QMessageBox.warning(self,
                 "Formular nicht gefunden",
-                f"Formulardatei '{form_file_name}.toml' nicht gefunden")
+                f"Formulardatei '{form_file}' nicht gefunden")
 
                 continue
 
