@@ -100,6 +100,8 @@ class PatientDataLoader:
         :param patient_data_xml: etree object containing docx-tabledata
         """
 
+        self.patient_data = PatientData()
+
         # xpath = self.proc.new_xpath_processor()
         xpath.declare_namespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main")
         xpath.set_context(xdm_item=patient_data_xml)
