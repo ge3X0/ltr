@@ -1,10 +1,10 @@
-from enum import Enum
+from enum import IntEnum
 from dataclasses import dataclass, field
 from typing import Self, override
 from datetime import datetime, timedelta
 
 
-class Field(Enum):
+class Field(IntEnum):
     """
     Fields in the data *.docx file. This needs to be adjusted if the input
     table ever changes.
