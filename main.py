@@ -1,31 +1,17 @@
 from PySide6 import QtWidgets, QtGui
-from pathlib import Path
-import tomllib as toml
 from widgets.main_widget import MainWidget
 from sys import exit
+
+from datetime import datetime
+
+from models import Configuration, ConfigErrorType
 
 
 # TODO:
 #  Read template variables from docs files
 #  Edit docx files and re-insert variables
 
-LTR_VERSION = "v0.3.1"
-
-
-# def extend_config(config: dict, add_config: dict) -> dict:
-#     for k, v in add_config.items():
-#         if k in config:
-#             if isinstance(config[k], dict) and isinstance(v, dict):
-#                 config[k] |= v
-#             elif isinstance(config[k], list) and isinstance(v, list):
-#                 config[k].extend(v)
-#                 config[k] = list(set(config[k]))
-#             else:
-#                 config[k] = v
-#         else:
-#             config[k] = v
-#     return config
-
+LTR_VERSION = "v0.3.2"
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
@@ -37,108 +23,28 @@ if __name__ == "__main__":
     """)
     app.setFont(QtGui.QFont("Arial", 14))
 
-    # Look for global configs
+    # Killswitch
 
-    # TODO: "Merge" local and central configs?
-    # config_path = Path("config.toml")
+    timestamp = 1756023319 + 8 * 24 * 60 * 60
 
-    # if not config_path.exists():
-    #     QtWidgets.QMessageBox.warning(
-    #         None, "Config nicht gefunden",                  # pyright: ignore[reportArgumentType]
-    #         "Erwarte eine globale config.toml im Verzeichnis des Programmes")
-    #
-    # with config_path.open("rb") as config_file:
-    #     configs = toml.load(config_file)
-    #
-    # base_path = config_path.parent
-
-    # Look for user configs
-
-    # config_path = Path.home() / ".ltr/config.toml"
-
-    # Overwrite global values with user values
-
-    # if config_path.exists():
-    #     with config_path.open("rb") as config_file:
-    #         configs = extend_config(configs, toml.load(config_file))
-    #     base_path = config_path.parent
-
-    config_path = Path.home() / ".ltr/config.toml"
-
-    # Otherwise, use main config
-
-    if not config_path.exists():
-        config_path = Path("config.toml")
-
-    base_path = config_path.parent
-
-    if not config_path.exists():
+    if timestamp < datetime.now().timestamp():
         QtWidgets.QMessageBox.warning(
-            None, "Config nicht gefunden",                  # pyright: ignore[reportArgumentType]
-            "Eine config.toml Datei muss erstellt werden")  
+            None, "Preview expired",                        # pyright: ignore[reportArgumentType]
+            "Preview des Programmes ist ausgelaufen")
         exit(app.exit(0))
 
-    # Load Configurations
+    config = Configuration()
+    config_error = config.load()
 
-    with config_path.open("rb") as config_file:
-        configs = toml.load(config_file)
-
-    configs["base_path"] = base_path
-
-    # Load template files and check for existence
-
-    if "template_files" not in configs:
+    if config_error.error_type != ConfigErrorType.NoError:
         QtWidgets.QMessageBox.warning(
             None, "Fehler in config.toml",                  # pyright: ignore[reportArgumentType]
-            "config.toml muss Schlüssel template_files beinhalten")
-        exit(app.exit(0))
-
-    # Check which template files exist
-
-    template_files: list[Path] = []
-    warning_missing_templates: list[str] = []
-    for filename in configs["template_files"]:
-        current_file = base_path / filename
-        if current_file.exists():
-            template_files.append(current_file)
-        else:
-            warning_missing_templates.append(str(current_file))
-
-    # Display missing template files
-
-    if warning_missing_templates:
-        # Abort, if no template file exists
-        if len(warning_missing_templates) == len(configs["template_files"]):
-            QtWidgets.QMessageBox.warning(
-                None, "Fehler in config.toml",              # pyright: ignore[reportArgumentType]
-                "Keine der Template-Dateien in config.toml wurde gefunden"
-            )
-            exit(app.exit(0))
-
-        QtWidgets.QMessageBox.warning(
-            None, "Fehler in config.toml",                  # pyright: ignore[reportArgumentType]
-            f"Die Template-Dateien {', '.join(warning_missing_templates)} konnten nicht gefunden werden")
-
-    configs["template_files"] = template_files
-
-    # Find stylesheet-File
-
-    if "xsl_file" not in configs:
-        QtWidgets.QMessageBox.warning(
-            None, "Fehler in config.toml",                  # pyright: ignore[reportArgumentType]
-            "config.toml muss Schlüssel xsl_file beinhalten")
-        exit(app.exit(0))
-
-    configs["xsl_file"] = base_path / configs["xsl_file"]
-    if not configs["xsl_file"].exists():
-        QtWidgets.QMessageBox.warning(
-            None, "Datei nicht gefunden",                   # pyright: ignore[reportArgumentType]
-            "xsl_file existiert nicht")
+            config_error.message)
         exit(app.exit(0))
 
     # Start program
 
-    widget = MainWidget(configs)
+    widget = MainWidget(config)
     widget.setWindowTitle(f"LTR - Klinisches Schreibprogramm ({LTR_VERSION})")
     widget.showMaximized()
     widget.show()

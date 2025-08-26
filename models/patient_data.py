@@ -1,10 +1,10 @@
-from enum import IntEnum
+from enum import Enum
 from dataclasses import dataclass, field
 from typing import Self, override
 from datetime import datetime, timedelta
 
 
-class Field(IntEnum):
+class Field(Enum):
     """
     Fields in the data *.docx file. This needs to be adjusted if the input
     table ever changes.
@@ -41,7 +41,7 @@ class Diagnosis:
             return self.icd10 == str
 
         if isinstance(other, Self):
-            return self.icd10 == other.icd10
+            return self.icd10 == other.icd10    # pyright: ignore[reportAttributeAccessIssue, reportUnknownVariableType]
         
         return super().__eq__(other)
 

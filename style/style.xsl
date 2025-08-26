@@ -310,7 +310,7 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
 
     <xsl:template match="//medizinische_vorbehandlungen">
 	<xsl:call-template name="string-list">
-	    <xsl:with-param name="selection" select="$med_treats"/>
+	    <xsl:with-param name="selection" select="$medical_treats"/>
 	</xsl:call-template>
     </xsl:template>
 

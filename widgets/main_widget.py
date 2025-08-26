@@ -7,11 +7,10 @@ from zipfile import ZipFile
 import re
 from urllib import parse
 
-from typing import Any
-
 from saxonche import PySaxonProcessor
 
-from models.patient_data import PatientData
+from models import Configuration
+
 from .data_tab import DataTabWidget
 from .eval_line import EvalLine
 from .exam_tab import ExamTab
@@ -36,32 +35,14 @@ class MainWidget(QtWidgets.QWidget):
             self.configs["current_template"] = self.configs["template_files"][index]
 
 
-    def __init__(self, configs: dict[str, Any]):
+    def __init__(self, configs: Configuration):
         super().__init__()
 
         self.proc: PySaxonProcessor = PySaxonProcessor(license=False)
-        self.patient_data: PatientData = PatientData()
 
         # Load Configuration
 
-        self.configs: dict[str, Any] = {
-            "forms": [],
-            "ignore_meds": [],
-            "substitute_meds": {},
-            "substitute_diagnoses": {},
-            "process_files": ["word/document.xml", "word/header1.xml"],
-        }
-
-        self.configs.update(configs)
-
-        # Set standard Path values, important paths are handled before init
-
-        self.configs["file_db"] = Path(self.configs.get("file_db", "."))
-        self.configs["save_path"] = self.configs["base_path"] / self.configs.get("save_path", "data")
-        self.configs["output_path"] = self.configs["base_path"] / self.configs.get("output_path", "output")
-
-        # Easy transfer of template change to other widgets
-        self.configs["current_template"] = self.configs["template_files"][0]
+        self.configs: Configuration = configs
 
         # Tab Widget is central widget
 
@@ -118,16 +99,7 @@ class MainWidget(QtWidgets.QWidget):
 
         # Tabs loaded from ./forms
 
-        for form_file_name in self.configs["forms"]:
-            # TODO: Should this also be local?
-            form_file = Path("./forms") / f"{form_file_name}.toml"
-
-            if not form_file.exists():
-                QtWidgets.QMessageBox.warning(self,
-                "Formular nicht gefunden",
-                f"Formulardatei '{form_file_name}.toml' nicht gefunden")
-
-                continue
+        for form_file in self.configs["forms"]:
 
             with form_file.open("rb") as fl:
                 form_data = toml.load(fl)
@@ -138,7 +110,6 @@ class MainWidget(QtWidgets.QWidget):
             form_group_layout = QtWidgets.QVBoxLayout()
             form_group.setLayout(form_group_layout)
             self.tab_widget.addTab(form_group, form_data.get("name", "Unbenannt"))
-
 
             for field in form_data.get("field", []):
                 field_group = QtWidgets.QGroupBox(title=field.get("caption", ""))

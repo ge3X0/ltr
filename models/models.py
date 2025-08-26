@@ -13,24 +13,24 @@ class DiagnosesTableModel(QtCore.QAbstractTableModel):
 
 
     @override
-    def rowCount(self, /, parent = ...): # pyright: ignore[reportMissingParameterType]
+    def rowCount(self, /, parent = ...):
         return len(self.diagnoses) if not parent.isValid() else 0
 
 
     @override
-    def columnCount(self, /, parent = ...): # pyright: ignore[reportMissingParameterType]
+    def columnCount(self, /, parent = ...):
         return 2 if not parent.isValid() else 0
 
 
     @override
-    def data(self, index, /, role = ...): # pyright: ignore[reportMissingParameterType]
+    def data(self, index, /, role = ...):
         if role == Qt.ItemDataRole.DisplayRole:
             return getattr(self.diagnoses[index.row()], "icd10" if index.column() == 0 else "name")
         return None
 
 
     @override
-    def headerData(self, section, orientation, /, role = ...): # pyright: ignore[reportMissingParameterType]
+    def headerData(self, section, orientation, /, role = ...):
         if role != Qt.ItemDataRole.DisplayRole or orientation == Qt.Orientation.Vertical:
             return None
 
@@ -45,18 +45,18 @@ class MedicationTableModel(QtCore.QAbstractTableModel):
 
 
     @override
-    def rowCount(self, /, parent = ...): # pyright: ignore[reportMissingParameterType]
+    def rowCount(self, /, parent = ...):
         # Length of both medication lists plus 2 additional headers
         return len(self.base_medication) + len(self.other_medication) + 2 if not parent.isValid() else 0
 
 
     @override
-    def columnCount(self, /, parent = ...): # pyright: ignore[reportMissingParameterType]
+    def columnCount(self, /, parent = ...):
         return 7 if not parent.isValid() else 0
 
 
     @override
-    def data(self, index, /, role = ...): # pyright: ignore[reportMissingParameterType]
+    def data(self, index, /, role = ...):
         # First and "middle" row are "Section Headers"
         if index.row() == 0 or index.row() - 1 == len(self.base_medication):
             match role:
@@ -92,7 +92,7 @@ class MedicationTableModel(QtCore.QAbstractTableModel):
 
 
     @override
-    def headerData(self, section, orientation, /, role = ...): # pyright: ignore[reportMissingParameterType]
+    def headerData(self, section, orientation, /, role = ...):
         if role != Qt.ItemDataRole.DisplayRole or orientation == Qt.Orientation.Vertical:
             return None
         return ["Name", "Dosis", "Einheit", "Morgens", "Mittags", "Abends", "Nachts"][section]
