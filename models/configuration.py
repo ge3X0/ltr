@@ -27,7 +27,7 @@ class ConfigError:
 
 
 def process_path(path: str | Path, base_path: Path) -> Path:
-    # TODO: does this work with network paths?
+    """Expand system envvars and set path onto current base path"""
     return base_path / Path(os.path.expandvars(path))
 
 

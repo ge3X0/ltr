@@ -158,8 +158,6 @@ class DataTabWidget(QtWidgets.QWidget):
               f"Konnte die Datei {patient_path} nicht öffnen")
             return
 
-        print(patient_path)
-
         with ZipFile(patient_path) as archive:
             with archive.open("word/document.xml") as fl:
                 patient_data_xml = self.proc.parse_xml(xml_text=fl.read().decode())
