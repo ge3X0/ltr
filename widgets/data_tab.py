@@ -324,6 +324,7 @@ class DataTabWidget(QtWidgets.QWidget):
                 f"Konnte die Datei {patient_path} nicht öffnen")
             return
 
+        print(patient_path.absolute())
         os.startfile(patient_path.absolute())
         # subprocess.run(f"powershell -Command \"& {{Start-Process '{patient_path.absolute()}'\"}}")
 
