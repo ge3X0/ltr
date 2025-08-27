@@ -129,6 +129,8 @@ class DataTabWidget(QtWidgets.QWidget):
                 f"Konnte die Datei {patient_path} nicht öffnen")
             return
 
+        print(patient_path)
+
         os.startfile(patient_path)
 
 
@@ -157,8 +159,6 @@ class DataTabWidget(QtWidgets.QWidget):
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden",
               f"Konnte die Datei {patient_path} nicht öffnen")
             return
-
-        print(patient_path)
 
         with ZipFile(patient_path) as archive:
             with archive.open("word/document.xml") as fl:
