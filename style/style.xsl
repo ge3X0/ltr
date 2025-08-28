@@ -86,6 +86,7 @@
     <xsl:template match="//arbeit"><xsl:value-of select="$data//patient/occupation"/></xsl:template>
     <xsl:template match="//groesse"><xsl:value-of select="$data//exam/height"/></xsl:template>
     <xsl:template match="//gewicht"><xsl:value-of select="$data//exam/weight"/></xsl:template>
+    <xsl:template match="//bmi"><xsl:value-of select="format-number($data//exam/bmi, '#.##')"/></xsl:template>
     <xsl:template match="//puls"><xsl:value-of select="$data//exam/pulse"/></xsl:template>
     <xsl:template match="//blutdruck"><xsl:value-of select="$data//exam/sys"/> / <xsl:value-of select="$data//exam/dia"/></xsl:template>
     <xsl:template match="//aufnahme"><xsl:value-of select="$data//patient/admission"/></xsl:template>

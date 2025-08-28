@@ -13,8 +13,7 @@ from models import Configuration, ConfigErrorType
 
 
 # TODO:
-# Unterteilungen BDI-II  
-# MIDAS aus Schnuppi übernehmen
+# MIDAS aus Schnuppi übernehmen (Wird durch Psychologen eingetragen)
 # Regeln Basisabschnitt Migräne nicht immer übernehmen
 # Vorbehandlungen erweitern?
 # BMI

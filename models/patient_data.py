@@ -23,6 +23,7 @@ class Field(IntEnum):
     DiagMisuse = 39
     DiagPsych = 42
     DiagSom = 45
+    Midas = 48
     MedCurrAcute = 51
     MedCurrBase = 52
     MedCurrOther = 55

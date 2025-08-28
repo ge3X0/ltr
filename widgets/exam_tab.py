@@ -86,11 +86,16 @@ class ExamTab(QtWidgets.QWidget):
             QtWidgets.QMessageBox.warning(self, "Exam Tab",
                 f"Untersuchungsfelder {', '.join(field_names[i] for i in invalid_fields)} enthalten nicht-numerische Werte, werden mit 0 ersetzt")
 
+        weight: int = values[ExamTab.Field.Weight]
+        height: float = values[ExamTab.Field.Height] / 100
+        bmi: float = weight / (height * height)
+
         return f"""
 <exam>
     <gender>{self.gender_btn_group.checkedButton().text()}</gender>
     <height>{values[ExamTab.Field.Height]}</height>
     <weight>{values[ExamTab.Field.Weight]}</weight>
+    <bmi>{bmi}</bmi>
     <sys>{values[ExamTab.Field.Systolic]}</sys>
     <dia>{values[ExamTab.Field.Diastolic]}</dia>
     <pulse>{values[ExamTab.Field.Pulse]}</pulse>
