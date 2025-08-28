@@ -129,8 +129,6 @@ class DataTabWidget(QtWidgets.QWidget):
                 f"Konnte die Datei {patient_path} nicht öffnen")
             return
 
-        print(patient_path)
-
         os.startfile(patient_path)
 
 

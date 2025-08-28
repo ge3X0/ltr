@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <xsl:stylesheet version="2.0"
-xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs">
 
     <!-- Read Values from internal data file (fed by ltr.exe) !-->
     <xsl:param name="data_file" required="yes"/>
@@ -92,6 +94,14 @@ xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
     <xsl:template match="//arzt"><xsl:value-of select="$data//patient/doctor_name"/></xsl:template>
     <xsl:template match="//psych"><xsl:value-of select="$data//patient/therapist_name"/></xsl:template>
     <xsl:template match="//allergien"><xsl:value-of select="$data//patient/allergies"/></xsl:template>
+
+    <xsl:template match="//heute"> 
+	<xsl:value-of select="format-date(current-date(), '[D01].[M01].[Y]')" />
+    </xsl:template>
+
+    <xsl:template match="//morgen">
+	<xsl:value-of select="format-date(current-date() + xs:dayTimeDuration('P1D'), '[D01].[M01].[Y]')" />
+    </xsl:template>
 
 
     <!-- Gender templates !-->

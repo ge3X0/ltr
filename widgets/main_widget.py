@@ -30,7 +30,6 @@ class MainWidget(QtWidgets.QWidget):
         """
         Sets the currently used export-template to template with index `index`
         """
-
         if 0 <= index < len(self.configs["template_files"]):
             self.configs["current_template"] = self.configs["template_files"][index]
 
