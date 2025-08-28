@@ -70,12 +70,21 @@ class ExamTab(QtWidgets.QWidget):
 
 
     def to_xml(self) -> str:
-        try:
-            values = [int(inp.text()) for inp in self.inp]
-        except ValueError:
+        field_names: list[str] = [
+            "Größe", "Gewicht", "RR systolisch", "RR diastolisch", "Puls" ]
+        invalid_fields: list[int] = []
+        values: list[int] = []
+
+        for idx, inp in enumerate(self.inp):
+            try:
+                values.append(int(inp.text()))
+            except ValueError:
+                invalid_fields.append(idx)
+                values.append(0)
+
+        if invalid_fields:
             QtWidgets.QMessageBox.warning(self, "Exam Tab",
-              "Felder enthalten nicht-numerische Werte, werden mit 0 ersetzt")
-            values = [0] * len(self.inp)
+                f"Untersuchungsfelder {', '.join(field_names[i] for i in invalid_fields)} enthalten nicht-numerische Werte, werden mit 0 ersetzt")
 
         return f"""
 <exam>

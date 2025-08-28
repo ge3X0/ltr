@@ -50,6 +50,20 @@ class XBox(QtWidgets.QWidget):
         else:
             __make_checkboxes(values)
 
+        button_col = QtWidgets.QVBoxLayout()
+        button_col.setAlignment(Qt.AlignmentFlag.AlignTop)
+        select_all_btn = QtWidgets.QPushButton("Auswahl umkehren")
+        button_col.addWidget(select_all_btn)
+        select_all_btn.setMaximumWidth(220)
+        select_all_btn.clicked.connect(self.select_all)
+
+        layout.addLayout(button_col)
+
+    
+    def select_all(self):
+        for cb in self.__checkboxes:
+            cb.setChecked(not cb.isChecked())
+
 
     def results(self) -> list[str]:
         return [cb.text() for cb in self.__checkboxes if cb.isChecked()]
