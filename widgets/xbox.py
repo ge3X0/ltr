@@ -32,6 +32,9 @@ class XBox(QtWidgets.QWidget):
         def __make_checkboxes(vals: Iterable[str]):
             col = QtWidgets.QVBoxLayout()
             for v in vals:
+                if v == "--":
+                    col.addSpacing(18)
+                    continue
                 cb = XCheckBox(v)
                 self.__checkboxes.append(cb)
                 col.addWidget(cb)

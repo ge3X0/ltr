@@ -142,6 +142,7 @@ field_type = "xbox"
 values = [
     "habe eine verminderte körperliche Leistungsfähigkeit",
     "reagiere körperlich empfindlicher als früher",
+    "--",
     "schone sich mehr",
     "versuche trotz der Schmerzen durchzuhalten",
     "nehme zunehmend mehr Medikamente ein",
@@ -150,6 +151,7 @@ values = [
     "sei gedrückt in der Stimmung und habe Angst",
     "sei reizbarer",
     "könne oft keine Ruhe finden",
+    "--",
     "sei wegen der Schmerzen oft arbeitsunfähig oder bei der Arbeit stark beeinträchtigt",
     "sei in Alltagsaktivitäten beeinträchtigt",
     "müsse häufig Ärzte, Therapeuten oder Kliniken aufsuchen",

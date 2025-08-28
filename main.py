@@ -11,6 +11,14 @@ from models import Configuration, ConfigErrorType
 #  Read template variables from docs files
 #  Edit docx files and re-insert variables
 
+
+# TODO:
+# Unterteilungen BDI-II  
+# MIDAS aus Schnuppi übernehmen
+# Regeln Basisabschnitt Migräne nicht immer übernehmen
+# Vorbehandlungen erweitern?
+# BMI
+
 LTR_VERSION = "v0.3.2"
 
 if __name__ == "__main__":
