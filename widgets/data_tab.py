@@ -176,16 +176,30 @@ class DataTabWidget(QtWidgets.QWidget):
         # Check for loadable data
         data_file = Path(self.configs["save_path"] / f"{self.patient_file_name()}.xml")
 
-        if not data_file.exists():
+        if data_file.exists():
+            self.letter_button.setVisible(True)
+            xml = self.proc.parse_xml(xml_file_name=str(data_file.absolute().as_posix()))
+
+        else:
             self.letter_button.setVisible(False)
-            self.dataLoaded.emit(None)
-            return
+            
+            # Try to load default values
+            if not self.patient_data.default_values:
+                self.dataLoaded.emit(None)
+                return
 
-        self.letter_button.setVisible(True)
+            # If field ids of forms are found in default_values, those
+            # data will be loaded
 
-        xml = self.proc.parse_xml(xml_file_name=str(data_file.absolute().as_posix()))
+            default_xml = ""
+            for field_name, values in self.patient_data.default_values.items():
+                default_xml += f"<field name=\"{field_name}\">"
+                default_xml += ''.join(f"<value>{v}</value>" for v in values)
+                default_xml += "</field>"
+
+            xml = self.proc.parse_xml(xml_text=default_xml)
+
         xpath.set_context(xdm_item=xml)
-
         self.dataLoaded.emit(xpath)
 
 

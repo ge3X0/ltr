@@ -216,6 +216,12 @@ class PatientDataLoader:
                         else:
                             self.patient_data.diagnoses.append(diag)
 
+                case Field.Midas:
+                    if (midas := re.search(r"\(.*\)", text)) is None:
+                        continue
+                    values = [v[0] for v in re.finditer(r"\d+", midas[0])]
+                    if len(values) == 5:
+                        self.patient_data.default_values["midas"] = values
 
                 case Field.MedCurrAcute:
                     self.read_meds(text, "current", "acute")

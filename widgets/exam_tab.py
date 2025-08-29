@@ -88,7 +88,7 @@ class ExamTab(QtWidgets.QWidget):
 
         weight: int = values[ExamTab.Field.Weight]
         height: float = values[ExamTab.Field.Height] / 100
-        bmi: float = weight / (height * height)
+        bmi: float = 0 if height == 0 else weight / (height * height)
 
         return f"""
 <exam>

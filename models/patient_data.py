@@ -1,6 +1,7 @@
 from enum import IntEnum
 from dataclasses import dataclass, field
 from typing import Self, override
+from collections.abc import Sequence
 from datetime import datetime, timedelta
 
 
@@ -90,6 +91,8 @@ class PatientData:
     admission: datetime = datetime.now()
     discharge: datetime = datetime.now()
     allergies: str = "Keine bekannt"
+
+    default_values: dict[str, Sequence[str | int]] = field(default_factory=dict)
 
     diagnoses: list[Diagnosis] = field(default_factory=list)
     medication: dict[str, dict[str, list[Medication]]] = field(default_factory=lambda: {
