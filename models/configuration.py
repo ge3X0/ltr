@@ -58,7 +58,8 @@ class Configuration:
                     self.configs[k] |= v
 
                 elif isinstance(self.configs[k], list) and isinstance(v, list):
-                    if k == "forms":
+                    # Replace forms or filenames with the same name
+                    if k == "forms" or k == "template_files":
                         for new_path in v:
                             for i, old_path in enumerate(self.configs[k]):
                                 if old_path.stem == new_path.stem:
@@ -68,7 +69,6 @@ class Configuration:
                                 self.configs[k].append(new_path)
                     else:
                         self.configs[k].extend(v)
-                    # self.configs[k] = list(set(self.configs[k]))
 
                 else:
                     self.configs[k] = v

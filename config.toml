@@ -1,6 +1,6 @@
 # Path to location of data *.docx files (required)
-# file_db = "D:/projects/python/ltr/file_db"
-file_db = "\\\\192.168.20.161\\word\\Arztbriefe\\01 Teaminformationen\\"
+file_db = "D:/projects/python/ltr/file_db"
+# file_db = "\\\\192.168.20.161\\word\\Arztbriefe\\01 Teaminformationen\\"
 
 # Path to template *.docx to copy contents from (required)
 # Adding a new value will automatically append it to the "export"-options in ltr.

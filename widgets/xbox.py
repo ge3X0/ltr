@@ -73,7 +73,7 @@ class XBox(QtWidgets.QWidget):
 
 
     def to_xml(self) -> str:
-        values = ''.join(f"<value>{v}</value>" for v in self.results())
+        values = ''.join(f"<value>{v}</value>" for v in self.results() if '*' not in v)
         return f"""<field name="{self.__field_id}">{values}</field>"""
 
 
@@ -87,4 +87,6 @@ class XBox(QtWidgets.QWidget):
 
         text_list = [e.string_value for e in elements if e is not None]
         for cb in self.__checkboxes:
+            if '*' in cb.text():
+                continue
             cb.setChecked(cb.text() in text_list)

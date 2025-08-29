@@ -14,8 +14,6 @@ from models import Configuration, ConfigErrorType
 
 # TODO:
 # Regeln Basisabschnitt Migräne nicht immer übernehmen
-# Vorbehandlungen erweitern?
-# BMI -> Done
 
 LTR_VERSION = "v0.3.2"
 
