@@ -58,7 +58,16 @@ class Configuration:
                     self.configs[k] |= v
 
                 elif isinstance(self.configs[k], list) and isinstance(v, list):
-                    self.configs[k].extend(v)
+                    if k == "forms":
+                        for new_path in v:
+                            for i, old_path in enumerate(self.configs[k]):
+                                if old_path.stem == new_path.stem:
+                                    self.configs[k][i] = new_path
+                                    break
+                            else:
+                                self.configs[k].append(new_path)
+                    else:
+                        self.configs[k].extend(v)
                     # self.configs[k] = list(set(self.configs[k]))
 
                 else:

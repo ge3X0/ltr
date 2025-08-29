@@ -13,10 +13,9 @@ from models import Configuration, ConfigErrorType
 
 
 # TODO:
-# MIDAS aus Schnuppi übernehmen (Wird durch Psychologen eingetragen)
 # Regeln Basisabschnitt Migräne nicht immer übernehmen
 # Vorbehandlungen erweitern?
-# BMI
+# BMI -> Done
 
 LTR_VERSION = "v0.3.2"
 
