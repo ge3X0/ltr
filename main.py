@@ -12,10 +12,7 @@ from models import Configuration, ConfigErrorType
 #  Edit docx files and re-insert variables
 
 
-# TODO:
-# Regeln Basisabschnitt Migräne nicht immer übernehmen
-
-LTR_VERSION = "v0.3.2"
+LTR_VERSION = "v0.3.3"
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])

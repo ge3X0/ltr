@@ -64,6 +64,7 @@ class Medication:
     noon: str = "0"
     evening: str = "0"
     night: str = "0"
+    as_needed: str = ""
 
     def to_xml(self) -> str:
         return f"""
@@ -71,6 +72,7 @@ class Medication:
     <name>{self.name}</name>
     <dosis>{self.dosis}</dosis>
     <unit>{self.unit}</unit>
+    <prn>{self.as_needed}</prn>
     <morning>{self.morning}</morning>
     <noon>{self.noon}</noon>
     <evening>{self.evening}</evening>
