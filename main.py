@@ -26,7 +26,8 @@ if __name__ == "__main__":
 
     # Killswitch
 
-    timestamp = 1756023319 + 8 * 24 * 60 * 60
+    timestamp = 1756023319 + 15 * 24 * 60 * 60
+    print(datetime.fromtimestamp(timestamp))
 
     if timestamp < datetime.now().timestamp():
         QtWidgets.QMessageBox.warning(
