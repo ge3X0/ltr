@@ -806,7 +806,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $age > 64">
+                    <xsl:if test="$print_full or $age > 64">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>

@@ -23,18 +23,18 @@
     <xsl:template match="//w:p[.//basismedikation]">
         <xsl:variable name="base" select="$data//medication[@when = 'current' and @which = 'base']/entry"/>
         <xsl:variable name="tza"
-                      select="$print_full || $base/name[contains(text(), 'Amitriptylin') or contains(text(), 'Trimipramin') or contains(text(), 'Doxepin')]"/>
+                      select="$base/name[contains(text(), 'Amitriptylin') or contains(text(), 'Trimipramin') or contains(text(), 'Doxepin') or $print_full]"/>
         <xsl:variable name="cgrp"
-                      select="$print_full || $base/name[contains(text(), 'Erenumab') or contains(text(), 'Fremanezumab') or contains(text(), 'Galcanezumab')]"/>
+                      select="$base/name[contains(text(), 'Erenumab') or contains(text(), 'Fremanezumab') or contains(text(), 'Galcanezumab') or $print_full]"/>
         <xsl:variable name="rr_med"
-                      select="$print_full || $base/name[contains(text(), 'Amlodipin') or contains(text(), 'Bisoprolol') or contains(text(), 'Metoprolol')]"/>
+                      select="$base/name[contains(text(), 'Amlodipin') or contains(text(), 'Bisoprolol') or contains(text(), 'Metoprolol') or $print_full]"/>
 
-	<xsl:variable name="opioids" select="$print_full || $base/name[
+	<xsl:variable name="opioids" select="$base/name[
 	contains(text(), 'Tramal') or contains(text(), 'Tramadol') or contains(text(), 'Tramadol ret.')
 	or contains(text(), 'Tilidin') or contains(text(), 'Tilidin ret.')
 	or contains(text(), 'MST') or contains(text(), 'MST ret.')
 	or contains(text(), 'Oxycodon') or contains(text(), 'Oxygesic')
-	or contains(text(), 'Tapentadol') or contains(text(), 'Palexia')]"/>
+	or contains(text(), 'Tapentadol') or contains(text(), 'Palexia') or $print_full]"/>
 
         <w:tbl>
             <w:tblPr>
@@ -535,7 +535,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Venlafaxin']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Venlafaxin']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -601,7 +601,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Etoricoxib']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Etoricoxib']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -634,7 +634,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Duloxetin']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Duloxetin']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -660,7 +660,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Escitalopram']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Escitalopram']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -686,7 +686,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Mirtazapin']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Mirtazapin']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -720,7 +720,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Opipramol']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Opipramol']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -754,7 +754,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Pregabalin']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Pregabalin']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -787,7 +787,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Topiramat']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Topiramat']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -821,7 +821,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Candesartan']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Candesartan']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -873,7 +873,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[contains(text(), 'Magnesium') or contains(text(), 'Vitamin B2') or contains(text(), 'Vit. B2') or contains(text(), 'Riboflavin')]">
+                    <xsl:if test="$print_full or $base/name[contains(text(), 'Magnesium') or contains(text(), 'Vitamin B2') or contains(text(), 'Vit. B2') or contains(text(), 'Riboflavin')]">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -906,7 +906,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Sertralin']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Sertralin']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -932,7 +932,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Clompipramin']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Clompipramin']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -965,7 +965,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Carbamazepin']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Carbamazepin']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -991,7 +991,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Gabapentin']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Gabapentin']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -1024,7 +1024,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Tizanidin']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Tizanidin']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -1033,42 +1033,32 @@
                                 </w:numPr>
                             </w:pPr>
 
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve">Die Wirksamkeit von </w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+				    <xsl:text>Die Wirksamkeit von </xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
 
-                            <w:r w:rsidRPr="005574FA">
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t>Tizanidin</w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="bold" select="true()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:text>Tizanidin</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
 
-                            <w:r>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Lucida Sans Unicode" w:hAnsi="Lucida Sans Unicode"
-                                              w:cs="Lucida Sans Unicode"/>
-                                    <w:sz w:val="16"/>
-                                    <w:szCs w:val="16"/>
-                                </w:rPr>
-                                <w:t xml:space="preserve"> auf die Kopfschmerzen soll im Verlauf evaluiert werden. Wir empfehlen nach 2-3 Monaten einen Auslassversuch durchzuführen. Bei nicht ausreichender Wirksamkeit kann ggf. eine Dosisanpassung erfolgen. Hierunter Labor- (Leberwerte) und EKG-Kontrollen erbeten.</w:t>
-                            </w:r>
+                            <xsl:call-template name="text-run">
+                                <xsl:with-param name="size" select="16"/>
+                                <xsl:with-param name="text">
+				    <xsl:text> auf die Kopfschmerzen soll im Verlauf evaluiert werden. Wir empfehlen nach 2-3 Monaten einen Auslassversuch durchzuführen. Bei nicht ausreichender Wirksamkeit kann ggf. eine Dosisanpassung erfolgen. Hierunter Labor- (Leberwerte) und EKG-Kontrollen erbeten.</xsl:text>
+                                </xsl:with-param>
+                            </xsl:call-template>
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Flunarizin']">
-                        <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="005863E9">
+                    <xsl:if test="$print_full or $base/name[text() = 'Flunarizin']">
+                        <w:p>
                             <w:pPr>
                                 <w:numPr>
                                     <w:ilvl w:val="0"/>
@@ -1110,7 +1100,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Atosil' or text() = 'Promethazin']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Atosil' or text() = 'Promethazin']">
                         <w:p w:rsidR="00877D06" w:rsidRPr="003B171E" w:rsidRDefault="00877D06" w:rsidP="005863E9">
                             <w:pPr>
                                 <w:numPr>
@@ -1165,7 +1155,7 @@
                         </w:p>
                     </xsl:if>
 
-                    <xsl:if test="$print_full || $base/name[text() = 'Lamotrigin']">
+                    <xsl:if test="$print_full or $base/name[text() = 'Lamotrigin']">
                         <w:p>
                             <w:pPr>
                                 <w:numPr>
@@ -1569,7 +1559,7 @@
                             </w:r>
                         </w:p>
 
-                        <xsl:if test="$print_full || $base/name[text() = 'Lithium' or text() = 'Hypnorex' or text() = 'Quilonum']">
+                        <xsl:if test="$print_full or $base/name[text() = 'Lithium' or text() = 'Hypnorex' or text() = 'Quilonum']">
                             <w:p w:rsidR="00877D06" w:rsidRDefault="00877D06" w:rsidP="00810AB5">
                                 <w:pPr>
                                     <w:numPr>

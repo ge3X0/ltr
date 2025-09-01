@@ -13,7 +13,7 @@
 
     <!-- Variable Definition !-->
 
-    <xsl:variable name="print_full" select="true()"/>
+    <xsl:variable name="print_full" as="xs:boolean" select="false()"/>
 
 
     <!-- General Variables !-->
@@ -23,14 +23,14 @@
 
     <!-- Diagnosis Variables !-->
 
-    <xsl:variable name="diag_overuse" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.4']"/>
-    <xsl:variable name="diag_cluster" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.0']"/>
-    <xsl:variable name="diag_chronic_migraine" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.8/3']"/>
-    <xsl:variable name="diag_migraine_without_aura" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.0']"/>
-    <xsl:variable name="diag_migraine_with_aura" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.1']"/>
-    <xsl:variable name="diag_status_migrainosus" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.2']"/>
-    <xsl:variable name="diag_spaks" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.2']"/>
-    <xsl:variable name="diag_trigeminus" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[contains(., 'G50')]"/>
+    <xsl:variable name="diag_overuse" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.4']"/>
+    <xsl:variable name="diag_cluster" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.0']"/>
+    <xsl:variable name="diag_chronic_migraine" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.8/3']"/>
+    <xsl:variable name="diag_migraine_without_aura" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.0']"/>
+    <xsl:variable name="diag_migraine_with_aura" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.1']"/>
+    <xsl:variable name="diag_status_migrainosus" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.2']"/>
+    <xsl:variable name="diag_spaks" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.2']"/>
+    <xsl:variable name="diag_trigeminus" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[contains(., 'G50')]"/>
 
 
     <!-- Special Functions !-->
@@ -168,6 +168,16 @@
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template name="patient_akk">
+        <xsl:choose>
+            <xsl:when test="$gender = 'm'">den Patienten</xsl:when>
+            <xsl:when test="$gender = 'f'">die Patientin</xsl:when>
+            <xsl:otherwise>den Patienten/die Patientin</xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="//patient_akk"><xsl:call-template name="patient_akk"/></xsl:template>
+
 
     <!-- List of diagnoses !-->
 
@@ -304,6 +314,10 @@
         <xsl:text> Somit besteht eine ausgeprägte Beeinträchtigung sowohl der Lebensqualität als auch der Arbeitsfähigkeit.</xsl:text>
     </xsl:template>
 
+
+    <!-- Prior treatments !-->
+
+
     <xsl:variable name="medical_values" as="xs:string*" select="(
     'Allgemeinmedizin', 'Endokrinologie', 'Dermatologie', 'Pädiatrie', 'Neurologie', 'Onkologie',
     'Proktologie', 'Psychiatrie', 'Psychotherapie', 'Rheumatologie', 'Urologie', 'Allergologie',
@@ -341,7 +355,7 @@
 
     <xsl:template match="//eigene_vorbehandlungen">
 	<xsl:call-template name="string-list">
-		<xsl:with-param name="selection" select="$data//field[@name='treatments']/value[not(. = $all_treats)]"/>
+	    <xsl:with-param name="selection" select="$data//field[@name='treatments']/value[not(. = $all_treats)]"/>
 	</xsl:call-template>
     </xsl:template>
 

@@ -27,7 +27,7 @@ if __name__ == "__main__":
     # Killswitch
 
     timestamp = 1756023319 + 15 * 24 * 60 * 60
-    print(datetime.fromtimestamp(timestamp))
+    print(f"Programm läuft aus: {datetime.fromtimestamp(timestamp)}")
 
     if timestamp < datetime.now().timestamp():
         QtWidgets.QMessageBox.warning(
