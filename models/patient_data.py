@@ -1,6 +1,7 @@
 from enum import IntEnum
 from dataclasses import dataclass, field
 from typing import Self, override
+from collections.abc import Sequence
 from datetime import datetime, timedelta
 
 
@@ -63,6 +64,7 @@ class Medication:
     noon: str = "0"
     evening: str = "0"
     night: str = "0"
+    as_needed: str = ""
 
     def to_xml(self) -> str:
         return f"""
@@ -70,6 +72,7 @@ class Medication:
     <name>{self.name}</name>
     <dosis>{self.dosis}</dosis>
     <unit>{self.unit}</unit>
+    <prn>{self.as_needed}</prn>
     <morning>{self.morning}</morning>
     <noon>{self.noon}</noon>
     <evening>{self.evening}</evening>
@@ -90,6 +93,8 @@ class PatientData:
     admission: datetime = datetime.now()
     discharge: datetime = datetime.now()
     allergies: str = "Keine bekannt"
+
+    default_values: dict[str, Sequence[str | int]] = field(default_factory=dict)
 
     diagnoses: list[Diagnosis] = field(default_factory=list)
     medication: dict[str, dict[str, list[Medication]]] = field(default_factory=lambda: {

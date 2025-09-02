@@ -32,6 +32,7 @@ class PatientDataLoader:
     icd_pattern: re.Pattern[str] = re.compile(f"^\\s*{icd_name}{icd_num}.*$")
 
     md_name: str = r"([/.\-()\w\säöüÄÖÜß?]+?)"
+    md_prn: str = r"(bei [bB]ed\S+ (?:bis(?: zu)? )?"
     md_dosage: str = r"([\-\d?.,/]+)\s*"
     md_unit: str = r"((?:g|mg|µg|ug|ng|IE|ml|l|Hub|Kapsel|Kps\.?|Tablette|Tbl\.?|°|Tropfen|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ng|ml|l|d|Tag|h|Stunde))?)"
     n: str = r"\s*([\d.,/]+°?)\s*"
@@ -217,9 +218,11 @@ class PatientDataLoader:
                             self.patient_data.diagnoses.append(diag)
 
                 case Field.Midas:
-                    if m := re.search(text, r"\((.+)\)"):
-                        pass
-
+                    if (midas := re.search(r"\(.*\)", text)) is None:
+                        continue
+                    values = [v[0] for v in re.finditer(r"\d+", midas[0])]
+                    if len(values) == 5:
+                        self.patient_data.default_values["midas"] = values
 
                 case Field.MedCurrAcute:
                     self.read_meds(text, "current", "acute")

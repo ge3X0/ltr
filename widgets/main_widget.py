@@ -203,8 +203,12 @@ class MainWidget(QtWidgets.QWidget):
         tmp_path = data_file.with_name(parse.quote(data_file.name, encoding="utf-8"))
         path_str = str(tmp_path.absolute().as_posix())
 
+        # xml = f"<?xml version=\"1.0\" encoding=\"UTF-8\" ?><data>{''.join(field.to_xml() for field in self.forms)}</data>"
+        # xml_node = self.proc.parse_xml(xml_text=xml)
+
         xslt_proc = self.proc.new_xslt30_processor()
         xslt_proc.set_parameter("data_file", self.proc.make_string_value(path_str))
+        # xslt_proc.set_parameter("data_file", xml_node)
         transform = xslt_proc.compile_stylesheet(stylesheet_file=str(self.configs["xsl_file"].absolute()))
 
         # Internal function to concat docs templates {varname} if word inserted <t></t> tags

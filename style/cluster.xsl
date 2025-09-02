@@ -457,6 +457,7 @@
                         <xsl:text>- Sauerstoff 10 Liter/min über 10 Minuten</xsl:text>
                     </xsl:with-param>
                 </xsl:call-template>
+		<w:br type="page"/>
             </w:p>
         </xsl:if>
     </xsl:template>

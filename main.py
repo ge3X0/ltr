@@ -12,12 +12,7 @@ from models import Configuration, ConfigErrorType
 #  Edit docx files and re-insert variables
 
 
-# TODO:
-# MIDAS aus Schnuppi übernehmen (Wird durch Psychologen eingetragen)
-# Regeln Basisabschnitt Migräne nicht immer übernehmen
-# Vorbehandlungen erweitern?
-
-LTR_VERSION = "v0.3.2"
+LTR_VERSION = "v0.3.3"
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
@@ -31,7 +26,8 @@ if __name__ == "__main__":
 
     # Killswitch
 
-    timestamp = 1756023319 + 8 * 24 * 60 * 60
+    timestamp = 1756023319 + 15 * 24 * 60 * 60
+    print(f"Programm läuft aus: {datetime.fromtimestamp(timestamp)}")
 
     if timestamp < datetime.now().timestamp():
         QtWidgets.QMessageBox.warning(

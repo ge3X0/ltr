@@ -10,7 +10,7 @@ class XCheckBox(QtWidgets.QCheckBox):
     """Used for custom focus forwarding on pressing 'x' or 'y'"""
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)               # pyright: ignore[reportUnknownArgumentType]
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
 
@@ -31,16 +31,21 @@ class XBox(QtWidgets.QWidget):
 
         def __make_checkboxes(vals: Iterable[str]):
             col = QtWidgets.QVBoxLayout()
+
             for v in vals:
+                # Insert separator for "--"
                 if v == "--":
                     col.addSpacing(18)
                     continue
+
                 cb = XCheckBox(v)
                 self.__checkboxes.append(cb)
                 col.addWidget(cb)
+
             layout.addLayout(col)
 
-        super().__init__(*args, **kwargs)
+
+        super().__init__(*args, **kwargs)               # pyright: ignore[reportUnknownArgumentType]
 
         self.__field_id = field_id
         self.__checkboxes: list[QtWidgets.QCheckBox] = []
@@ -58,22 +63,25 @@ class XBox(QtWidgets.QWidget):
         select_all_btn = QtWidgets.QPushButton("Auswahl umkehren")
         button_col.addWidget(select_all_btn)
         select_all_btn.setMaximumWidth(220)
-        select_all_btn.clicked.connect(self.select_all)
+        select_all_btn.clicked.connect(self.invert_selection)
 
         layout.addLayout(button_col)
 
     
-    def select_all(self):
+    @QtCore.Slot()
+    def invert_selection(self):
+        """Inverts selection of checkboxes"""
         for cb in self.__checkboxes:
             cb.setChecked(not cb.isChecked())
 
 
     def results(self) -> list[str]:
+        """Returns list of all values of selected checkboxes"""
         return [cb.text() for cb in self.__checkboxes if cb.isChecked()]
 
 
     def to_xml(self) -> str:
-        values = ''.join(f"<value>{v}</value>" for v in self.results())
+        values = ''.join(f"<value>{v}</value>" for v in self.results() if '*' not in v)
         return f"""<field name="{self.__field_id}">{values}</field>"""
 
 
@@ -87,4 +95,6 @@ class XBox(QtWidgets.QWidget):
 
         text_list = [e.string_value for e in elements if e is not None]
         for cb in self.__checkboxes:
+            if '*' in cb.text():
+                continue
             cb.setChecked(cb.text() in text_list)

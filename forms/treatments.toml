@@ -1,3 +1,10 @@
+
+# ***************
+# *   CAUTION   *
+# ***************
+
+# Changes to the values in this file MUST be accompanied by changes in style.xsl
+
 name = "&Vorbehandlungen"
 
 [[field]]
@@ -17,15 +24,3 @@ values = [
     "Nervenheilkunde", "Neurochirurgie", "Orthopädie", "Priester",
     "Dipl.-Psychologe", "Radiologie", "Schmerztherapie", "Zahnheilkunde"
 ]
-# values = [
-#     "Akupunktur", "Allgemeinarzt", "Apotheker", "Bademeister",
-#     "Chiropraktiker", "Endokrinologe", "Geistheiler", "Hautarzt",
-#     "Hypnotiseur", "Kinderarzt", "Pflegekraft", "Masseur",
-#     "Naturheilkundler", "Neurologe", "Onkologe", "Proktologe",
-#     "Psychiater", "Psychotherapeut", "Rheumatologe", "Urologe",
-#     "Allergologe", "Anästhesiologe", "Augenarzt", "Kardiologe",
-#     "Chirurg", "Frauenarzt", "HNO-Arzt", "Heilpraktiker",
-#     "Internist", "Physiotherapeut", "Lungenarzt", "MKG-Chirurg",
-#     "Nervenarzt", "Neurochirurg", "Orthopäde", "Priester",
-#     "Dipl.-Psychologe", "Radiologe", "Schmerztherapeut", "Zahnarzt"
-# ]
