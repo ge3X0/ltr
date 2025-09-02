@@ -216,6 +216,10 @@ class PatientDataLoader:
                         else:
                             self.patient_data.diagnoses.append(diag)
 
+                case Field.Midas:
+                    if m := re.search(text, r"\((.+)\)"):
+                        pass
+
 
                 case Field.MedCurrAcute:
                     self.read_meds(text, "current", "acute")
