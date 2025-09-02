@@ -88,6 +88,7 @@ class PatientData:
     address: str = "Unbekannt"
     phone: str = "Unbekannt"
     occupation: str = "Unbekannt"
+    gdb: int = 0
     doc_name: str = "Unbekannt"
     pt_name: str = "Unbekannt"
     admission: datetime = datetime.now()
@@ -121,6 +122,7 @@ class PatientData:
     <address>{self.address}</address>
     <phone>{self.phone}</phone>
     <occupation>{self.occupation}</occupation>
+    <gdb>{self.gdb}</gdb>
     <doctor_name>{self.doc_name}</doctor_name>
     <therapist_name>{self.pt_name}</therapist_name>
     <admission>{self.admission.strftime(date_format)}</admission>

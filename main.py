@@ -12,6 +12,9 @@ from models import Configuration, ConfigErrorType
 #  Edit docx files and re-insert variables
 
 
+# TODO:
+# gdb anpassen in word
+
 LTR_VERSION = "v0.3.3"
 
 if __name__ == "__main__":
