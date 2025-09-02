@@ -321,7 +321,9 @@
 		<xsl:text> Bisher erfolgte kein Antrag auf einen Grad der Behinderung.</xsl:text>
 	    </xsl:when>
 	    <xsl:otherwise>
-		<xsl:text> Es besteht ein Grad der Behinderung von <xsl:value-of select="$data//patient/gdb"/>.</xsl:text>
+		<xsl:text> Es besteht ein Grad der Behinderung von </xsl:text>
+		<xsl:value-of select="$data//patient/gdb"/>
+		<xsl:text>.</xsl:text>
 	    </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
