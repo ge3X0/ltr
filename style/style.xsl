@@ -13,7 +13,7 @@
 
     <!-- Variable Definition !-->
 
-    <xsl:variable name="print_full" select="true()"/>
+    <xsl:variable name="print_full" as="xs:boolean" select="false()"/>
 
 
     <!-- General Variables !-->
@@ -23,14 +23,14 @@
 
     <!-- Diagnosis Variables !-->
 
-    <xsl:variable name="diag_overuse" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.4']"/>
-    <xsl:variable name="diag_cluster" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.0']"/>
-    <xsl:variable name="diag_chronic_migraine" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.8/3']"/>
-    <xsl:variable name="diag_migraine_without_aura" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.0']"/>
-    <xsl:variable name="diag_migraine_with_aura" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.1']"/>
-    <xsl:variable name="diag_status_migrainosus" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.2']"/>
-    <xsl:variable name="diag_spaks" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.2']"/>
-    <xsl:variable name="diag_trigeminus" select="$print_full || $data//patient/diagnoses/diagnosis/icd10[contains(., 'G50')]"/>
+    <xsl:variable name="diag_overuse" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.4']"/>
+    <xsl:variable name="diag_cluster" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.0']"/>
+    <xsl:variable name="diag_chronic_migraine" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.8/3']"/>
+    <xsl:variable name="diag_migraine_without_aura" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.0']"/>
+    <xsl:variable name="diag_migraine_with_aura" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.1']"/>
+    <xsl:variable name="diag_status_migrainosus" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G43.2']"/>
+    <xsl:variable name="diag_spaks" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[text() = 'G44.2']"/>
+    <xsl:variable name="diag_trigeminus" select="$print_full or $data//patient/diagnoses/diagnosis/icd10[contains(., 'G50')]"/>
 
 
     <!-- Special Functions !-->
