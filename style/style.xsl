@@ -168,6 +168,16 @@
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template name="patient_akk">
+        <xsl:choose>
+            <xsl:when test="$gender = 'm'">den Patienten</xsl:when>
+            <xsl:when test="$gender = 'f'">die Patientin</xsl:when>
+            <xsl:otherwise>den Patienten/die Patientin</xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="//patient_akk"><xsl:call-template name="patient_akk"/></xsl:template>
+
 
     <!-- List of diagnoses !-->
 
@@ -304,6 +314,10 @@
         <xsl:text> Somit besteht eine ausgeprägte Beeinträchtigung sowohl der Lebensqualität als auch der Arbeitsfähigkeit.</xsl:text>
     </xsl:template>
 
+
+    <!-- Prior treatments !-->
+
+
     <xsl:variable name="medical_values" as="xs:string*" select="(
     'Allgemeinmedizin', 'Endokrinologie', 'Dermatologie', 'Pädiatrie', 'Neurologie', 'Onkologie',
     'Proktologie', 'Psychiatrie', 'Psychotherapie', 'Rheumatologie', 'Urologie', 'Allergologie',
@@ -341,7 +355,7 @@
 
     <xsl:template match="//eigene_vorbehandlungen">
 	<xsl:call-template name="string-list">
-		<xsl:with-param name="selection" select="$data//field[@name='treatments']/value[not(. = $all_treats)]"/>
+	    <xsl:with-param name="selection" select="$data//field[@name='treatments']/value[not(. = $all_treats)]"/>
 	</xsl:call-template>
     </xsl:template>
 
