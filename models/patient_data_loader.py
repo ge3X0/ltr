@@ -156,7 +156,7 @@ class PatientDataLoader:
 
 
                 case Field.Occupation:
-                    if (m := re.search(r"^(.+?)\s+(?i:GDB\s*(\d+))?", text)) is not None:
+                    if (m := re.match(r"^(.+?)(?i:,\sGDB\s*(\d+))?$", text)) is not None:
                         self.patient_data.occupation = m[1]
                         if m[2] is not None:
                             try:
@@ -165,6 +165,9 @@ class PatientDataLoader:
                                 return PatientDataError(
                                     PatientDataErrorType.WrongGdb,
                                     "Grad der Behinderung ungültig")
+                    else:
+                        print("not match")
+                        self.patient_data.occupation = text
 
 
                 case Field.Doctor:
