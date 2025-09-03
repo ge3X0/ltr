@@ -315,6 +315,20 @@
     </xsl:template>
 
 
+    <xsl:template match="//gdb">
+        <xsl:choose>
+	    <xsl:when test="$data//patient/gdb = 0">
+		<xsl:text> Bisher erfolgte kein Antrag auf einen Grad der Behinderung.</xsl:text>
+	    </xsl:when>
+	    <xsl:otherwise>
+		<xsl:text> Es besteht ein Grad der Behinderung von </xsl:text>
+		<xsl:value-of select="$data//patient/gdb"/>
+		<xsl:text>.</xsl:text>
+	    </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+
     <!-- Prior treatments !-->
 
 

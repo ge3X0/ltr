@@ -16,6 +16,7 @@ class PatientDataErrorType(Enum):
     BirthdayFormat = 3
     AdmissionDate = 4
     DischargeDate = 5
+    WrongGdb = 6
 
 
 @dataclass
@@ -33,8 +34,9 @@ class PatientDataLoader:
 
     md_name: str = r"([/.\-()\w\säöüÄÖÜß?]+?)"
     md_prn: str = r"(bei [bB]ed\S+ (?:bis(?: zu)? )?"
+    md_taken: str = r"(\d+x.+?)?"
     md_dosage: str = r"([\-\d?.,/]+)\s*"
-    md_unit: str = r"((?:g|mg|µg|ug|ng|IE|ml|l|Hub|Kapsel|Kps\.?|Tablette|Tbl\.?|°|Tropfen|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ng|ml|l|d|Tag|h|Stunde))?)"
+    md_unit: str = r"((?:g|mg|µg|ug|yg|ng|IE|ml|l|Hub|Kapsel|Kps\.?|Tablette|Tbl\.?|°|Tropfen|Trpf\.?)(?:\s*/\s*(?:g|mg|µg|ug|ng|ml|l|d|Tag|h|Stunde))?)"
     n: str = r"\s*([\d.,/]+°?)\s*"
 
     med_pattern: re.Pattern[str] = re.compile(f"^{md_name}\\s{md_dosage}{md_unit}{n}-{n}-{n}(?:-{n})?.*?$")
@@ -154,7 +156,15 @@ class PatientDataLoader:
 
 
                 case Field.Occupation:
-                    self.patient_data.occupation = text
+                    if (m := re.search(r"^(.+?)\s+(?i:GDB\s*(\d+))?", text)) is not None:
+                        self.patient_data.occupation = m[1]
+                        if m[2] is not None:
+                            try:
+                                self.patient_data.gdb = int(m[2])
+                            except ValueError:
+                                return PatientDataError(
+                                    PatientDataErrorType.WrongGdb,
+                                    "Grad der Behinderung ungültig")
 
 
                 case Field.Doctor:

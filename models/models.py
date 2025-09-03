@@ -106,6 +106,8 @@ class PatientTableModel(QtCore.QAbstractTableModel):
             ("Geburtsdatum", f"{data.birthday.strftime('%d.%m.%Y')}"),
             ("Aufenthalt", f"{data.admission.strftime('%d.%m.%Y')} - {data.discharge.strftime('%d.%m.%Y')}"),
             ("Wohnhaft", data.address),
+            ("Beruf", data.occupation),
+            ("GdB", str(data.gdb)),
             ("Telefon", data.phone),
             ("Arzt", data.doc_name),
             ("PT", data.pt_name)
@@ -113,7 +115,7 @@ class PatientTableModel(QtCore.QAbstractTableModel):
 
     @override
     def rowCount(self, /, parent = ...): 
-        return 7 if not parent.isValid() else 0
+        return 9 if not parent.isValid() else 0
 
 
     @override

@@ -4,12 +4,16 @@ from PySide6.QtCore import Qt
 from zipfile import ZipFile
 from pathlib import Path
 import os
+import subprocess as sp
 
 from saxonche import PySaxonProcessor, PyXPathProcessor
 
 from models import DiagnosesTableModel, MedicationTableModel
 from models import PatientData, PatientDataLoader, PatientDataErrorType, PatientTableModel
 from models import Configuration
+
+from itertools import zip_longest, batched
+from tempfile import NamedTemporaryFile
 
 
 class DataTabWidget(QtWidgets.QWidget):
@@ -97,10 +101,26 @@ class DataTabWidget(QtWidgets.QWidget):
 
         data_layout.addWidget(QtWidgets.QLabel("\nDiagnosen\n"))
 
+        icd_layout = QtWidgets.QHBoxLayout()
+        data_layout.addLayout(icd_layout)
+
         self.diagnoses_table: QtWidgets.QTableView = QtWidgets.QTableView()
         self.diagnoses_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
         self.diagnoses_table.setModel(DiagnosesTableModel([]))
-        data_layout.addWidget(self.diagnoses_table)
+        icd_layout.addWidget(self.diagnoses_table)
+
+        # Setup Buttons
+
+        icd_buttons_layout = QtWidgets.QVBoxLayout()
+        icd_buttons_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        icd_layout.addLayout(icd_buttons_layout)
+
+        self.icd_list_button: QtWidgets.QPushButton = QtWidgets.QPushButton("ICD-Liste drucken")
+        icd_buttons_layout.addWidget(self.icd_list_button)
+
+        self.icd_list_button.setToolTip("ICD-Liste zum Drucken anzeigen [Strg+P]")
+        self.icd_list_button.clicked.connect(self.show_icd_list)
+        self.icd_list_button.setVisible(False)
 
         # Setup Medication Table
 
@@ -115,6 +135,34 @@ class DataTabWidget(QtWidgets.QWidget):
 
         scroll_area.setWidget(scroll_widget)
         main_layout.addWidget(scroll_area)
+
+
+    def hide_buttons(self) -> None:
+        self.icd_list_button.setVisible(False)
+        self.letter_button.setVisible(False)
+        self.data_sheet_button.setVisible(False)
+
+
+    @QtCore.Slot()
+    def show_icd_list(self) -> None:
+        offset: str = "\n" * self.configs["icd_list_offset"] 
+
+        diagnose_batches = batched((d.icd10 for d in self.patient_data.diagnoses), self.configs["icd_list_column_height"])
+        diagnose_lines = zip_longest(*list(diagnose_batches), fillvalue="")
+
+        output_line: list[str] = []
+        for line in diagnose_lines:
+            output_line.append(' '.join(f"{icd:<10}" for icd in line))
+
+        output_text = offset + "\n\n".join(output_line)
+
+        # Create and show file to print
+        with NamedTemporaryFile(suffix=".txt", delete_on_close=False) as tmp_file:
+            tmp_file.write(output_text.encode("utf-8"))
+            tmp_file.close()
+
+            sp.run(["notepad", tmp_file.name])
+
 
 
     @QtCore.Slot()
@@ -156,6 +204,7 @@ class DataTabWidget(QtWidgets.QWidget):
         if not patient_path.exists():
             QtWidgets.QMessageBox.warning(self, "Datei nicht gefunden",
               f"Konnte die Datei {patient_path} nicht öffnen")
+            self.hide_buttons()
             return
 
         with ZipFile(patient_path) as archive:
@@ -169,6 +218,7 @@ class DataTabWidget(QtWidgets.QWidget):
             QtWidgets.QMessageBox.warning(self,
                 "Fehler beim Laden",
                 loader_error.message)
+            self.hide_buttons()
             return
 
         self.display_data()
@@ -209,6 +259,7 @@ class DataTabWidget(QtWidgets.QWidget):
         self.patient_table.setModel(PatientTableModel(self.patient_data))
         self.patient_table.resizeColumnsToContents()
         self.data_sheet_button.setVisible(True)
+        self.icd_list_button.setVisible(True)
 
         self.diagnoses_table.setModel(DiagnosesTableModel(self.patient_data.diagnoses))
         self.diagnoses_table.resizeColumnsToContents()

@@ -34,6 +34,12 @@ forms = [
     "midas", "treatments", "symptoms_box", "bdi2", "whodas"
 ]
 
+# Number of blank lines on page before the icd10-list
+icd_list_offset = 34
+
+# Number of icd codes fit into one column
+icd_list_column_height = 4
+
 # Medication names to ignore while loading (optional)
 ignore_meds = ["Akut:", "Basis:", "Sonstige:"]
 
@@ -65,3 +71,4 @@ Vyepti = "Eptinezumab"
 "G43.8" = []
 "F55.2" = ["F55.2", "Analgetikagebrauch"]
 "F45.41" = ["F45.41", "Chronische Schmerzstörung"]
+

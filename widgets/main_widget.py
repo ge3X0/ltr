@@ -83,6 +83,9 @@ class MainWidget(QtWidgets.QWidget):
         open_data_shortcut = QtGui.QShortcut("Ctrl+I", self) # pyright: ignore[reportArgumentType]
         open_data_shortcut.activated.connect(self.forms[0].show_data_sheet)
 
+        icd_list_shortcut = QtGui.QShortcut("Ctrl+P", self) #pyright: ignore[reportArgumentType]
+        icd_list_shortcut.activated.connect(self.forms[0].show_icd_list)
+
         save_data_shortcut = QtGui.QShortcut("Ctrl+S", self) # pyright: ignore[reportArgumentType]
         save_data_shortcut.activated.connect(self.save_data)
 

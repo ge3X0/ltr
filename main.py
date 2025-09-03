@@ -12,7 +12,7 @@ from models import Configuration, ConfigErrorType
 #  Edit docx files and re-insert variables
 
 
-LTR_VERSION = "v0.3.3"
+LTR_VERSION = "v0.3.4"
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])

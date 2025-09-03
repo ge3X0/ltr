@@ -113,6 +113,8 @@ class Configuration:
             "substitute_meds": {},
             "substitute_diagnoses": {},
             "process_files": ["word/document.xml", "word/header1.xml"],
+            "icd_list_offset": 34,
+            "icd_list_column_height": 4,
         }
 
 
